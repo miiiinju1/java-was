@@ -1,11 +1,14 @@
 package codesquad;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Main {
 
@@ -17,15 +20,15 @@ public class Main {
 
         while (true) { // 무한 루프를 돌며 클라이언트의 연결을 기다립니다.
             try (Socket clientSocket = serverSocket.accept()) { // 클라이언트 연결을 수락합니다.
-                log.debug("Client connected");
+                InputStream inputStream = clientSocket.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder request = new StringBuilder();
+                String line;
 
-                // HTTP 응답을 생성합니다.
-                OutputStream clientOutput = clientSocket.getOutputStream();
-                clientOutput.write("HTTP/1.1 200 OK\r\n".getBytes());
-                clientOutput.write("Content-Type: text/html\r\n".getBytes());
-                clientOutput.write("\r\n".getBytes());
-                clientOutput.write("<h1>Hello</h1>\r\n".getBytes()); // 응답 본문으로 "Hello"를 보냅니다.
-                clientOutput.flush();
+                while (!(line = br.readLine()).isEmpty()) {
+                    request.append(line).append(System.lineSeparator());
+                }
+                log.debug("request : {}", request);
             }
         }
     }
