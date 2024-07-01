@@ -9,8 +9,6 @@ public class ResourceHandler {
     public InputStream readFileAsStream(String filePath) {
         ClassLoader classLoader = ResourceHandler.class.getClassLoader();
 
-        classLoader.getResource(STATIC_PATH + filePath);
-
         InputStream inputStream = classLoader.getResourceAsStream(STATIC_PATH + filePath);
 
         if (inputStream == null) {
