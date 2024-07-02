@@ -7,7 +7,7 @@ public class HttpRequest {
     private final HttpMethod method;
     private final String path;
     private final HttpVersion version;
-    private final Map<String, String> headers;
+    private final HttpHeaders httpHeaders;
     private final String body;
 
     public HttpMethod getMethod() {
@@ -22,8 +22,8 @@ public class HttpRequest {
         return version;
     }
 
-    public Map<String, String> getHeaders() {
-        return headers;
+    public HttpHeaders getHeaders() {
+        return httpHeaders;
     }
 
     public String getBody() {
@@ -38,7 +38,7 @@ public class HttpRequest {
         this.method = HttpMethod.of(method);
         this.path = path;
         this.version = HttpVersion.of(version);
-        this.headers = headers;
+        this.httpHeaders = HttpHeaders.of(headers);
         this.body = body;
     }
 
@@ -48,7 +48,7 @@ public class HttpRequest {
                 "method='" + method + '\'' +
                 "\n, path='" + path + '\'' +
                 "\n, version='" + version + '\'' +
-                "\n, headers=" + headers +
+                "\n, headers=" + httpHeaders +
                 "\n, body='" + body + '\'' +
                 '}';
     }
