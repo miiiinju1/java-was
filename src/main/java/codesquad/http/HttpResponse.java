@@ -29,9 +29,9 @@ public class HttpResponse {
     }
 
     public HttpResponse(HttpVersion httpVersion, HttpStatus httpStatus, Map<String, String> headers, ByteArrayOutputStream body) {
-        this.httpVersion = httpVersion;
-        this.httpStatus = httpStatus;
-        this.headers = headers;
+        this.httpVersion = validateHttpVersion(httpVersion);
+        this.httpStatus = validateHttpStatus(httpStatus);
+        this.headers = validateHeaders(headers);
         this.body = body;
     }
 
@@ -85,6 +85,28 @@ public class HttpResponse {
         public HttpResponse build() {
             return new HttpResponse(httpVersion, httpStatus, headers, body);
         }
+    }
+
+
+    private HttpVersion validateHttpVersion(HttpVersion httpVersion) {
+        if (httpVersion == null) {
+            throw new IllegalArgumentException("HttpVersion이 존재하지 않습니다.");
+        }
+        return httpVersion;
+    }
+
+    private HttpStatus validateHttpStatus(HttpStatus httpStatus) {
+        if (httpStatus == null) {
+            throw new IllegalArgumentException("HttpStatus가 존재하지 않습니다.");
+        }
+        return httpStatus;
+    }
+
+    private Map<String, String> validateHeaders(Map<String, String> headers) {
+        if (headers == null) {
+            throw new IllegalArgumentException("Headers가 존재하지 않습니다.");
+        }
+        return headers;
     }
 
 }
