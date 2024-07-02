@@ -4,13 +4,13 @@ import java.util.Map;
 
 public class HttpRequest {
 
-    private final String method;
+    private final HttpMethod method;
     private final String path;
-    private final String version;
+    private final HttpVersion version;
     private final Map<String, String> headers;
     private final String body;
 
-    public String getMethod() {
+    public HttpMethod getMethod() {
         return method;
     }
 
@@ -18,7 +18,7 @@ public class HttpRequest {
         return path;
     }
 
-    public String getVersion() {
+    public HttpVersion getVersion() {
         return version;
     }
 
@@ -35,9 +35,9 @@ public class HttpRequest {
     }
 
     public HttpRequest(String method, String path, String version, Map<String, String> headers, String body) {
-        this.method = method;
+        this.method = HttpMethod.of(method);
         this.path = path;
-        this.version = version;
+        this.version = HttpVersion.of(version);
         this.headers = headers;
         this.body = body;
     }
