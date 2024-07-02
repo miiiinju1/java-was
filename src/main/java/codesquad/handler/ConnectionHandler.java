@@ -10,12 +10,12 @@ import java.nio.charset.StandardCharsets;
 
 public class ConnectionHandler {
 
-    private final HttpHandler httpHandler;
+    private final HttpRequestHandler httpRequestHandler;
     private final ResourceHandler resourceHandler;
     private static final Logger log = LoggerFactory.getLogger(ConnectionHandler.class);
 
-    public ConnectionHandler(HttpHandler httpHandler, ResourceHandler resourceHandler) {
-        this.httpHandler = httpHandler;
+    public ConnectionHandler(HttpRequestHandler httpRequestHandler, ResourceHandler resourceHandler) {
+        this.httpRequestHandler = httpRequestHandler;
         this.resourceHandler = resourceHandler;
     }
 
@@ -23,7 +23,7 @@ public class ConnectionHandler {
         final InputStream requestStream = clientSocket.getInputStream();
         final OutputStream responseStream = clientSocket.getOutputStream();
 
-        final HttpRequest httpRequest = httpHandler.parseRequest(requestStream);
+        final HttpRequest httpRequest = httpRequestHandler.parseRequest(requestStream);
 
         try {
             final InputStream inputStream = resourceHandler.readFileAsStream(httpRequest.getPath());
