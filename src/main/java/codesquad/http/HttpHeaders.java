@@ -2,6 +2,7 @@ package codesquad.http;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class HttpHeaders {
 
@@ -21,6 +22,10 @@ public class HttpHeaders {
             throw new IllegalArgumentException("Header not found : " + key);
         }
         return value;
+    }
+
+    public Set<Map.Entry<String, String>> gegHeaders() {
+        return headerMap.entrySet();
     }
 
     private HttpHeaders(Map<String, String> headerMap) {

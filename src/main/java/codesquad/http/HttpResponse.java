@@ -9,7 +9,7 @@ public class HttpResponse {
 
     private final HttpVersion httpVersion;
     private final HttpStatus httpStatus;
-    private final Map<String, String> headers;
+    private final HttpHeaders httpHeaders;
     private final ByteArrayOutputStream body;
 
     public HttpVersion getHttpVersion() {
@@ -20,8 +20,8 @@ public class HttpResponse {
         return httpStatus;
     }
 
-    public Map<String, String> getHeaders() {
-        return headers;
+    public HttpHeaders getHttpHeaders() {
+        return httpHeaders;
     }
 
     public ByteArrayOutputStream getBody() {
@@ -31,7 +31,7 @@ public class HttpResponse {
     public HttpResponse(HttpVersion httpVersion, HttpStatus httpStatus, Map<String, String> headers, ByteArrayOutputStream body) {
         this.httpVersion = validateHttpVersion(httpVersion);
         this.httpStatus = validateHttpStatus(httpStatus);
-        this.headers = validateHeaders(headers);
+        this.httpHeaders = HttpHeaders.of(headers);
         this.body = body;
     }
 
@@ -102,11 +102,10 @@ public class HttpResponse {
         return httpStatus;
     }
 
-    private Map<String, String> validateHeaders(Map<String, String> headers) {
+    private void validateHeaders(Map<String, String> headers) {
         if (headers == null) {
             throw new IllegalArgumentException("Headers가 존재하지 않습니다.");
         }
-        return headers;
     }
 
 }

@@ -24,7 +24,7 @@ public class HttpResponseSerializer {
 
 
         // 응답 헤더를 만들어서 byte 배열에 추가
-        for (Map.Entry<String, String> headerEntry : httpResponse.getHeaders().entrySet()) {
+        for (Map.Entry<String, String> headerEntry : httpResponse.getHttpHeaders().gegHeaders()) {
             String header = String.format("%s: %s%s",
                     headerEntry.getKey(),
                     headerEntry.getValue(),
