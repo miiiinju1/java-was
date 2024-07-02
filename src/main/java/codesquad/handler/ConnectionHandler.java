@@ -38,7 +38,6 @@ public class ConnectionHandler {
             while ((line = br.readLine()) != null) {
                 response.append(line);
             }
-            log.debug("request : {}", response);
 
             // -----------
 
