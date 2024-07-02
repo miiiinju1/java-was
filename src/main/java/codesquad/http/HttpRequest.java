@@ -5,7 +5,7 @@ import java.util.Map;
 public class HttpRequest {
 
     private final HttpMethod method;
-    private final String path;
+    private final Path path;
     private final HttpVersion version;
     private final HttpHeaders httpHeaders;
     private final String body;
@@ -14,7 +14,7 @@ public class HttpRequest {
         return method;
     }
 
-    public String getPath() {
+    public Path getPath() {
         return path;
     }
 
@@ -36,7 +36,7 @@ public class HttpRequest {
 
     public HttpRequest(String method, String path, String version, Map<String, String> headers, String body) {
         this.method = HttpMethod.of(method);
-        this.path = path;
+        this.path = Path.of(path);
         this.version = HttpVersion.of(version);
         this.httpHeaders = HttpHeaders.of(headers);
         this.body = body;

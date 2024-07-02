@@ -32,7 +32,7 @@ public class ConnectionHandler {
         String response = "";
         try {
             // 비즈니스 로직
-            final InputStream inputStream = resourceHandler.readFileAsStream(httpRequest.getPath());
+            final InputStream inputStream = resourceHandler.readFileAsStream(httpRequest.getPath().getValue());
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             StringBuilder responseBuilder = new StringBuilder();
             String line;
@@ -43,7 +43,7 @@ public class ConnectionHandler {
         }
         catch (IllegalArgumentException e) {
             log.error("File not found! : {}", httpRequest.getPath());
-            httpResponseHandler.writeResponse(clientSocket, HttpResponse.notFoundOf(httpRequest.getPath()));
+            httpResponseHandler.writeResponse(clientSocket, HttpResponse.notFoundOf(httpRequest.getPath().getValue()));
         }
         // -----------
 
