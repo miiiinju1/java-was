@@ -4,6 +4,7 @@ import codesquad.handler.ConnectionHandler;
 import codesquad.handler.HttpRequestHandler;
 import codesquad.handler.HttpResponseHandler;
 import codesquad.handler.ResourceHandler;
+import codesquad.http.HttpResponseSerializer;
 import codesquad.server.ServerInitializer;
 
 public class Main {
@@ -13,7 +14,8 @@ public class Main {
         ServerInitializer serverInitializer = new ServerInitializer();
         HttpRequestHandler httpHandler = new HttpRequestHandler();
         ResourceHandler resourceHandler = new ResourceHandler();
-        HttpResponseHandler httpResponseHandler = new HttpResponseHandler();
+        HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
+        HttpResponseHandler httpResponseHandler = new HttpResponseHandler(httpResponseSerializer);
         ConnectionHandler connectionHandler = new ConnectionHandler(httpHandler, resourceHandler, httpResponseHandler);
 
         try {
