@@ -58,7 +58,7 @@ public class ConnectionHandler {
         catch (IllegalArgumentException e) {
 
             log.error("File not found! : {}", httpRequest.getPath());
-            httpResponseHandler.writeResponse(clientSocket, HttpResponse.notFound());
+            httpResponseHandler.writeResponse(clientSocket, HttpResponse.notFoundOf(httpRequest.getPath()));
         }
 
     }

@@ -35,8 +35,8 @@ public class HttpResponse {
         this.body = body;
     }
 
-    public static HttpResponse notFound() {
-        byte[] responseBytes = "<html><body><h1>404 Not Found</h1></body></html>".getBytes(StandardCharsets.UTF_8);
+    public static HttpResponse notFoundOf(String path) {
+        byte[] responseBytes = ("<html><body><h1>404 Not Found " + path + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
         ByteArrayOutputStream body = new ByteArrayOutputStream();
         try {
             body.write(responseBytes);
