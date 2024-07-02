@@ -29,36 +29,36 @@ public class ConnectionHandler {
         final InputStream requestStream = clientSocket.getInputStream();
         final HttpRequest httpRequest = httpRequestHandler.parseRequest(requestStream);
 
+        String response = "";
         try {
             // 비즈니스 로직
             final InputStream inputStream = resourceHandler.readFileAsStream(httpRequest.getPath());
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-            StringBuilder response = new StringBuilder();
+            StringBuilder responseBuilder = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
-                response.append(line);
+                responseBuilder.append(line);
             }
-
-            // -----------
-
-            byte[] responseBytes = response.toString().getBytes(StandardCharsets.UTF_8);
-            ByteArrayOutputStream body = new ByteArrayOutputStream();
-            body.write(responseBytes);
-
-            HttpResponse httpResponse = HttpResponse.builder()
-                    .httpVersion(HttpVersion.HTTP_1_1)
-                    .httpStatus(HttpStatus.OK)
-                    .headers(Map.of("Content-Type", "text/html; charset=UTF-8"))
-                    .body(body)
-                    .build();
-
-            httpResponseHandler.writeResponse(clientSocket, httpResponse);
+            response = responseBuilder.toString();
         }
         catch (IllegalArgumentException e) {
-
             log.error("File not found! : {}", httpRequest.getPath());
             httpResponseHandler.writeResponse(clientSocket, HttpResponse.notFoundOf(httpRequest.getPath()));
         }
+        // -----------
+
+        byte[] responseBytes = response.getBytes(StandardCharsets.UTF_8);
+        ByteArrayOutputStream body = new ByteArrayOutputStream();
+        body.write(responseBytes);
+
+        HttpResponse httpResponse = HttpResponse.builder()
+                .httpVersion(HttpVersion.HTTP_1_1)
+                .httpStatus(HttpStatus.OK)
+                .headers(Map.of("Content-Type", "text/html; charset=UTF-8"))
+                .body(body)
+                .build();
+
+        httpResponseHandler.writeResponse(clientSocket, httpResponse);
 
     }
 
