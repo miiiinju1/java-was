@@ -1,8 +1,9 @@
 package codesquad;
 
 import codesquad.handler.ConnectionHandler;
-import codesquad.handler.ResourceHandler;
 import codesquad.handler.HttpRequestHandler;
+import codesquad.handler.HttpResponseHandler;
+import codesquad.handler.ResourceHandler;
 import codesquad.server.ServerInitializer;
 
 public class Main {
@@ -12,7 +13,8 @@ public class Main {
         ServerInitializer serverInitializer = new ServerInitializer();
         HttpRequestHandler httpHandler = new HttpRequestHandler();
         ResourceHandler resourceHandler = new ResourceHandler();
-        ConnectionHandler connectionHandler = new ConnectionHandler(httpHandler, resourceHandler);
+        HttpResponseHandler httpResponseHandler = new HttpResponseHandler();
+        ConnectionHandler connectionHandler = new ConnectionHandler(httpHandler, resourceHandler, httpResponseHandler);
 
         try {
             serverInitializer.startServer(8080, connectionHandler);
