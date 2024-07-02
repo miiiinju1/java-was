@@ -2,7 +2,7 @@ package codesquad;
 
 import codesquad.handler.ConnectionHandler;
 import codesquad.handler.ResourceHandler;
-import codesquad.http.HttpHandler;
+import codesquad.handler.HttpHandler;
 import codesquad.server.ServerInitializer;
 
 public class Main {
