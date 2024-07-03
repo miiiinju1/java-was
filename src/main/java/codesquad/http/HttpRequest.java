@@ -1,5 +1,7 @@
 package codesquad.http;
 
+import codesquad.http.header.HttpHeaders;
+
 import java.util.Map;
 
 public class HttpRequest {

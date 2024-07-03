@@ -2,7 +2,6 @@ package codesquad.http;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class HttpResponseSerializer {
@@ -20,7 +19,7 @@ public class HttpResponseSerializer {
                 httpStatus.getStatusMessage(),
                 System.lineSeparator());
 
-        byteArrayOutputStream.write(responseLine.getBytes(StandardCharsets.UTF_8));
+        byteArrayOutputStream.write(responseLine.getBytes());
 
 
         // 응답 헤더를 만들어서 byte 배열에 추가
@@ -30,11 +29,12 @@ public class HttpResponseSerializer {
                     headerEntry.getValue(),
                     System.lineSeparator());
 
-            byteArrayOutputStream.write(header.getBytes(StandardCharsets.UTF_8));
+            byteArrayOutputStream.write(header.getBytes());
         }
 
         // 응답 바디를 byte 배열에 추가
-        byteArrayOutputStream.write(System.lineSeparator().getBytes(StandardCharsets.UTF_8));
+        byteArrayOutputStream.write(System.lineSeparator().getBytes());
+        byteArrayOutputStream.write(System.lineSeparator().getBytes());
         byteArrayOutputStream.write(httpResponse.getBody().toByteArray());
 
         return byteArrayOutputStream.toByteArray();
