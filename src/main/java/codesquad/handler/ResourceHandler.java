@@ -51,8 +51,8 @@ public class ResourceHandler implements HttpHandler {
                 response.getBody().write(buffer, 0, bytesRead);
             }
         } catch (IllegalArgumentException e) {
-            log.error("File not found! : {}", request.getPath());
-            throw new FileNotFoundException("File not found: " + request.getPath().getValue());
+            log.error("Cannot write file to response body", e);
+            throw new RuntimeException(e);
         }
 
         Mime mime = null;
