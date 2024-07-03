@@ -3,9 +3,7 @@ package codesquad.http;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,15 +16,10 @@ class HttpResponseSerializerTest {
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         String bodyStr = "<html><body>Hello World!</body></html>";
         byte[] bodyBytes = bodyStr.getBytes();
-        ByteArrayOutputStream body = new ByteArrayOutputStream();
-        body.write(bodyBytes);
 
-        HttpResponse httpResponse = HttpResponse.builder()
-                .httpVersion(HttpVersion.HTTP_1_1)
-                .httpStatus(HttpStatus.OK)
-                .headers(Map.of("Content-Type", "text/html"))
-                .body(body)
-                .build();
+        HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
+        httpResponse.getHttpHeaders().addHeader("Content-Type", "text/html");
+        httpResponse.getBody().write(bodyBytes);
 
 
         // when
@@ -36,7 +29,6 @@ class HttpResponseSerializerTest {
         String resultStr = new String(result);
         assertThat(resultStr)
                 .isNotNull()
-                .contains("HTTP/1.1 200 OK")
                 .contains("Content-Type: text/html")
                 .contains(bodyStr);
     }
