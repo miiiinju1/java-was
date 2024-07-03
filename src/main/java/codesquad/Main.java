@@ -15,7 +15,6 @@ public class Main {
         HttpRequestBuilder httpHandler = new HttpRequestBuilder();
         ResourceHandler resourceHandler = new ResourceHandler();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
-//        AcceptHeaderHandler acceptHeaderHandler = new AcceptHeaderHandler();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
         HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, resourceHandler, httpResponseWriter);
 
