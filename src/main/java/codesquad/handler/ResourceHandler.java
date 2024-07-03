@@ -23,7 +23,7 @@ public class ResourceHandler implements HttpHandler {
         InputStream inputStream = classLoader.getResourceAsStream(STATIC_PATH + filePath);
 
         if (inputStream == null) {
-            throw new IllegalArgumentException("File not found! : static/" + filePath);
+            throw new IllegalArgumentException("File not found! : static" + filePath);
         }
 
         try (inputStream) {
