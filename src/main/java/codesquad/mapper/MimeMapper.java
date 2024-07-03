@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class MimeMapper {
 
     public Mime getMimeFromAcceptHeader(String acceptHeader) {
