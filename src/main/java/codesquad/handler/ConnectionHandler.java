@@ -16,14 +16,14 @@ import java.util.Map;
 
 public class ConnectionHandler {
 
-    private final HttpRequestHandler httpRequestHandler;
+    private final HttpRequestBuilder httpRequestBuilder;
     private final ResourceHandler resourceHandler;
     private final HttpResponseHandler httpResponseHandler;
     private final AcceptHeaderHandler acceptHeaderHandler;
     private static final Logger log = LoggerFactory.getLogger(ConnectionHandler.class);
 
-    public ConnectionHandler(HttpRequestHandler httpRequestHandler, ResourceHandler resourceHandler, HttpResponseHandler httpResponseHandler, AcceptHeaderHandler acceptHeaderHandler) {
-        this.httpRequestHandler = httpRequestHandler;
+    public ConnectionHandler(HttpRequestBuilder httpRequestBuilder, ResourceHandler resourceHandler, HttpResponseHandler httpResponseHandler, AcceptHeaderHandler acceptHeaderHandler) {
+        this.httpRequestBuilder = httpRequestBuilder;
         this.resourceHandler = resourceHandler;
         this.httpResponseHandler = httpResponseHandler;
         this.acceptHeaderHandler = acceptHeaderHandler;
@@ -31,7 +31,7 @@ public class ConnectionHandler {
 
     public void handleConnection(final Socket clientSocket) throws IOException {
         final InputStream requestStream = clientSocket.getInputStream();
-        final HttpRequest httpRequest = httpRequestHandler.parseRequest(requestStream);
+        final HttpRequest httpRequest = httpRequestBuilder.parseRequest(requestStream);
 
         byte[] responseBody = null;
         try {

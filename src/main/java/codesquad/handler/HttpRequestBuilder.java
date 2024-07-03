@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-public class HttpRequestHandler {
+public class HttpRequestBuilder {
 
     public HttpRequest parseRequest(InputStream inputStream) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
