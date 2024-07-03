@@ -4,21 +4,15 @@ import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.Mime;
 import codesquad.http.header.HeaderConstants;
-import codesquad.http.header.HttpHeaders;
-import codesquad.mapper.MimeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ResourceHandler implements HttpHandler {
 
     private static final String STATIC_PATH = "static";
     private static final Logger log = LoggerFactory.getLogger(ResourceHandler.class);
-
-    private static final MimeMapper mimeMapper = new MimeMapper();
-
 
     public InputStream readFileAsStream(String filePath) {
         ClassLoader classLoader = ResourceHandler.class.getClassLoader();
@@ -51,26 +45,11 @@ public class ResourceHandler implements HttpHandler {
                 response.getBody().write(buffer, 0, bytesRead);
             }
         } catch (IllegalArgumentException e) {
-            log.error("Cannot write file to response body", e);
-            throw new RuntimeException(e);
+            log.error("Failed to read file", e);
+            throw e;
         }
 
-        Mime mime = null;
-        HttpHeaders clientHeaders = request.getHeaders();
-        if(!clientHeaders.containsHeader(HeaderConstants.ACCEPT)) {
-            mime = Mime.valueOf(request.getPath().getValue());
-        }
-        else {
-            mime = mimeMapper.getMimeFromAcceptHeader(clientHeaders.getHeader(HeaderConstants.ACCEPT));
-        }
-
-        if (request.getPath().getValue().endsWith("favicon.ico")) {
-            mime = Mime.IMAGE_ICO;
-        }
-        else if (request.getPath().getValue().endsWith("svg")) {
-            mime = Mime.IMAGE_SVG;
-        }
-
+        Mime mime = Mime.valueOf(filePath);
         response.getHttpHeaders()
                 .addHeader(HeaderConstants.CONTENT_TYPE, mime.getType());
 
