@@ -2,10 +2,9 @@ package codesquad;
 
 import codesquad.handler.HttpRequestDispatcher;
 import codesquad.handler.HttpRequestBuilder;
-import codesquad.handler.HttpResponseHandler;
+import codesquad.handler.HttpResponseWriter;
 import codesquad.handler.ResourceHandler;
 import codesquad.http.HttpResponseSerializer;
-import codesquad.http.header.AcceptHeaderHandler;
 import codesquad.server.ServerInitializer;
 
 public class Main {
@@ -16,9 +15,9 @@ public class Main {
         HttpRequestBuilder httpHandler = new HttpRequestBuilder();
         ResourceHandler resourceHandler = new ResourceHandler();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
-        AcceptHeaderHandler acceptHeaderHandler = new AcceptHeaderHandler();
-        HttpResponseHandler httpResponseHandler = new HttpResponseHandler(httpResponseSerializer);
-        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, resourceHandler, httpResponseHandler, acceptHeaderHandler);
+//        AcceptHeaderHandler acceptHeaderHandler = new AcceptHeaderHandler();
+        HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
+        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, resourceHandler, httpResponseWriter);
 
         try {
             serverInitializer.startServer(8080, httpRequestDispatcher);

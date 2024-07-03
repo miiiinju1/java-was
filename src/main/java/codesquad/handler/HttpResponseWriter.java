@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class HttpResponseHandler {
+public class HttpResponseWriter {
 
     private final HttpResponseSerializer httpResponseSerializer;
 
-    public HttpResponseHandler(HttpResponseSerializer httpResponseSerializer) {
+    public HttpResponseWriter(HttpResponseSerializer httpResponseSerializer) {
         this.httpResponseSerializer = httpResponseSerializer;
     }
 

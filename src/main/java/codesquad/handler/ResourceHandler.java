@@ -2,6 +2,10 @@ package codesquad.handler;
 
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
+import codesquad.http.Mime;
+import codesquad.http.header.HeaderConstants;
+import codesquad.http.header.HttpHeaders;
+import codesquad.mapper.MimeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +16,8 @@ public class ResourceHandler implements HttpHandler {
 
     private static final String STATIC_PATH = "static";
     private static final Logger log = LoggerFactory.getLogger(ResourceHandler.class);
+
+    private static final MimeMapper mimeMapper = new MimeMapper();
 
 
     public InputStream readFileAsStream(String filePath) {
@@ -49,6 +55,24 @@ public class ResourceHandler implements HttpHandler {
             throw new FileNotFoundException("File not found: " + request.getPath().getValue());
         }
 
+        Mime mime = null;
+        HttpHeaders clientHeaders = request.getHeaders();
+        if(!clientHeaders.containsHeader(HeaderConstants.ACCEPT)) {
+            mime = Mime.valueOf(request.getPath().getValue());
+        }
+        else {
+            mime = mimeMapper.getMimeFromAcceptHeader(clientHeaders.getHeader(HeaderConstants.ACCEPT));
+        }
+
+        if (request.getPath().getValue().endsWith("favicon.ico")) {
+            mime = Mime.IMAGE_ICO;
+        }
+        else if (request.getPath().getValue().endsWith("svg")) {
+            mime = Mime.IMAGE_SVG;
+        }
+
+        response.getHttpHeaders()
+                .addHeader(HeaderConstants.CONTENT_TYPE, mime.getType());
 
     }
 }

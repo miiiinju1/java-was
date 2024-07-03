@@ -12,6 +12,10 @@ public class HttpHeaders {
         return new HttpHeaders(headers);
     }
 
+    public static HttpHeaders emptyHeader() {
+        return new HttpHeaders();
+    }
+
     public void addHeader(String key, String value) {
         valueMap.put(key, value);
     }
@@ -34,5 +38,9 @@ public class HttpHeaders {
 
     private HttpHeaders(Map<String, String> valueMap) {
         this.valueMap = new HashMap<>(valueMap);
+    }
+
+    private HttpHeaders() {
+        this.valueMap = new HashMap<>();
     }
 }

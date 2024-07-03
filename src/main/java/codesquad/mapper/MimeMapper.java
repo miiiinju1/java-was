@@ -1,4 +1,4 @@
-package codesquad.http.header;
+package codesquad.mapper;
 
 import codesquad.http.Mime;
 
@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
-public class AcceptHeaderHandler {
+public class MimeMapper {
 
     public Mime getMimeFromAcceptHeader(String acceptHeader) {
         PriorityQueue<MimeWithQuality> mimeTypes = parseAcceptHeader(acceptHeader);
