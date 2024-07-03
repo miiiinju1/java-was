@@ -49,7 +49,7 @@ public class ResourceHandler implements HttpHandler {
             throw e;
         }
 
-        Mime mime = Mime.valueOf(filePath);
+        Mime mime = Mime.ofFilePath(filePath);
         response.getHttpHeaders()
                 .addHeader(HeaderConstants.CONTENT_TYPE, mime.getType());
 
