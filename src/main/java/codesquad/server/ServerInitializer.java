@@ -1,6 +1,6 @@
 package codesquad.server;
 
-import codesquad.handler.ConnectionHandler;
+import codesquad.handler.HttpRequestDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class ServerInitializer {
     private static final Logger log = LoggerFactory.getLogger(ServerInitializer.class);
     private static final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-    public void startServer(final int port, final ConnectionHandler connectionHandler) throws IOException {
+    public void startServer(final int port, final HttpRequestDispatcher httpRequestDispatcher) throws IOException {
         final ServerSocket serverSocket = new ServerSocket(port);
 
         log.debug("Listening for connection on port {} ....", port);
@@ -25,7 +25,7 @@ public class ServerInitializer {
                 final Socket clientSocket = serverSocket.accept();
                 executorService.execute(() -> {
                     try (clientSocket) {
-                        connectionHandler.handleConnection(clientSocket);
+                        httpRequestDispatcher.handleConnection(clientSocket);
                     } catch (IOException e) {
                         log.error("Failed to handle connection", e);
                     }

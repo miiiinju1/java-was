@@ -14,15 +14,15 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.Map;
 
-public class ConnectionHandler {
+public class HttpRequestDispatcher {
 
     private final HttpRequestBuilder httpRequestBuilder;
     private final ResourceHandler resourceHandler;
     private final HttpResponseHandler httpResponseHandler;
     private final AcceptHeaderHandler acceptHeaderHandler;
-    private static final Logger log = LoggerFactory.getLogger(ConnectionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(HttpRequestDispatcher.class);
 
-    public ConnectionHandler(HttpRequestBuilder httpRequestBuilder, ResourceHandler resourceHandler, HttpResponseHandler httpResponseHandler, AcceptHeaderHandler acceptHeaderHandler) {
+    public HttpRequestDispatcher(HttpRequestBuilder httpRequestBuilder, ResourceHandler resourceHandler, HttpResponseHandler httpResponseHandler, AcceptHeaderHandler acceptHeaderHandler) {
         this.httpRequestBuilder = httpRequestBuilder;
         this.resourceHandler = resourceHandler;
         this.httpResponseHandler = httpResponseHandler;

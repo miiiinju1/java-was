@@ -1,6 +1,6 @@
 package codesquad;
 
-import codesquad.handler.ConnectionHandler;
+import codesquad.handler.HttpRequestDispatcher;
 import codesquad.handler.HttpRequestBuilder;
 import codesquad.handler.HttpResponseHandler;
 import codesquad.handler.ResourceHandler;
@@ -18,10 +18,10 @@ public class Main {
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         AcceptHeaderHandler acceptHeaderHandler = new AcceptHeaderHandler();
         HttpResponseHandler httpResponseHandler = new HttpResponseHandler(httpResponseSerializer);
-        ConnectionHandler connectionHandler = new ConnectionHandler(httpHandler, resourceHandler, httpResponseHandler, acceptHeaderHandler);
+        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, resourceHandler, httpResponseHandler, acceptHeaderHandler);
 
         try {
-            serverInitializer.startServer(8080, connectionHandler);
+            serverInitializer.startServer(8080, httpRequestDispatcher);
         } catch (Exception e) {
             e.printStackTrace();
         }
