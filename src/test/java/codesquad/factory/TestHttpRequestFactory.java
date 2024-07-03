@@ -6,18 +6,12 @@ import java.util.Map;
 
 public class TestHttpRequestFactory {
 
-    public static HttpRequest createHttpRequest(
-            String method,
-            String path,
-            Map<String, String> headers,
-            String body
-    ) {
+    public static HttpRequest createGetResourceRequest(String path) {
         return HttpRequest.builder()
-                .headers(headers)
+                .headers(Map.of("Host", "localhost:8080"))
                 .path(path)
-                .method(method)
+                .method("GET")
                 .version("HTTP/1.1")
-                .body(body)
                 .build();
     }
 }
