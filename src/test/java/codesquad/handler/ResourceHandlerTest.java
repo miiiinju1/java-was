@@ -1,5 +1,6 @@
 package codesquad.handler;
 
+import codesquad.factory.TestHttpRequestFactory;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.HttpVersion;
@@ -18,14 +19,8 @@ class ResourceHandlerTest {
     void readFileAsStream() throws Exception {
         // given
         ResourceHandler resourceHandler = new ResourceHandler();
-        String filePath = "readStaticFileOf.txt";
-        HttpRequest request = HttpRequest.builder()
-                .path("/" + filePath)
-                .version("HTTP/1.1")
-                .headers(Map.of("Host", "localhost:8080"))
-                .method("GET")
-                .build();
-
+        String filePath = "/readStaticFileOf.txt";
+        HttpRequest request = TestHttpRequestFactory.createGetResourceRequest(filePath);
         HttpResponse response = new HttpResponse(HttpVersion.HTTP_1_1);
 
         // when
@@ -43,14 +38,8 @@ class ResourceHandlerTest {
     void readFileAsStream_notFound() {
         // given
         ResourceHandler resourceHandler = new ResourceHandler();
-        String filePath = "invalid.txt";
-
-        HttpRequest request = HttpRequest.builder()
-                .path(filePath)
-                .version("HTTP/1.1")
-                .headers(Map.of("Host", "localhost:8080"))
-                .method("GET")
-                .build();
+        String filePath = "/invalid.txt";
+        HttpRequest request = TestHttpRequestFactory.createGetResourceRequest(filePath);
 
         HttpResponse response = new HttpResponse(HttpVersion.HTTP_1_1);
 
