@@ -1,5 +1,6 @@
-package codesquad.handler;
+package codesquad.processor;
 
+import codesquad.handler.ResourceHandler;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.HttpVersion;

@@ -1,6 +1,6 @@
 package codesquad.server;
 
-import codesquad.handler.HttpRequestDispatcher;
+import codesquad.processor.HttpRequestDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

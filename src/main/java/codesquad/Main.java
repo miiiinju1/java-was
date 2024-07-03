@@ -1,8 +1,8 @@
 package codesquad;
 
-import codesquad.handler.HttpRequestDispatcher;
-import codesquad.handler.HttpRequestBuilder;
-import codesquad.handler.HttpResponseWriter;
+import codesquad.processor.HttpRequestDispatcher;
+import codesquad.processor.HttpRequestBuilder;
+import codesquad.processor.HttpResponseWriter;
 import codesquad.handler.ResourceHandler;
 import codesquad.http.HttpResponseSerializer;
 import codesquad.server.ServerInitializer;
