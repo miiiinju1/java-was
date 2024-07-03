@@ -1,44 +1,42 @@
 package codesquad.http;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 public enum Mime {
     // Text Types
-    TEXT_HTML("html", "text/html", StandardCharsets.UTF_8),
-    TEXT_CSS("css", "text/css", StandardCharsets.UTF_8),
-    TEXT_PLAIN("txt", "text/plain", StandardCharsets.UTF_8),
-    TEXT_XML("xml", "text/xml", StandardCharsets.UTF_8),
-    TEXT_CSV("csv", "text/csv", StandardCharsets.UTF_8),
+    TEXT_HTML("html", "text/html", "UTF-8"),
+    TEXT_CSS("css", "text/css", "UTF-8"),
+    TEXT_PLAIN("txt", "text/plain", "UTF-8"),
+    TEXT_XML("xml", "text/xml", "UTF-8"),
+    TEXT_CSV("csv", "text/csv", "UTF-8"),
 
     // Image Types
-    IMAGE_ICO("ico", "image/x-icon", null),
-    IMAGE_PNG("png", "image/png", null),
-    IMAGE_JPEG("jpeg", "image/jpeg", null),
-    IMAGE_BMP("bmp", "image/bmp", null),
-    IMAGE_SVG("svg", "image/svg+xml", StandardCharsets.UTF_8),
-    IMAGE_JPG("jpg", "image/jpg", null),
-    IMAGE_GIF("gif", "image/gif", null),
-    IMAGE_TIFF("tiff", "image/tiff", null),
-    IMAGE_WEBP("webp", "image/webp", null),
+    IMAGE_ICO("ico", "image/x-icon"),
+    IMAGE_PNG("png", "image/png"),
+    IMAGE_JPEG("jpeg", "image/jpeg"),
+    IMAGE_BMP("bmp", "image/bmp"),
+    IMAGE_SVG("svg", "image/svg+xml", "UTF-8"),
+    IMAGE_JPG("jpg", "image/jpg"),
+    IMAGE_GIF("gif", "image/gif"),
+    IMAGE_TIFF("tiff", "image/tiff"),
+    IMAGE_WEBP("webp", "image/webp"),
 
     // Application Types
-    APPLICATION_JSON("json", "application/json", StandardCharsets.UTF_8),
-    APPLICATION_XML("xml", "application/xml", StandardCharsets.UTF_8),
-    APPLICATION_JAVASCRIPT("js", "application/javascript", StandardCharsets.UTF_8),
-    APPLICATION_PDF("pdf", "application/pdf", null),
-    APPLICATION_ZIP("zip", "application/zip", null),
-    APPLICATION_GZIP("gz", "application/gzip", null),
-    APPLICATION_RAR("rar", "application/vnd.rar", null),
-    APPLICATION_TAR("tar", "application/x-tar", null),
-    APPLICATION_WWW_FORM_URLENCODED("urlencoded", "application/x-www-form-urlencoded", StandardCharsets.UTF_8),
-    APPLICATION_OCTET_STREAM("bin", "application/octet-stream", null);
+    APPLICATION_JSON("json", "application/json", "UTF-8"),
+    APPLICATION_XML("xml", "application/xml", "UTF-8"),
+    APPLICATION_JAVASCRIPT("js", "application/javascript", "UTF-8"),
+    APPLICATION_PDF("pdf", "application/pdf"),
+    APPLICATION_ZIP("zip", "application/zip"),
+    APPLICATION_GZIP("gz", "application/gzip"),
+    APPLICATION_RAR("rar", "application/vnd.rar"),
+    APPLICATION_TAR("tar", "application/x-tar"),
+    APPLICATION_WWW_FORM_URLENCODED("urlencoded", "application/x-www-form-urlencoded", "UTF-8"),
+    APPLICATION_OCTET_STREAM("bin", "application/octet-stream");
 
     private final String extension;
     private final String type;
-    private final Charset charset;
+    private final String charset;
 
     private static final Map<String, Mime> mimeTypes = new HashMap<>();
     private static final Map<String, Mime> extensionTypes = new HashMap<>();
@@ -50,7 +48,11 @@ public enum Mime {
         }
     }
 
-    Mime(String extension, String type, Charset charset) {
+    Mime(String extension, String type) {
+        this(extension, type, null);
+    }
+
+    Mime(String extension, String type, String charset) {
         this.extension = extension;
         this.type = type;
         this.charset = charset;
@@ -61,7 +63,7 @@ public enum Mime {
     }
 
     public static Mime ofType(String type) {
-        if(!mimeTypes.containsKey(type)) {
+        if (!mimeTypes.containsKey(type)) {
             return TEXT_HTML;
         }
         return mimeTypes.get(type);
@@ -72,7 +74,7 @@ public enum Mime {
             throw new IllegalArgumentException("확장자는 cannot be null");
         }
 
-        String extension = filePath.substring(filePath.lastIndexOf("."));
+        String extension = filePath.substring(filePath.lastIndexOf(".") + 1);
 
         if (!extensionTypes.containsKey(extension)) {
             return TEXT_HTML;
@@ -82,5 +84,9 @@ public enum Mime {
 
     public String getType() {
         return type;
+    }
+
+    public String getCharset() {
+        return charset;
     }
 }
