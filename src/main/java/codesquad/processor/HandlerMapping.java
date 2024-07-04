@@ -1,20 +1,26 @@
 package codesquad.processor;
 
-import codesquad.handler.HttpHandler;
+import codesquad.handler.HttpHandlerAdapter;
 import codesquad.http.HttpMethod;
 
 import java.util.regex.Pattern;
 
-public class HandlerMapping {
+public class HandlerMapping<R> {
 
     private final HttpMethod httpMethod;
     private final Pattern pattern;
-    private final HttpHandler handler;
+    private final HttpHandlerAdapter<R> handler;
+    private final Triggerable<R> triggerable;
 
-    public HandlerMapping(HttpMethod httpMethod, Pattern pattern, HttpHandler handler) {
+    public HandlerMapping(HttpMethod httpMethod, Pattern pattern, HttpHandlerAdapter<R> handler, Triggerable<R> triggerable) {
         this.httpMethod = httpMethod;
         this.pattern = pattern;
         this.handler = handler;
+        this.triggerable = triggerable;
+    }
+
+    public Triggerable<R> getTrigger() {
+        return triggerable;
     }
 
     public Pattern getPattern() {
@@ -25,7 +31,7 @@ public class HandlerMapping {
         return httpMethod;
     }
 
-    public HttpHandler getHandler() {
+    public HttpHandlerAdapter<R> getHandler() {
         return handler;
     }
 

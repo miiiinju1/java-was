@@ -28,6 +28,8 @@ public class ServerInitializer {
                         httpRequestDispatcher.handleConnection(clientSocket);
                     } catch (IOException e) {
                         log.error("Failed to handle connection", e);
+                    } catch (Exception e) {
+                        log.error("Failed to handle connection", e);
                     }
                 });
             }

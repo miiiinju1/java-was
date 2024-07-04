@@ -5,22 +5,23 @@ import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
 import codesquad.http.Mime;
 import codesquad.http.header.HeaderConstants;
+import codesquad.processor.Triggerable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ResourceHandler implements HttpHandler {
+public class ResourceHandlerAdapter<R> implements HttpHandlerAdapter<R> {
 
     private static final String STATIC_PATH = "static";
-    private static final Logger log = LoggerFactory.getLogger(ResourceHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(ResourceHandlerAdapter.class);
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response) throws Exception {
+    public void handle(HttpRequest request, HttpResponse response, Triggerable<R> triggerable) throws Exception {
         final String filePath = request.getPath().getBasePath();
 
-        ClassLoader classLoader = ResourceHandler.class.getClassLoader();
+        ClassLoader classLoader = ResourceHandlerAdapter.class.getClassLoader();
 
 
         // 자원 스트림을 가져오고 읽어서 body에 쓰기

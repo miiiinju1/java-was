@@ -1,7 +1,6 @@
 package codesquad.processor;
 
-import codesquad.handler.HttpHandler;
-import codesquad.handler.ResourceHandler;
+import codesquad.handler.HttpHandlerAdapter;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.HttpVersion;
@@ -15,13 +14,13 @@ import java.net.Socket;
 public class HttpRequestDispatcher {
 
     private final HttpRequestBuilder httpRequestBuilder;
-    private final HttpHandler defaultHandler;
+    private final HttpHandlerAdapter<?> defaultHandler;
     private final HttpResponseWriter httpResponseWriter;
     private final HandlerRegistry handlerRegistry;
     private static final Logger log = LoggerFactory.getLogger(HttpRequestDispatcher.class);
 
     public HttpRequestDispatcher(HttpRequestBuilder httpRequestBuilder,
-                                 ResourceHandler defaultHandler,
+                                 HttpHandlerAdapter<?> defaultHandler,
                                  HttpResponseWriter httpResponseWriter,
                                  HandlerRegistry handlerRegistry
     ) {
@@ -38,13 +37,14 @@ public class HttpRequestDispatcher {
 
         // 핸들러를 찾아서 실행 (현재는 리소스 핸들러만 존재)
         try {
-            HandlerMapping mapping = handlerRegistry.getHandler(httpRequest.getMethod(), httpRequest.getPath());
+            HandlerMapping<?> mapping = handlerRegistry.getHandler(httpRequest.getMethod(), httpRequest.getPath());
+
             if(mapping != null) {
-                mapping.getHandler().handle(httpRequest, httpResponse);
+                handleRequestWithMapping(httpRequest, httpResponse, mapping);
             }
             // 만약 API 핸들러가 없다면 디폴트 핸들러 (리소스 핸들러) 실행
             else {
-                defaultHandler.handle(httpRequest, httpResponse);
+                handleRequestWithDefaultHandler(httpRequest, httpResponse);
             }
         } catch (Exception e) {
             log.error("Failed to handle request", e);
@@ -52,6 +52,18 @@ public class HttpRequestDispatcher {
             return;
         }
 
+        // 결과 전송
         httpResponseWriter.writeResponse(clientSocket, httpResponse);
     }
+
+    private <R> void handleRequestWithMapping(HttpRequest httpRequest, HttpResponse httpResponse, HandlerMapping<R> mapping) throws Exception {
+        HttpHandlerAdapter<R> handler = mapping.getHandler();
+        Triggerable<R> triggerable = mapping.getTrigger();
+        handler.handle(httpRequest, httpResponse, triggerable);
+    }
+
+    private void handleRequestWithDefaultHandler(HttpRequest httpRequest, HttpResponse httpResponse) throws Exception {
+        defaultHandler.handle(httpRequest, httpResponse, null);
+    }
+
 }

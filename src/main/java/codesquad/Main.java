@@ -1,14 +1,13 @@
 package codesquad;
 
-import codesquad.handler.ApiRequestHandler;
+import codesquad.handler.ApiRequestHandlerAdapter;
+import codesquad.handler.ResourceHandlerAdapter;
 import codesquad.http.HttpMethod;
-import codesquad.processor.HandlerRegistry;
-import codesquad.processor.HttpRequestDispatcher;
-import codesquad.processor.HttpRequestBuilder;
-import codesquad.processor.HttpResponseWriter;
-import codesquad.handler.ResourceHandler;
 import codesquad.http.HttpResponseSerializer;
+import codesquad.model.business.RegisterUserLogic;
+import codesquad.processor.*;
 import codesquad.server.ServerInitializer;
+import codesquad.web.user.RegisterRequest;
 
 import java.util.ArrayList;
 
@@ -19,13 +18,19 @@ public class Main {
         ServerInitializer serverInitializer = new ServerInitializer();
 
         HandlerRegistry handlerRegistry = new HandlerRegistry(new ArrayList<>());
-        handlerRegistry.registerHandler(HttpMethod.GET, "/create", new ApiRequestHandler());
-
         HttpRequestBuilder httpHandler = new HttpRequestBuilder();
-        ResourceHandler resourceHandler = new ResourceHandler();
+
+        // 회원 가입 로직
+        RegisterUserLogic registerUserLogic = new RegisterUserLogic();
+        ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
+        ApiRequestHandlerAdapter<RegisterRequest, Void> registerUserHandler = new ApiRequestHandlerAdapter<>(registerArgumentResolver);
+        handlerRegistry.registerHandler(HttpMethod.GET, "/create", registerUserHandler, registerUserLogic);
+
+        // 기본 리소스 핸들러
+        ResourceHandlerAdapter<Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
-        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, resourceHandler, httpResponseWriter, handlerRegistry);
+        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, defaultResourceHandler, httpResponseWriter, handlerRegistry);
 
         try {
             serverInitializer.startServer(8080, httpRequestDispatcher);
