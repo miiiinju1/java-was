@@ -78,14 +78,12 @@ public class Path {
 
             for (String pair : pairs) {
                 String[] keyValue = pair.split("=");
-                if (keyValue.length == 2) {
-                    try {
-                        String key = URLDecoder.decode(keyValue[0], "UTF-8");
-                        String value = URLDecoder.decode(keyValue[1], "UTF-8");
-                        queryParameters.put(key, value);
-                    } catch (UnsupportedEncodingException e) {
-                        throw new IllegalArgumentException("쿼리 파라미터를 디코딩하는 중 오류가 발생했습니다.");
-                    }
+                try {
+                    String key = URLDecoder.decode(keyValue[0], "UTF-8");
+                    String value = keyValue.length > 1 ? URLDecoder.decode(keyValue[1], "UTF-8") : "";
+                    queryParameters.put(key, value);
+                } catch (IllegalArgumentException | UnsupportedEncodingException e) {
+                    throw new IllegalArgumentException("쿼리 파라미터를 디코딩하는 중 오류가 발생했습니다.");
                 }
             }
         }
