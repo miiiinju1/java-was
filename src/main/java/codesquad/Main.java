@@ -1,5 +1,6 @@
 package codesquad;
 
+import codesquad.handler.ApiRequestHandler;
 import codesquad.processor.HttpRequestDispatcher;
 import codesquad.processor.HttpRequestBuilder;
 import codesquad.processor.HttpResponseWriter;
@@ -15,8 +16,9 @@ public class Main {
         HttpRequestBuilder httpHandler = new HttpRequestBuilder();
         ResourceHandler resourceHandler = new ResourceHandler();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
+        ApiRequestHandler apiRequestHandler = new ApiRequestHandler();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
-        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, resourceHandler, httpResponseWriter);
+        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, resourceHandler, httpResponseWriter, apiRequestHandler);
 
         try {
             serverInitializer.startServer(8080, httpRequestDispatcher);
