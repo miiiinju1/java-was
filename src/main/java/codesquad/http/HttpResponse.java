@@ -29,6 +29,10 @@ public class HttpResponse {
         return body;
     }
 
+    public void setHttpStatus(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
+    }
+
     public HttpResponse(HttpVersion httpVersion) {
         this.httpVersion = validateHttpVersion(httpVersion);
         this.httpStatus = HttpStatus.INITIAL_STATUS;
