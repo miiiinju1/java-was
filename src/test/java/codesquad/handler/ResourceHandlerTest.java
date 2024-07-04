@@ -47,7 +47,7 @@ class ResourceHandlerTest {
         // when & then
         assertThatThrownBy(() -> resourceHandler.handle(request, response))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File not found! : static/invalid.txt");
+                .hasMessage("파일을 찾을 수 없습니다.");
     }
 
 }

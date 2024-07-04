@@ -18,7 +18,7 @@ public class ResourceHandler implements HttpHandler {
 
     @Override
     public void handle(HttpRequest request, HttpResponse response) throws Exception {
-        final String filePath = request.getPath().getValue();
+        final String filePath = request.getPath().getBasePath();
 
         ClassLoader classLoader = ResourceHandler.class.getClassLoader();
 
@@ -49,7 +49,7 @@ public class ResourceHandler implements HttpHandler {
             // 마지막 슬래시 이후 부분에 확장자가 있는 경우 파일로 간주
             InputStream resourceStream = classLoader.getResourceAsStream(STATIC_PATH + filePath);
             if (resourceStream == null) {
-                throw new RuntimeException("파일을 찾을 수 없습니다.");
+                throw new IllegalArgumentException("파일을 찾을 수 없습니다.");
             }
             return resourceStream;
         }
@@ -60,7 +60,7 @@ public class ResourceHandler implements HttpHandler {
         filePath += "index.html";
         InputStream resourceStream = classLoader.getResourceAsStream(STATIC_PATH + filePath);
         if (resourceStream == null) {
-            throw new RuntimeException("index.html 파일을 찾을 수 없습니다.");
+            throw new IllegalArgumentException("index.html 파일을 찾을 수 없습니다.");
         }
         return resourceStream;
     }

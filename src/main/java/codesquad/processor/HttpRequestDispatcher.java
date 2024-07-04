@@ -39,14 +39,14 @@ public class HttpRequestDispatcher {
         // 핸들러를 찾아서 실행 (현재는 리소스 핸들러만 존재)
         try {
             // TODO 임시로 create로 구분하게 만듦
-            if(httpRequest.getPath().getValue().startsWith("/create")) {
+            if(httpRequest.getPath().getBasePath().startsWith("/create")) {
                 apiRequestHandler.handle(httpRequest, httpResponse);
             } else {
                 resourceHandler.handle(httpRequest, httpResponse);
             }
         } catch (Exception e) {
             log.error("Failed to handle request", e);
-            httpResponseWriter.writeResponse(clientSocket, HttpResponse.notFoundOf(httpRequest.getPath().getValue()));
+            httpResponseWriter.writeResponse(clientSocket, HttpResponse.notFoundOf(httpRequest.getPath().getBasePath()));
             return;
         }
 

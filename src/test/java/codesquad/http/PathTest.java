@@ -46,7 +46,7 @@ class PathTest {
         Path result = Path.of(path);
 
         // then
-        assertEquals("/users/profile/123", result.getValue());
+        assertEquals("/users/profile/123", result.getBasePath());
         assertEquals(List.of("users", "profile", "123"), result.getSegments());
     }
 
@@ -60,7 +60,7 @@ class PathTest {
         Path result = Path.of(path);
 
         // then
-        assertEquals("/users/profile/123", result.getValue());
+        assertEquals("/users/profile/123", result.getBasePath());
     }
 
     @DisplayName("경로가 슬래시로 시작하지 않는 경우 정규화")
@@ -73,7 +73,7 @@ class PathTest {
         Path result = Path.of(path);
 
         // then
-        assertEquals("/users/profile/123", result.getValue());
+        assertEquals("/users/profile/123", result.getBasePath());
     }
 
     @DisplayName("경로의 세그먼트 파싱")
@@ -138,7 +138,7 @@ class PathTest {
         Path result = Path.of(path);
 
         // then
-        assertEquals("/users/profile/123", result.getValue());
+        assertEquals("/users/profile/123", result.getBasePath());
     }
 
     @DisplayName("특수 문자 포함 경로의 유효성 검사")
@@ -151,7 +151,7 @@ class PathTest {
         Path result = Path.of(path);
 
         // then
-        assertEquals("/users/prof ile/12 3", result.getValue());
+        assertEquals("/users/prof ile/12 3", result.getBasePath());
     }
 
     @DisplayName("쿼리 파라미터가 없는 경로의 유효성 검사")
@@ -164,7 +164,7 @@ class PathTest {
         Path result = Path.of(path);
 
         // then
-        assertEquals("/users/profile/123", result.getValue());
+        assertEquals("/users/profile/123", result.getBasePath());
         assertTrue(result.getQueryParameters().isEmpty());
     }
 
@@ -218,7 +218,7 @@ class PathTest {
         Path result = Path.of(path);
 
         // then
-        assertEquals("/users/프로필/123", result.getValue());
+        assertEquals("/users/프로필/123", result.getBasePath());
         assertEquals(List.of("users", "프로필", "123"), result.getSegments());
     }
 
@@ -232,7 +232,7 @@ class PathTest {
         Path result = Path.of(path);
 
         // then
-        assertEquals("/users/pro file/123", result.getValue());
+        assertEquals("/users/pro file/123", result.getBasePath());
         assertEquals(List.of("users", "pro file", "123"), result.getSegments());
     }
 
