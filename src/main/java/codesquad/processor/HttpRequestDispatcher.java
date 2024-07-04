@@ -1,6 +1,6 @@
 package codesquad.processor;
 
-import codesquad.handler.ApiRequestHandler;
+import codesquad.handler.HttpHandler;
 import codesquad.handler.ResourceHandler;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
@@ -15,20 +15,20 @@ import java.net.Socket;
 public class HttpRequestDispatcher {
 
     private final HttpRequestBuilder httpRequestBuilder;
-    private final ResourceHandler resourceHandler;
+    private final HttpHandler defaultHandler;
     private final HttpResponseWriter httpResponseWriter;
-    private final ApiRequestHandler apiRequestHandler;
+    private final HandlerRegistry handlerRegistry;
     private static final Logger log = LoggerFactory.getLogger(HttpRequestDispatcher.class);
 
     public HttpRequestDispatcher(HttpRequestBuilder httpRequestBuilder,
-                                 ResourceHandler resourceHandler,
+                                 ResourceHandler defaultHandler,
                                  HttpResponseWriter httpResponseWriter,
-                                    ApiRequestHandler apiRequestHandler
+                                 HandlerRegistry handlerRegistry
     ) {
         this.httpRequestBuilder = httpRequestBuilder;
-        this.resourceHandler = resourceHandler;
+        this.defaultHandler = defaultHandler;
         this.httpResponseWriter = httpResponseWriter;
-        this.apiRequestHandler = apiRequestHandler;
+        this.handlerRegistry = handlerRegistry;
     }
 
     public void handleConnection(final Socket clientSocket) throws IOException {
@@ -38,11 +38,13 @@ public class HttpRequestDispatcher {
 
         // 핸들러를 찾아서 실행 (현재는 리소스 핸들러만 존재)
         try {
-            // TODO 임시로 create로 구분하게 만듦
-            if(httpRequest.getPath().getBasePath().startsWith("/create")) {
-                apiRequestHandler.handle(httpRequest, httpResponse);
-            } else {
-                resourceHandler.handle(httpRequest, httpResponse);
+            HandlerMapping mapping = handlerRegistry.getHandler(httpRequest.getMethod(), httpRequest.getPath());
+            if(mapping != null) {
+                mapping.getHandler().handle(httpRequest, httpResponse);
+            }
+            // 만약 API 핸들러가 없다면 디폴트 핸들러 (리소스 핸들러) 실행
+            else {
+                defaultHandler.handle(httpRequest, httpResponse);
             }
         } catch (Exception e) {
             log.error("Failed to handle request", e);
