@@ -2,6 +2,7 @@ package codesquad.handler;
 
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
+import codesquad.http.HttpStatus;
 import codesquad.http.Mime;
 import codesquad.http.header.HeaderConstants;
 import org.slf4j.Logger;
@@ -36,6 +37,7 @@ public class ResourceHandler implements HttpHandler {
 
         // MIME 타입 설정
         Mime mime = Mime.ofFilePath(filePath);
+        response.setStatus(HttpStatus.OK);
         response.getHttpHeaders()
                 .addHeader(HeaderConstants.CONTENT_TYPE, mime.getType());
     }

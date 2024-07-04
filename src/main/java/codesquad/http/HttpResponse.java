@@ -29,7 +29,11 @@ public class HttpResponse {
         return body;
     }
 
-    public void setHttpStatus(HttpStatus httpStatus) {
+    public void setHeader(String key, String value) {
+        httpHeaders.addHeader(key, value);
+    }
+
+    public void setStatus(HttpStatus httpStatus) {
         this.httpStatus = httpStatus;
     }
 

@@ -34,7 +34,7 @@ public class ApiRequestHandler implements HttpHandler {
         registerUser(registerRequest);
 
         // 결과를 response에 담아서 반환
-        response.setHttpStatus(HttpStatus.FOUND);
+        response.setStatus(HttpStatus.FOUND);
 
         response.getHttpHeaders().addHeader("Location", "/login");
 
