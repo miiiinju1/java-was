@@ -34,7 +34,6 @@ public class HttpResponseSerializer {
 
         // 응답 바디를 byte 배열에 추가
         byteArrayOutputStream.write(System.lineSeparator().getBytes());
-        byteArrayOutputStream.write(System.lineSeparator().getBytes());
         byteArrayOutputStream.write(httpResponse.getBody().toByteArray());
 
         return byteArrayOutputStream.toByteArray();
