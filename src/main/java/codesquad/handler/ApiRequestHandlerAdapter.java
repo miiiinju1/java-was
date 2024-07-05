@@ -6,7 +6,7 @@ import codesquad.http.HttpStatus;
 import codesquad.processor.ArgumentResolver;
 import codesquad.processor.Triggerable;
 
-public class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapter<R> {
+public class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapter<T, R> {
 
     private final ArgumentResolver<T> argumentResolver;
 
@@ -15,7 +15,7 @@ public class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapter<R> {
     }
 
     @Override
-    public void handle(HttpRequest httpRequest, HttpResponse response, Triggerable<R> triggerable) throws Exception {
+    public void handle(HttpRequest httpRequest, HttpResponse response, Triggerable<T, R> triggerable) throws Exception {
 
         T request = argumentResolver.resolve(httpRequest);
 

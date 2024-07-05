@@ -4,7 +4,7 @@ import codesquad.model.User;
 import codesquad.processor.Triggerable;
 import codesquad.web.user.RegisterRequest;
 
-public class RegisterUserLogic implements Triggerable<Void> {
+public class RegisterUserLogic implements Triggerable<RegisterRequest, Void> {
 
     // TODO 임시 비즈니스 로직
     public void registerUser(RegisterRequest registerRequest) {
@@ -18,8 +18,8 @@ public class RegisterUserLogic implements Triggerable<Void> {
     }
 
     @Override
-    public Void run(Object o) {
-        registerUser((RegisterRequest) o);
+    public Void run(RegisterRequest request) {
+        registerUser(request);
         return null;
     }
 }

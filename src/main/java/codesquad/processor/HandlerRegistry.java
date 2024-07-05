@@ -10,9 +10,8 @@ import java.util.regex.Pattern;
 
 public class HandlerRegistry {
 
-    private final List<HandlerMapping<?>> handlerMappings;
-
-    public HandlerRegistry(List<HandlerMapping<?>> handlerMappings) {
+    private final List<HandlerMapping<?, ?>> handlerMappings;
+    public HandlerRegistry(List<HandlerMapping<?,?>> handlerMappings) {
         this.handlerMappings = handlerMappings;
     }
 
@@ -24,14 +23,14 @@ public class HandlerRegistry {
      * @param url        URL 패턴 (PathVariable은 {변수명}으로 표현)
      * @param handler    등록할 핸들러
      */
-    public <R> void registerHandler(HttpMethod httpMethod, String url, HttpHandlerAdapter<R> handler, Triggerable<R> triggerable) {
+    public <T, R> void registerHandler(HttpMethod httpMethod, String url, HttpHandlerAdapter<T, R> handler, Triggerable<T, R> triggerable) {
         // PathVariable의 경우 {변수명}으로 표현되어 있으므로 해당 부분을 정규표현식으로 변경
         String regexPattern = url.replaceAll("\\{[^/]+\\}", "([^/]+)");
         handlerMappings.add(new HandlerMapping<>(httpMethod, Pattern.compile(regexPattern), handler, triggerable));
     }
 
-    public HandlerMapping<?> getHandler(HttpMethod httpMethod, Path path) {
-        for (HandlerMapping<?> mapping : handlerMappings) {
+    public HandlerMapping<?, ?> getHandler(HttpMethod httpMethod, Path path) {
+        for (HandlerMapping<?, ?> mapping : handlerMappings) {
             Matcher matcher = mapping.getPattern().matcher(path.getBasePath());
             if (matcher.matches() && mapping.getHttpMethod() == httpMethod) {
                 return mapping;

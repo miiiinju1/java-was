@@ -27,7 +27,7 @@ public class Main {
         handlerRegistry.registerHandler(HttpMethod.GET, "/create", registerUserHandler, registerUserLogic);
 
         // 기본 리소스 핸들러
-        ResourceHandlerAdapter<Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
+        ResourceHandlerAdapter<Void, Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
         HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, defaultResourceHandler, httpResponseWriter, handlerRegistry);

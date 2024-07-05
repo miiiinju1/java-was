@@ -12,13 +12,13 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ResourceHandlerAdapter<R> implements HttpHandlerAdapter<R> {
+public class ResourceHandlerAdapter<T, R> implements HttpHandlerAdapter<T,R> {
 
     private static final String STATIC_PATH = "static";
     private static final Logger log = LoggerFactory.getLogger(ResourceHandlerAdapter.class);
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response, Triggerable<R> triggerable) throws Exception {
+    public void handle(HttpRequest request, HttpResponse response, Triggerable<T, R> triggerable) throws Exception {
         final String filePath = request.getPath().getBasePath();
 
         ClassLoader classLoader = ResourceHandlerAdapter.class.getClassLoader();

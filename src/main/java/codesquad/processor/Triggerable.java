@@ -1,7 +1,7 @@
 package codesquad.processor;
 
-public interface Triggerable<R> {
+public interface Triggerable<T, R> {
 
-    R run(Object t);
+    R run(T t);
 
 }

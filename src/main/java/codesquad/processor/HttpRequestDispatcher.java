@@ -14,13 +14,13 @@ import java.net.Socket;
 public class HttpRequestDispatcher {
 
     private final HttpRequestBuilder httpRequestBuilder;
-    private final HttpHandlerAdapter<?> defaultHandler;
+    private final HttpHandlerAdapter<?, ?> defaultHandler;
     private final HttpResponseWriter httpResponseWriter;
     private final HandlerRegistry handlerRegistry;
     private static final Logger log = LoggerFactory.getLogger(HttpRequestDispatcher.class);
 
     public HttpRequestDispatcher(HttpRequestBuilder httpRequestBuilder,
-                                 HttpHandlerAdapter<?> defaultHandler,
+                                 HttpHandlerAdapter<?,?> defaultHandler,
                                  HttpResponseWriter httpResponseWriter,
                                  HandlerRegistry handlerRegistry
     ) {
@@ -37,7 +37,7 @@ public class HttpRequestDispatcher {
 
         // 핸들러를 찾아서 실행 (현재는 리소스 핸들러만 존재)
         try {
-            HandlerMapping<?> mapping = handlerRegistry.getHandler(httpRequest.getMethod(), httpRequest.getPath());
+            HandlerMapping<?, ?> mapping = handlerRegistry.getHandler(httpRequest.getMethod(), httpRequest.getPath());
 
             if(mapping != null) {
                 handleRequestWithMapping(httpRequest, httpResponse, mapping);
@@ -56,9 +56,9 @@ public class HttpRequestDispatcher {
         httpResponseWriter.writeResponse(clientSocket, httpResponse);
     }
 
-    private <R> void handleRequestWithMapping(HttpRequest httpRequest, HttpResponse httpResponse, HandlerMapping<R> mapping) throws Exception {
-        HttpHandlerAdapter<R> handler = mapping.getHandler();
-        Triggerable<R> triggerable = mapping.getTrigger();
+    private <T, R> void handleRequestWithMapping(HttpRequest httpRequest, HttpResponse httpResponse, HandlerMapping<T, R> mapping) throws Exception {
+        HttpHandlerAdapter<T, R> handler = mapping.getHandler();
+        Triggerable<T, R> triggerable = mapping.getTrigger();
         handler.handle(httpRequest, httpResponse, triggerable);
     }
 
