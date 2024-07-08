@@ -14,14 +14,14 @@ public class LoginArgumentResolver implements ArgumentResolver<LoginRequest> {
 
         final Map<String, String> bodyParameters = RequestBodyParseHelper.bodyParameters(bodyStr);
 
-        final String email = bodyParameters.get("email");
+        final String userId = bodyParameters.get("userId");
         final String password = bodyParameters.get("password");
 
-        if (email == null || password == null) {
+        if (userId == null || password == null) {
             throw new IllegalArgumentException("필수 파라미터가 누락되었습니다.");
         }
 
-        return new LoginRequest(email, password);
+        return new LoginRequest(userId, password);
     }
 }
 

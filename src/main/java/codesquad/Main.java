@@ -36,6 +36,15 @@ public class Main {
         ApiRequestHandlerAdapter<RegisterRequest, Long> registerUserHandler = new ApiRequestHandlerAdapter<>(registerArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
 
+        // 로그인 로직
+        // TODO 로그인 실패 시 예외 전파하여 failed index.html 찾게 변경하기
+        // 쿠키 발급 구현
+        // ApiRequestHandlerAdapter를 공통적으로 구현하고, 추가적으로 setStatus나 redirectUrl은 추가 메서드를 통해 설정하도록 변경하기
+        LoginUserLogic loginUserLogic = new LoginUserLogic(userDatabase);
+        ArgumentResolver<LoginRequest> loginArgumentResolver = new LoginArgumentResolver();
+        ApiRequestHandlerAdapter<LoginRequest, User> loginUserHandler = new ApiRequestHandlerAdapter<>(loginArgumentResolver);
+        handlerRegistry.registerHandler(HttpMethod.POST, "/users/login", loginUserHandler, loginUserLogic);
+
         // 기본 리소스 핸들러
         ResourceHandlerAdapter<Void, Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
