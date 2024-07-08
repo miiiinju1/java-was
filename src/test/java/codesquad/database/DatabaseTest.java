@@ -324,9 +324,56 @@ class DatabaseTest {
         database.save(data2);
 
         // when
-        Collection<String> filteredData = database.findByCondition(data -> data.startsWith("data1"));
+        Collection<String> filteredData = database.findAllByCondition(data -> data.startsWith("data1"));
 
         // then
         assertThat(filteredData).containsExactly(data1);
+    }
+
+    @DisplayName("FindByCondition: 조건에 맞는 데이터 하나 찾기")
+    @Test
+    void findByConditionSingleMatch() {
+        // given
+        String data1 = "data1";
+        String data2 = "data2";
+        database.save(data1);
+        database.save(data2);
+
+        // when
+        Optional<String> result = database.findByCondition(data -> data.equals("data1"));
+
+        // then
+        assertThat(result).isPresent().contains(data1);
+    }
+
+    @DisplayName("FindByCondition: 조건에 맞는 데이터가 여러 개 존재할 때 예외 발생")
+    @Test
+    void findByConditionMultipleMatch() {
+        // given
+        String data1 = "data1";
+        String data2 = "data1";
+        database.save(data1);
+        database.save(data2);
+
+        // when & then
+        assertThatThrownBy(() -> database.findByCondition(data -> data.equals("data1")))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("조건에 맞는 데이터가 여러 개 존재합니다.");
+    }
+
+    @DisplayName("FindByCondition: 조건에 맞는 데이터가 없을 때")
+    @Test
+    void findByConditionNoMatch() {
+        // given
+        String data1 = "data1";
+        String data2 = "data2";
+        database.save(data1);
+        database.save(data2);
+
+        // when
+        Optional<String> result = database.findByCondition(data -> data.equals("data3"));
+
+        // then
+        assertThat(result).isNotPresent();
     }
 }
