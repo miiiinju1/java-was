@@ -24,7 +24,7 @@ public class Main {
         RegisterUserLogic registerUserLogic = new RegisterUserLogic();
         ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
         ApiRequestHandlerAdapter<RegisterRequest, Void> registerUserHandler = new ApiRequestHandlerAdapter<>(registerArgumentResolver);
-        handlerRegistry.registerHandler(HttpMethod.GET, "/create", registerUserHandler, registerUserLogic);
+        handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
 
         // 기본 리소스 핸들러
         ResourceHandlerAdapter<Void, Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
