@@ -37,7 +37,7 @@ public class RegisterArgumentResolver implements ArgumentResolver<RegisterReques
                     .map(s -> {
                         String[] split = s.split("=");
                         String key = split[0];
-                        String value = split.length > 1 ? split[1] : ""; // If no value, use empty string
+                        String value = split.length > 1 ? split[1] : "";
 
                         return Map.entry(key, value);
                     })
