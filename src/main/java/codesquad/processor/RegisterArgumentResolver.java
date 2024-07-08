@@ -3,8 +3,6 @@ package codesquad.processor;
 import codesquad.http.HttpRequest;
 import codesquad.web.user.RegisterRequest;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,22 +29,17 @@ public class RegisterArgumentResolver implements ArgumentResolver<RegisterReques
     }
 
     private Map<String, String> bodyParameters(String bodyString) {
-        try {
-            String decodedBodyString = URLDecoder.decode(bodyString, "UTF-8");
-            return Arrays.stream(decodedBodyString.split("&"))
-                    .map(s -> {
-                        String[] split = s.split("=");
-                        String key = split[0];
-                        String value = split.length > 1 ? split[1] : "";
+        return Arrays.stream(bodyString.split("&"))
+                .map(s -> {
+                    String[] split = s.split("=");
+                    String key = split[0];
+                    String value = split.length > 1 ? split[1] : "";
 
-                        return Map.entry(key, value);
-                    })
+                    return Map.entry(key, value);
+                })
 
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("인코딩 에러가 발생했습니다.");
-        }
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
     }
 
 }
