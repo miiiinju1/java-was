@@ -24,7 +24,7 @@ public class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapter<T, R> 
         // 결과를 response에 담아서 반환
         response.setStatus(HttpStatus.FOUND);
 
-        response.getHttpHeaders().addHeader("Location", "/login");
+        response.getHttpHeaders().addHeader("Location", "/");
 
         // 이걸 HttpHandler에 default 메서드로 두고 필요한 경우 오버라이드해서 사용하도록 하면 어떨까?
     }
