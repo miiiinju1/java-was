@@ -1,4 +1,4 @@
-package codesquad.processor;
+package codesquad.processor.argumentresolver;
 
 import codesquad.http.HttpRequest;
 

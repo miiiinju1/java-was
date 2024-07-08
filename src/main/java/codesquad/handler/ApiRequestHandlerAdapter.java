@@ -3,7 +3,7 @@ package codesquad.handler;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
-import codesquad.processor.ArgumentResolver;
+import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.processor.Triggerable;
 
 public class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapter<T, R> {
