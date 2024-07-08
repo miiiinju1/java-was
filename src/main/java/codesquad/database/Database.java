@@ -1,6 +1,7 @@
 package codesquad.database;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,10 +41,21 @@ public class Database<T> {
         return database.values();
     }
 
-    public Collection<T> findByCondition(Predicate<T> predicate) {
+    public Collection<T> findAllByCondition(Predicate<T> predicate) {
         return database.values().stream()
                 .filter(predicate)
                 .toList();
+    }
+
+    public Optional<T> findByCondition(Predicate<T> predicate) {
+        final List<T> foundData = database.values().stream()
+                .filter(predicate)
+                .toList();
+        if(foundData.size() > 1) {
+            throw new IllegalArgumentException("조건에 맞는 데이터가 여러 개 존재합니다.");
+        }
+        return foundData.stream()
+                .findFirst();
     }
 
     private void validateId(long id) {
