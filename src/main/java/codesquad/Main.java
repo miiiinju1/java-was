@@ -1,9 +1,11 @@
 package codesquad;
 
+import codesquad.database.Database;
 import codesquad.handler.ApiRequestHandlerAdapter;
 import codesquad.handler.ResourceHandlerAdapter;
 import codesquad.http.HttpMethod;
 import codesquad.http.HttpResponseSerializer;
+import codesquad.model.User;
 import codesquad.model.business.RegisterUserLogic;
 import codesquad.processor.*;
 import codesquad.server.ServerInitializer;
@@ -20,10 +22,13 @@ public class Main {
         HandlerRegistry handlerRegistry = new HandlerRegistry(new ArrayList<>());
         HttpRequestBuilder httpHandler = new HttpRequestBuilder();
 
+        // User DB
+        Database<User> userDatabase = new Database<>();
+
         // 회원 가입 로직
-        RegisterUserLogic registerUserLogic = new RegisterUserLogic();
+        RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDatabase);
         ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
-        ApiRequestHandlerAdapter<RegisterRequest, Void> registerUserHandler = new ApiRequestHandlerAdapter<>(registerArgumentResolver);
+        ApiRequestHandlerAdapter<RegisterRequest, Long> registerUserHandler = new ApiRequestHandlerAdapter<>(registerArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
 
         // 기본 리소스 핸들러

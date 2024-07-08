@@ -20,6 +20,7 @@ public class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapter<T, R> 
         T request = argumentResolver.resolve(httpRequest);
 
         R res = triggerable.run(request);
+        System.out.println("res = " + res);
 
         // 결과를 response에 담아서 반환
         response.setStatus(HttpStatus.FOUND);
