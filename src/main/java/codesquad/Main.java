@@ -1,7 +1,8 @@
 package codesquad;
 
 import codesquad.database.Database;
-import codesquad.handler.ApiRequestHandlerAdapter;
+import codesquad.handler.LoginRequestHandlerAdapter;
+import codesquad.handler.RegisterRequestHandlerAdapter;
 import codesquad.handler.ResourceHandlerAdapter;
 import codesquad.http.HttpMethod;
 import codesquad.http.HttpResponseSerializer;
@@ -10,7 +11,10 @@ import codesquad.http.header.HeaderConstants;
 import codesquad.model.User;
 import codesquad.model.business.LoginUserLogic;
 import codesquad.model.business.RegisterUserLogic;
-import codesquad.processor.*;
+import codesquad.processor.HandlerRegistry;
+import codesquad.processor.HttpRequestBuilder;
+import codesquad.processor.HttpRequestDispatcher;
+import codesquad.processor.HttpResponseWriter;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.processor.argumentresolver.LoginArgumentResolver;
 import codesquad.processor.argumentresolver.RegisterArgumentResolver;
@@ -36,7 +40,7 @@ public class Main {
         // 회원 가입 로직
         RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDatabase);
         ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
-        ApiRequestHandlerAdapter<RegisterRequest, Long> registerUserHandler = new ApiRequestHandlerAdapter<>(registerArgumentResolver);
+        RegisterRequestHandlerAdapter registerUserHandler = new RegisterRequestHandlerAdapter(registerArgumentResolver);
         registerUserHandler.setResponseConfig(HttpStatus.FOUND, Map.of(HeaderConstants.LOCATION, "/"));
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
 
@@ -46,7 +50,7 @@ public class Main {
         // ApiRequestHandlerAdapter를 공통적으로 구현하고, 추가적으로 setStatus나 redirectUrl은 추가 메서드를 통해 설정하도록 변경하기
         LoginUserLogic loginUserLogic = new LoginUserLogic(userDatabase);
         ArgumentResolver<LoginRequest> loginArgumentResolver = new LoginArgumentResolver();
-        ApiRequestHandlerAdapter<LoginRequest, User> loginUserHandler = new ApiRequestHandlerAdapter<>(loginArgumentResolver);
+        LoginRequestHandlerAdapter loginUserHandler = new LoginRequestHandlerAdapter(loginArgumentResolver);
         loginUserHandler.setResponseConfig(HttpStatus.FOUND, Map.of(HeaderConstants.LOCATION, "/"));
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/login", loginUserHandler, loginUserLogic);
 
