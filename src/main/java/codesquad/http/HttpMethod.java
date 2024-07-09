@@ -4,7 +4,10 @@ public enum HttpMethod {
     GET,
     POST,
     PUT,
-    DELETE;
+    DELETE,
+    HEAD,
+    OPTIONS,
+    PATCH;
 
     public static HttpMethod of(String method) {
         if(method == null) {
