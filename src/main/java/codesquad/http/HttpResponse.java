@@ -14,6 +14,16 @@ public class HttpResponse {
     private HttpHeaders httpHeaders;
     private final ByteArrayOutputStream body;
 
+    public static HttpResponse unauthorizedOf(String basePath) {
+        byte[] responseBytes = ("<html><body><h1>401 Unauthorized " + basePath + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
+        HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
+        httpResponse.httpStatus = HttpStatus.UNAUTHORIZED;
+        httpResponse.httpHeaders = HttpHeaders.of(Map.of("Content-Type", List.of("text/html", "charset=UTF-8")));
+        httpResponse.body.write(responseBytes, 0, responseBytes.length);
+
+        return httpResponse;
+    }
+
     public HttpVersion getHttpVersion() {
         return httpVersion;
     }
