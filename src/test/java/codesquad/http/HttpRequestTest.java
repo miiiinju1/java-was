@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,8 +22,8 @@ class HttpRequestTest {
         String method = "GET";
         String path = "/";
         String version = "HTTP/1.1";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", "localhost");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("Host", List.of("localhost"));
         String body = "";
 
         // when
@@ -48,8 +49,8 @@ class HttpRequestTest {
         String method = null;
         String path = "/";
         String version = "HTTP/1.1";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", "localhost");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("Host", List.of("localhost"));
         String body = "";
 
         // when & then
@@ -71,8 +72,8 @@ class HttpRequestTest {
         String method = "invalid";
         String path = "/";
         String version = "HTTP/1.1";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", "localhost");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("Host", List.of("localhost"));
         String body = "";
 
         // when & then
@@ -94,8 +95,8 @@ class HttpRequestTest {
         String method = "GET";
         String path = null;
         String version = "HTTP/1.1";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", "localhost");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("Host", List.of("localhost"));
         String body = "";
 
         // when & then
@@ -117,8 +118,8 @@ class HttpRequestTest {
         String method = "GET";
         String path = "/";
         String version = null;
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", "localhost");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("Host", List.of("localhost"));
         String body = "";
 
         // when & then
@@ -140,8 +141,8 @@ class HttpRequestTest {
         String method = "GET";
         String path = "/";
         String version = "HTTP/1.1";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", "localhost");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("Host", List.of("localhost"));
         String body = "";
 
         // when
@@ -156,7 +157,7 @@ class HttpRequestTest {
         // then
         HttpHeaders requestHeaders = request.getHeaders();
         assertThat(requestHeaders.getHeader("Host"))
-                .isEqualTo("localhost");
+                .isEqualTo(List.of("localhost"));
     }
 
     @DisplayName("Builder: 정상적인 바디 설정")
@@ -166,8 +167,8 @@ class HttpRequestTest {
         String method = "POST";
         String path = "/";
         String version = "HTTP/1.1";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", "localhost");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("Host", List.of("localhost"));
         String body = "test body";
 
         // when
@@ -248,7 +249,7 @@ class HttpRequestTest {
         // when & then
         assertThatThrownBy(() -> request.setAttributes(null, attributeValue))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("키는 null이거나 빈 문자열일 수 없습니다.");
+                .hasMessage("key는 null이거나 빈 문자열일 수 없습니다.");
     }
 
     @DisplayName("Attributes: null 속성 값으로 설정 시 예외 발생")
@@ -267,7 +268,7 @@ class HttpRequestTest {
         // when & then
         assertThatThrownBy(() -> request.setAttributes(attributeName, null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("값은 null일 수 없습니다.");
+                .hasMessage("value는 null일 수 없습니다.");
     }
 
 }

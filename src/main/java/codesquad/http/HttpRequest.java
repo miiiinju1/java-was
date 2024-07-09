@@ -5,6 +5,7 @@ import codesquad.http.header.HttpHeaders;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class HttpRequest {
 
@@ -35,12 +36,25 @@ public class HttpRequest {
         return body;
     }
 
-    public Object getAttributes(String name) {
-        return attributes.get(name);
+    public Optional<Object> getAttributes(String key) {
+        return Optional.ofNullable(attributes.get(key));
     }
 
-    public void setAttributes(String name, Object value) {
-        attributes.put(name, value);
+    public void setAttributes(String key, Object value) {
+        validateAttributeKey(key);
+        validateAttributeValue(value);
+        attributes.put(key, value);
+    }
+
+    private void validateAttributeKey(String key) {
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("key는 null이거나 빈 문자열일 수 없습니다.");
+        }
+    }
+    private void validateAttributeValue(Object value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value는 null일 수 없습니다.");
+        }
     }
 
     public static Builder builder() {
