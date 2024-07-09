@@ -24,6 +24,7 @@ public class LogoutRequestHandlerAdapter extends ApiRequestHandlerAdapter<Void, 
 
     @Override
     public void applyExceptionHandler(RuntimeException e, HttpResponse response) {
-
+        // 이미 세션이 없는데 로그아웃을 시도할 경우
+        response.setStatus(HttpStatus.BAD_REQUEST);
     }
 }

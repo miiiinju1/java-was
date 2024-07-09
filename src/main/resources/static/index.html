@@ -28,6 +28,9 @@
           if (response.ok) {
             deleteCookie('sid');
             window.location.href = '/';
+          } else if (response.status === 400) {
+            console.warn('No active session');
+            window.location.href = '/';
           } else {
             console.error('Failed to log out');
           }
