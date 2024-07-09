@@ -11,17 +11,23 @@ public abstract class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapt
     private static final Logger log = LoggerFactory.getLogger(ApiRequestHandlerAdapter.class);
 
     @Override
-    public void handle(HttpRequest httpRequest, HttpResponse response, Triggerable<T, R> triggerable) throws Exception {
-
+    public final void handle(HttpRequest httpRequest, HttpResponse response, Triggerable<T, R> triggerable) throws Exception {
         T request = resolveArgument(httpRequest);
-        R res = triggerable.run(request);
-        log.debug("res = {}", res);
-        afterHandle(request, res, httpRequest, response);
-
+        try {
+            R res = triggerable.run(request);
+            log.debug("res = {}", res);
+            afterHandle(request, res, httpRequest, response);
+        }
+        catch (RuntimeException e) {
+            log.error("Exception : {}", e.getMessage());
+            applyExceptionHandler(e, response);
+        }
     }
 
     public abstract void afterHandle(T request, R response, HttpRequest httpRequest, HttpResponse httpResponse);
 
     public abstract T resolveArgument(HttpRequest httpRequest);
+
+    public abstract void applyExceptionHandler(RuntimeException e, HttpResponse response);
 
 }

@@ -19,6 +19,12 @@ public class LoginRequestHandlerAdapter extends ApiRequestHandlerAdapter<LoginRe
     }
 
     @Override
+    public void applyExceptionHandler(RuntimeException e, HttpResponse response) {
+        response.setStatus(HttpStatus.FOUND);
+        response.setHeader(HeaderConstants.LOCATION, "/users/login_failed");
+    }
+
+    @Override
     public void afterHandle(LoginRequest request, User response, HttpRequest httpRequest, HttpResponse httpResponse) {
         String sessionKey = SessionDatabase.save(response.getUserPk());
 

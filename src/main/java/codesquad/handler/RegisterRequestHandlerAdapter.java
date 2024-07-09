@@ -17,6 +17,12 @@ public class RegisterRequestHandlerAdapter extends ApiRequestHandlerAdapter<Regi
     }
 
     @Override
+    public void applyExceptionHandler(RuntimeException e, HttpResponse response) {
+        response.setStatus(HttpStatus.FOUND);
+        response.setHeader(HeaderConstants.LOCATION, "/users/register_failed.html");
+    }
+
+    @Override
     public void afterHandle(RegisterRequest request, Long response, HttpRequest httpRequest, HttpResponse httpResponse) {
         httpResponse.setStatus(HttpStatus.FOUND);
         httpResponse.setHeader(HeaderConstants.LOCATION, "/");
