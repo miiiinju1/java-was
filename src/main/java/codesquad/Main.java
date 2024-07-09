@@ -55,6 +55,8 @@ public class Main {
         ResourceHandlerAdapter<Void, Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
+
+        // 디스패처 생성
         HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, defaultResourceHandler, httpResponseWriter, handlerRegistry);
 
         try {
