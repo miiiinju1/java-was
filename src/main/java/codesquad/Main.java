@@ -11,7 +11,7 @@ import codesquad.model.User;
 import codesquad.model.business.LoginUserLogic;
 import codesquad.model.business.RegisterUserLogic;
 import codesquad.processor.HandlerRegistry;
-import codesquad.processor.HttpRequestBuilder;
+import codesquad.processor.HttpRequestParser;
 import codesquad.processor.HttpRequestDispatcher;
 import codesquad.processor.HttpResponseWriter;
 import codesquad.processor.argumentresolver.ArgumentResolver;
@@ -30,7 +30,7 @@ public class Main {
         ServerInitializer serverInitializer = new ServerInitializer();
 
         HandlerRegistry handlerRegistry = new HandlerRegistry(new ArrayList<>());
-        HttpRequestBuilder httpHandler = new HttpRequestBuilder();
+        HttpRequestParser httpHandler = new HttpRequestParser();
 
         // User DB
         Database<User> userDatabase = new Database<>();

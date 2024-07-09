@@ -9,13 +9,13 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HttpRequestBuilderTest {
+class HttpRequestParserTest {
 
     @DisplayName("urlencoded된 요청이 오는 경우에는 decode된 body를 HttpRequest에 저장한다.")
     @Test
     void urlencoded() throws IOException {
         // given
-        HttpRequestBuilder httpRequestBuilder = new HttpRequestBuilder();
+        HttpRequestParser httpRequestParser = new HttpRequestParser();
         String request = """
                 POST /user/create HTTP/1.1
                 Host: localhost:8080
@@ -29,7 +29,7 @@ class HttpRequestBuilderTest {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getBytes());
 
         // when
-        HttpRequest httpRequest = httpRequestBuilder.parseRequest(byteArrayInputStream);
+        HttpRequest httpRequest = httpRequestParser.parseRequest(byteArrayInputStream);
 
         // then
         assertThat(httpRequest.getBody())
@@ -40,7 +40,7 @@ class HttpRequestBuilderTest {
     @Test
     void urlencode되어있지_않은_경우() throws IOException {
         // given
-        HttpRequestBuilder httpRequestBuilder = new HttpRequestBuilder();
+        HttpRequestParser httpRequestParser = new HttpRequestParser();
         String request = """
                 POST /user/create HTTP/1.1
                 Host: localhost:8080
@@ -54,7 +54,7 @@ class HttpRequestBuilderTest {
 
 
         // when
-        HttpRequest httpRequest = httpRequestBuilder.parseRequest(byteArrayInputStream);
+        HttpRequest httpRequest = httpRequestParser.parseRequest(byteArrayInputStream);
 
         // then
         assertThat(httpRequest.getBody())

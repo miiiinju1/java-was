@@ -14,18 +14,18 @@ import java.net.Socket;
 
 public class HttpRequestDispatcher {
 
-    private final HttpRequestBuilder httpRequestBuilder;
+    private final HttpRequestParser httpRequestParser;
     private final HttpHandlerAdapter<?, ?> defaultHandler;
     private final HttpResponseWriter httpResponseWriter;
     private final HandlerRegistry handlerRegistry;
     private static final Logger log = LoggerFactory.getLogger(HttpRequestDispatcher.class);
 
-    public HttpRequestDispatcher(HttpRequestBuilder httpRequestBuilder,
+    public HttpRequestDispatcher(HttpRequestParser httpRequestParser,
                                  HttpHandlerAdapter<?,?> defaultHandler,
                                  HttpResponseWriter httpResponseWriter,
                                  HandlerRegistry handlerRegistry
     ) {
-        this.httpRequestBuilder = httpRequestBuilder;
+        this.httpRequestParser = httpRequestParser;
         this.defaultHandler = defaultHandler;
         this.httpResponseWriter = httpResponseWriter;
         this.handlerRegistry = handlerRegistry;
@@ -33,7 +33,7 @@ public class HttpRequestDispatcher {
 
     public void handleConnection(final Socket clientSocket) throws IOException {
         final InputStream requestStream = clientSocket.getInputStream();
-        final HttpRequest httpRequest = httpRequestBuilder.parseRequest(requestStream);
+        final HttpRequest httpRequest = httpRequestParser.parseRequest(requestStream);
         final HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
 
         // 핸들러를 찾아서 실행 (현재는 리소스 핸들러만 존재)
