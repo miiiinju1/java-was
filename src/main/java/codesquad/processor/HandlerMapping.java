@@ -11,6 +11,7 @@ public class HandlerMapping<T, R> {
     private final Pattern pattern;
     private final HttpHandlerAdapter<T, R> handler;
     private final Triggerable<T, R> triggerable;
+    private static final Pattern DISALLOWED_SPECIAL_CHARACTERS_PATTERN = Pattern.compile("[!@#$%^&*()+=|<>?\\[\\]~]");
 
     public HandlerMapping(HttpMethod httpMethod, String url, HttpHandlerAdapter<T, R> handler, Triggerable<T, R> triggerable) {
         this.httpMethod = validateHttpMethod(httpMethod);
@@ -50,8 +51,13 @@ public class HandlerMapping<T, R> {
             throw new IllegalArgumentException("url이 null이거나 비어있습니다.");
         }
 
+        if (DISALLOWED_SPECIAL_CHARACTERS_PATTERN.matcher(url).find()) {
+            throw new IllegalArgumentException("url에 허용되지 않은 특수 문자가 포함될 수 없습니다.");
+        }
+
         // PathVariable의 경우 {변수명}으로 표현되어 있으므로 해당 부분을 정규표현식으로 변경
         String regexPattern = url.replaceAll("\\{[^/]+\\}", "([^/]+)");
+        regexPattern = "^" + regexPattern + "$";
         return Pattern.compile(regexPattern);
     }
 
