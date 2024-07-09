@@ -24,7 +24,7 @@ class LoginArgumentResolverTest {
     @Test
     void resolveWithValidParameters() {
         // given
-        String body = "email=test@example.com&password=secret";
+        String body = "userId=test@example.com&password=secret";
         HttpRequest request = HttpRequest.builder()
                 .method("POST")
                 .path("/login")
@@ -39,7 +39,7 @@ class LoginArgumentResolverTest {
         // then
         assertThat(loginRequest)
                 .isNotNull()
-                .extracting(LoginRequest::getEmail, LoginRequest::getPassword)
+                .extracting(LoginRequest::getUserId, LoginRequest::getPassword)
                 .containsExactly("test@example.com", "secret");
     }
 
