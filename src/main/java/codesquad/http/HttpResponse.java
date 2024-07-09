@@ -44,6 +44,16 @@ public class HttpResponse {
         this.body = new ByteArrayOutputStream();
     }
 
+    public static HttpResponse internalServerErrorOf(String path) {
+        byte[] responseBytes = ("<html><body><h1>500 Internal Server Error " + path + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
+        HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
+        httpResponse.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        httpResponse.httpHeaders = HttpHeaders.of(Map.of("Content-Type", "text/html; charset=UTF-8"));
+        httpResponse.body.write(responseBytes, 0, responseBytes.length);
+
+        return httpResponse;
+    }
+
     public static HttpResponse notFoundOf(String path) {
         byte[] responseBytes = ("<html><body><h1>404 Not Found " + path + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
         HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
