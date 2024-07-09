@@ -3,6 +3,7 @@ package codesquad.processor;
 import codesquad.handler.HttpHandlerAdapter;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
+import codesquad.http.HttpStatus;
 import codesquad.http.HttpVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,19 @@ public class HttpRequestDispatcher {
                 handleRequestWithDefaultHandler(httpRequest, httpResponse);
             }
         } catch (Exception e) {
-            log.error("Failed to handle request", e);
-            httpResponseWriter.writeResponse(clientSocket, HttpResponse.notFoundOf(httpRequest.getPath().getBasePath()));
+            log.error("Dispatcher : {}", e.getMessage());
+            switch (httpResponse.getHttpStatus()) {
+                case NOT_FOUND:
+                    httpResponseWriter.writeResponse(clientSocket, HttpResponse.notFoundOf(httpRequest.getPath().getBasePath()));
+                    break;
+                case INTERNAL_SERVER_ERROR:
+                    httpResponseWriter.writeResponse(clientSocket, HttpResponse.internalServerErrorOf(httpRequest.getPath().getBasePath()));
+                    break;
+                default:
+                    httpResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                    httpResponseWriter.writeResponse(clientSocket, httpResponse);
+                    break;
+            }
             return;
         }
 
