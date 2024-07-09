@@ -1,7 +1,9 @@
 package codesquad.handler;
 
+import codesquad.database.SessionDatabase;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
+import codesquad.http.HttpStatus;
 import codesquad.http.header.HeaderConstants;
 import codesquad.model.User;
 import codesquad.processor.argumentresolver.ArgumentResolver;
@@ -11,10 +13,6 @@ public class LoginRequestHandlerAdapter extends ApiRequestHandlerAdapter<LoginRe
 
     private final ArgumentResolver<LoginRequest> argumentResolver;
 
-    public LoginRequestHandlerAdapter(ArgumentResolver<LoginRequest> argumentResolver) {
-        this.argumentResolver = argumentResolver;
-    }
-
     @Override
     public LoginRequest resolveArgument(HttpRequest httpRequest) {
         return argumentResolver.resolve(httpRequest);
@@ -22,7 +20,14 @@ public class LoginRequestHandlerAdapter extends ApiRequestHandlerAdapter<LoginRe
 
     @Override
     public void afterHandle(LoginRequest request, User response, HttpRequest httpRequest, HttpResponse httpResponse) {
-        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "logined=true; Path=/");
+        String sessionKey = SessionDatabase.save(response.getUserPk());
+
+        httpResponse.setStatus(HttpStatus.FOUND);
+        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=" + sessionKey + "; Path=/");
+        httpResponse.setHeader(HeaderConstants.LOCATION, "/");
     }
 
+    public LoginRequestHandlerAdapter(ArgumentResolver<LoginRequest> argumentResolver) {
+        this.argumentResolver = argumentResolver;
+    }
 }

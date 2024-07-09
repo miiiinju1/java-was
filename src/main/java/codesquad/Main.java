@@ -6,8 +6,6 @@ import codesquad.handler.RegisterRequestHandlerAdapter;
 import codesquad.handler.ResourceHandlerAdapter;
 import codesquad.http.HttpMethod;
 import codesquad.http.HttpResponseSerializer;
-import codesquad.http.HttpStatus;
-import codesquad.http.header.HeaderConstants;
 import codesquad.model.User;
 import codesquad.model.business.LoginUserLogic;
 import codesquad.model.business.RegisterUserLogic;
@@ -23,7 +21,6 @@ import codesquad.web.user.LoginRequest;
 import codesquad.web.user.RegisterRequest;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Main {
 
@@ -41,7 +38,6 @@ public class Main {
         RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDatabase);
         ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
         RegisterRequestHandlerAdapter registerUserHandler = new RegisterRequestHandlerAdapter(registerArgumentResolver);
-        registerUserHandler.setResponseConfig(HttpStatus.FOUND, Map.of(HeaderConstants.LOCATION, "/"));
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
 
         // 로그인 로직
@@ -51,7 +47,6 @@ public class Main {
         LoginUserLogic loginUserLogic = new LoginUserLogic(userDatabase);
         ArgumentResolver<LoginRequest> loginArgumentResolver = new LoginArgumentResolver();
         LoginRequestHandlerAdapter loginUserHandler = new LoginRequestHandlerAdapter(loginArgumentResolver);
-        loginUserHandler.setResponseConfig(HttpStatus.FOUND, Map.of(HeaderConstants.LOCATION, "/"));
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/login", loginUserHandler, loginUserLogic);
 
         // 기본 리소스 핸들러

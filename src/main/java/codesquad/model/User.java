@@ -1,6 +1,7 @@
 package codesquad.model;
 
 public class User {
+    private Long userPk;
     private final String userId;
     private final String password;
     private final String name;
@@ -22,6 +23,17 @@ public class User {
         return email;
     }
 
+    public Long getUserPk() {
+        return userPk;
+    }
+
+    public void initUserPk(Long userPk) {
+        if(this.userPk != null) {
+            throw new IllegalArgumentException("이미 PK가 존재합니다.");
+        }
+        this.userPk = userPk;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -38,4 +50,7 @@ public class User {
         this.name = name;
         this.email = email;
     }
+
+
+
 }

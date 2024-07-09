@@ -2,6 +2,8 @@ package codesquad.handler;
 
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
+import codesquad.http.HttpStatus;
+import codesquad.http.header.HeaderConstants;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.web.user.RegisterRequest;
 
@@ -10,14 +12,14 @@ public class RegisterRequestHandlerAdapter extends ApiRequestHandlerAdapter<Regi
     private final ArgumentResolver<RegisterRequest> argumentResolver;
 
     @Override
-    public void afterHandle(RegisterRequest request, Long response, HttpRequest httpRequest, HttpResponse httpResponse) {
-        // do nothing
-        // TODO 여기에서 sendRedirect를 호출하면 되지 않을까?
+    public RegisterRequest resolveArgument(HttpRequest httpRequest) {
+        return argumentResolver.resolve(httpRequest);
     }
 
     @Override
-    public RegisterRequest resolveArgument(HttpRequest httpRequest) {
-        return argumentResolver.resolve(httpRequest);
+    public void afterHandle(RegisterRequest request, Long response, HttpRequest httpRequest, HttpResponse httpResponse) {
+        httpResponse.setStatus(HttpStatus.FOUND);
+        httpResponse.setHeader(HeaderConstants.LOCATION, "/");
     }
 
     public RegisterRequestHandlerAdapter(ArgumentResolver<RegisterRequest> argumentResolver) {

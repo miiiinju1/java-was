@@ -16,8 +16,10 @@ public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
         String name = registerRequest.getName();
 
         User user = new User(userId, password, name, email);
+        long savedPk = userDatabase.save(user);
+        user.initUserPk(savedPk);
 
-        return userDatabase.save(user);
+        return savedPk;
     }
 
     @Override
