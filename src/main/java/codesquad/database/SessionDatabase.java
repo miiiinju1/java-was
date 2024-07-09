@@ -11,9 +11,8 @@ public class SessionDatabase {
     private static final Map<String, Session> registry = new ConcurrentHashMap<>();
 
     public static Session save(Long userPk) {
-        String key = UUID.randomUUID().toString();
         Session session = new Session(userPk, LocalDateTime.now(), 3600);
-        registry.put(key, session);
+        registry.put(session.getSessionId(), session);
         return session;
     }
 
