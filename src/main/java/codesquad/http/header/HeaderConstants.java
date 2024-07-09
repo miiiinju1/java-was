@@ -18,4 +18,8 @@ public class HeaderConstants {
     public static final String USER_AGENT = "User-Agent";
     public static final String REFERER = "Referer";
 
+    public static final String CACHE_CONTROL = "Cache-Control";
+
+    private HeaderConstants() {
+    }
 }

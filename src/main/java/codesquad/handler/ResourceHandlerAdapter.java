@@ -39,6 +39,8 @@ public class ResourceHandlerAdapter<T, R> implements HttpHandlerAdapter<T,R> {
         // MIME 타입 설정
         Mime mime = Mime.ofFilePath(filePath);
         response.setStatus(HttpStatus.OK);
+        response.setHeader(HeaderConstants.CACHE_CONTROL, "public, max-age=31536000");
+
         response.getHttpHeaders()
                 .addHeader(HeaderConstants.CONTENT_TYPE, mime.getType());
     }
