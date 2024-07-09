@@ -1,10 +1,6 @@
 package codesquad.http.header;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.ArrayList;
+import java.util.*;
 
 public class HttpHeaders {
 
@@ -36,18 +32,18 @@ public class HttpHeaders {
         return values;
     }
 
-    public String getSubValueOfHeader(final String key, final String subkey) {
+    public Optional<String> getSubValueOfHeader(final String key, final String subkey) {
         List<String> values = valueMap.get(key);
         if (values == null) {
-            throw new IllegalArgumentException("Header not found: " + key);
+            return Optional.empty();
         }
         for (String value : values) {
             String[] keyValue = value.split("=");
             if (keyValue[0].equals(subkey)) {
-                return keyValue[1];
+                return Optional.ofNullable(keyValue[1]);
             }
         }
-        throw new IllegalArgumentException("Subkey not found: " + subkey);
+        return Optional.empty();
     }
 
     public Set<Map.Entry<String, List<String>>> getValues() {
