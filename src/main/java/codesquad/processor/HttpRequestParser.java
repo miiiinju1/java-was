@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 public class HttpRequestParser {
 
@@ -20,29 +21,39 @@ public class HttpRequestParser {
             throw new IllegalArgumentException("Request line is null");
         }
 
-        StringTokenizer st = new StringTokenizer(line);
-        String method = st.nextToken();
-        String path = st.nextToken();
-        String version = st.nextToken();
+        String[] requestLineParts = line.split(" ");
+        if (requestLineParts.length < 3) {
+            throw new IllegalArgumentException("Invalid request line: " + line);
+        }
+        String method = requestLineParts[0];
+        String path = requestLineParts[1];
+        String version = requestLineParts[2];
 
-        Map<String, String> headers = new HashMap<>();
+        Map<String, List<String>> headers = new HashMap<>();
         while (!(line = br.readLine()).isEmpty()) {
-            st = new StringTokenizer(line, ": ");
-            String key = st.nextToken();
-            String value = st.nextToken();
-            headers.put(key, value);
+            int colonIndex = line.indexOf(":");
+            if (colonIndex == -1) {
+                throw new IllegalArgumentException("Invalid header line: " + line);
+            }
+            String key = line.substring(0, colonIndex).trim();
+            String valuesString = line.substring(colonIndex + 1).trim();
+            String[] values = valuesString.split(";");
+
+            List<String> subList = headers.computeIfAbsent(key, k -> new ArrayList<>());
+            for (String value : values) {
+                subList.add(value.trim());
+            }
         }
 
-        int contentLength = headers.containsKey("Content-Length") ? Integer.parseInt(headers.get("Content-Length")) : 0;
+        int contentLength = headers.containsKey("Content-Length") ? Integer.parseInt(headers.get("Content-Length").get(0)) : 0;
         char[] body = new char[contentLength];
         br.read(body);
 
         String bodyString = String.valueOf(body);
-        if(headers.containsKey("Content-Type") && headers.get("Content-Type").equals("application/x-www-form-urlencoded")) {
+        if (headers.containsKey("Content-Type") && headers.get("Content-Type").get(0).equals("application/x-www-form-urlencoded")) {
             try {
                 bodyString = URLDecoder.decode(bodyString, "UTF-8");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new IllegalArgumentException("인코딩 에러가 발생했습니다.");
             }
         }

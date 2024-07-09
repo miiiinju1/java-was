@@ -1,14 +1,16 @@
 package codesquad.http.header;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.ArrayList;
 
 public class HttpHeaders {
 
-    private final Map<String, String> valueMap;
+    private final Map<String, List<String>> valueMap;
 
-    public static HttpHeaders of(Map<String, String> headers) {
+    public static HttpHeaders of(Map<String, List<String>> headers) {
         return new HttpHeaders(headers);
     }
 
@@ -16,27 +18,41 @@ public class HttpHeaders {
         return new HttpHeaders();
     }
 
-    public void addHeader(String key, String value) {
-        valueMap.put(key, value);
+    public void addHeader(final String key, final String value) {
+        validateHeaderKey(key);
+        validateHeaderValue(value);
+        valueMap.computeIfAbsent(key, k -> new ArrayList<>()).add(value.trim());
     }
 
-    public boolean containsHeader(String key) {
+    public boolean containsHeader(final String key) {
         return valueMap.containsKey(key);
     }
 
-    public String getHeader(String key) {
-        String value = valueMap.get(key);
-        if(value == null) {
-            throw new IllegalArgumentException("Header not found : " + key);
+    public List<String> getHeader(final String key) {
+        List<String> values = valueMap.get(key);
+        if (values == null) {
+            throw new IllegalArgumentException("Header not found: " + key);
         }
-        return value;
+        return values;
     }
 
-    public Set<Map.Entry<String, String>> getValues() {
+    public Set<Map.Entry<String, List<String>>> getValues() {
         return valueMap.entrySet();
     }
 
-    private HttpHeaders(Map<String, String> valueMap) {
+    private void validateHeaderKey(String key) {
+        if (key == null || key.trim().isEmpty()) {
+            throw new IllegalArgumentException("Header key cannot be null or empty");
+        }
+    }
+
+    private void validateHeaderValue(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Header value cannot be null");
+        }
+    }
+
+    private HttpHeaders(Map<String, List<String>> valueMap) {
         this.valueMap = new HashMap<>(valueMap);
     }
 

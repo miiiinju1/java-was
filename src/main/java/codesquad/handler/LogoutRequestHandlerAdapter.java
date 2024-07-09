@@ -6,13 +6,15 @@ import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
 import codesquad.http.header.HttpHeaders;
 
+import java.util.List;
+
 public class LogoutRequestHandlerAdapter extends ApiRequestHandlerAdapter<Void, Void> {
     @Override
     public void afterHandle(Void request, Void response, HttpRequest httpRequest, HttpResponse httpResponse) {
         HttpHeaders headers = httpRequest.getHeaders();
 
-        String cookieValue = headers.getHeader("Cookie");
-        SessionDatabase.delete(cookieValue);
+        List<String> cookieValue = headers.getHeader("Cookie");
+        SessionDatabase.delete(cookieValue.get(0));
         httpResponse.setStatus(HttpStatus.OK);
 
     }

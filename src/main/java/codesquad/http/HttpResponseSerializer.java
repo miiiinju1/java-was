@@ -2,6 +2,7 @@ package codesquad.http;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class HttpResponseSerializer {
@@ -21,12 +22,15 @@ public class HttpResponseSerializer {
 
         byteArrayOutputStream.write(responseLine.getBytes());
 
-
         // 응답 헤더를 만들어서 byte 배열에 추가
-        for (Map.Entry<String, String> headerEntry : httpResponse.getHttpHeaders().getValues()) {
+        for (Map.Entry<String, List<String>> headerEntry : httpResponse.getHttpHeaders().getValues()) {
+            String key = headerEntry.getKey();
+            List<String> values = headerEntry.getValue();
+            String value = String.join("; ", values);
+
             String header = String.format("%s: %s%s",
-                    headerEntry.getKey(),
-                    headerEntry.getValue(),
+                    key,
+                    value,
                     System.lineSeparator());
 
             byteArrayOutputStream.write(header.getBytes());

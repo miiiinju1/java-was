@@ -4,6 +4,7 @@ import codesquad.http.header.HttpHeaders;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 public class HttpResponse {
@@ -48,7 +49,7 @@ public class HttpResponse {
         byte[] responseBytes = ("<html><body><h1>500 Internal Server Error " + path + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
         HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
         httpResponse.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        httpResponse.httpHeaders = HttpHeaders.of(Map.of("Content-Type", "text/html; charset=UTF-8"));
+        httpResponse.httpHeaders = HttpHeaders.of(Map.of("Content-Type", List.of("text/html", "charset=UTF-8")));
         httpResponse.body.write(responseBytes, 0, responseBytes.length);
 
         return httpResponse;
@@ -58,7 +59,7 @@ public class HttpResponse {
         byte[] responseBytes = ("<html><body><h1>404 Not Found " + path + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
         HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
         httpResponse.httpStatus = HttpStatus.NOT_FOUND;
-        httpResponse.httpHeaders = HttpHeaders.of(Map.of("Content-Type", "text/html; charset=UTF-8"));
+        httpResponse.httpHeaders = HttpHeaders.of(Map.of("Content-Type", List.of("text/html", "charset=UTF-8")));
         httpResponse.body.write(responseBytes, 0, responseBytes.length);
 
         return httpResponse;
