@@ -10,13 +10,10 @@ public class MiddleWareChain {
 
     private final List<MiddleWare> middleWares;
 
-    public boolean applyMiddleWares(HttpRequest request, HttpResponse response) {
+    public void applyMiddleWares(HttpRequest request, HttpResponse response) {
         for (MiddleWare middleWare : middleWares) {
-            if(!middleWare.applyMiddleWare(request, response)) {
-                return false;
-            }
+            middleWare.applyMiddleWare(request, response);
         }
-        return true;
     }
 
     public void addMiddleWare(MiddleWare middleWares) {

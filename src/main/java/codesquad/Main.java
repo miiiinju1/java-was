@@ -8,6 +8,7 @@ import codesquad.handler.ResourceHandlerAdapter;
 import codesquad.http.HttpMethod;
 import codesquad.http.HttpResponseSerializer;
 import codesquad.middleware.MiddleWareChain;
+import codesquad.middleware.SessionMiddleWare;
 import codesquad.model.User;
 import codesquad.model.business.LoginUserLogic;
 import codesquad.model.business.RegisterUserLogic;
@@ -59,6 +60,8 @@ public class Main {
 
         // 미들웨어 생성
         MiddleWareChain middleWareChain = new MiddleWareChain();
+        SessionMiddleWare sessionMiddleWare = new SessionMiddleWare();
+        middleWareChain.addMiddleWare(sessionMiddleWare);
 
         // Processor 생성
         HttpRequestProcessor httpRequestProcessor = new HttpRequestProcessor(requestParser, httpRequestDispatcher, httpResponseWriter, middleWareChain);

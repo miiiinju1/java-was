@@ -26,9 +26,16 @@ public class HttpRequestProcessor {
         final HttpRequest httpRequest = httpRequestParser.parseRequest(requestStream);
         final HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
 
-        if (!middleWareChain.applyMiddleWares(httpRequest, httpResponse)) {
-            return;
-        }
+        middleWareChain.applyMiddleWares(httpRequest, httpResponse);
+
+        // 위에서 return하지 말고
+
+        // 권한이 설정됐는지 검사해서
+
+        // 권한이 없으면 401을 리턴하고 return해버리게 만들기
+
+        // 그럼 middleWareChain은 boolean이 아니라 void로 바꿔도 됨
+
 
         try {
             httpRequestDispatcher.handleConnection(httpRequest, httpResponse);

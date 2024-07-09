@@ -1,5 +1,6 @@
 package codesquad.server;
 
+import codesquad.authorization.AuthorizationContextHolder;
 import codesquad.processor.HttpRequestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,9 @@ public class ServerInitializer {
                         log.error("Failed to handle connection", e);
                     } catch (Exception e) {
                         log.error("Failed to handle connection", e);
+                    }
+                    finally {
+                        AuthorizationContextHolder.clearContext();
                     }
                 });
             }

@@ -5,5 +5,5 @@ import codesquad.http.HttpResponse;
 
 public interface MiddleWare {
 
-    boolean applyMiddleWare(HttpRequest request, HttpResponse response);
+    void applyMiddleWare(HttpRequest request, HttpResponse response);
 }
