@@ -4,6 +4,7 @@ import codesquad.database.SessionDatabase;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
+import codesquad.http.Session;
 import codesquad.http.header.HeaderConstants;
 import codesquad.model.User;
 import codesquad.processor.argumentresolver.ArgumentResolver;
@@ -26,10 +27,10 @@ public class LoginRequestHandlerAdapter extends ApiRequestHandlerAdapter<LoginRe
 
     @Override
     public void afterHandle(LoginRequest request, User response, HttpRequest httpRequest, HttpResponse httpResponse) {
-        String sessionKey = SessionDatabase.save(response.getUserPk());
+        Session session = SessionDatabase.save(response.getUserPk());
 
         httpResponse.setStatus(HttpStatus.FOUND);
-        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=" + sessionKey + "; Path=/");
+        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=" + session.getSessionId() + "; Path=/ ; Max-Age=" + session.getTimeout() + "; HttpOnly");
         httpResponse.setHeader(HeaderConstants.LOCATION, "/");
     }
 
