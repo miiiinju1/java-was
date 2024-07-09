@@ -7,13 +7,11 @@ import codesquad.handler.RegisterRequestHandlerAdapter;
 import codesquad.handler.ResourceHandlerAdapter;
 import codesquad.http.HttpMethod;
 import codesquad.http.HttpResponseSerializer;
+import codesquad.middleware.MiddleWareChain;
 import codesquad.model.User;
 import codesquad.model.business.LoginUserLogic;
 import codesquad.model.business.RegisterUserLogic;
-import codesquad.processor.HandlerRegistry;
-import codesquad.processor.HttpRequestParser;
-import codesquad.processor.HttpRequestDispatcher;
-import codesquad.processor.HttpResponseWriter;
+import codesquad.processor.*;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.processor.argumentresolver.LoginArgumentResolver;
 import codesquad.processor.argumentresolver.RegisterArgumentResolver;
@@ -30,7 +28,7 @@ public class Main {
         ServerInitializer serverInitializer = new ServerInitializer();
 
         HandlerRegistry handlerRegistry = new HandlerRegistry(new ArrayList<>());
-        HttpRequestParser httpHandler = new HttpRequestParser();
+        HttpRequestParser requestParser = new HttpRequestParser();
 
         // User DB
         Database<User> userDatabase = new Database<>();
@@ -57,10 +55,16 @@ public class Main {
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
 
         // 디스패처 생성
-        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(httpHandler, defaultResourceHandler, httpResponseWriter, handlerRegistry);
+        HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(defaultResourceHandler, handlerRegistry);
+
+        // 미들웨어 생성
+        MiddleWareChain middleWareChain = new MiddleWareChain();
+
+        // Processor 생성
+        HttpRequestProcessor httpRequestProcessor = new HttpRequestProcessor(requestParser, httpRequestDispatcher, httpResponseWriter, middleWareChain);
 
         try {
-            serverInitializer.startServer(8080, httpRequestDispatcher);
+            serverInitializer.startServer(8080, httpRequestProcessor);
         } catch (Exception e) {
             e.printStackTrace();
         }
