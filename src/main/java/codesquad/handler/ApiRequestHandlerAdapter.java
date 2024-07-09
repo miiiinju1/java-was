@@ -17,11 +17,24 @@ public abstract class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapt
             R res = triggerable.run(request);
             log.debug("res = {}", res);
             afterHandle(request, res, httpRequest, response);
+
+            if(res == null) {
+                return;
+            }
+            String serializedResponse = serializeResponse(res);
+
+            response.getBody().write(serializedResponse.getBytes());
         }
         catch (RuntimeException e) {
             log.error("Exception : {}", e.getMessage());
             applyExceptionHandler(e, response);
         }
+    }
+
+    private static final String DEFAULT_EMPTY_RESPONSE = "";
+
+    public String serializeResponse(R response) {
+        return DEFAULT_EMPTY_RESPONSE;
     }
 
     public abstract void afterHandle(T request, R response, HttpRequest httpRequest, HttpResponse httpResponse);

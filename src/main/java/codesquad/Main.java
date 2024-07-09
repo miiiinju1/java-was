@@ -2,10 +2,7 @@ package codesquad;
 
 import codesquad.authorization.SecurePathManager;
 import codesquad.database.Database;
-import codesquad.handler.LoginRequestHandlerAdapter;
-import codesquad.handler.LogoutRequestHandlerAdapter;
-import codesquad.handler.RegisterRequestHandlerAdapter;
-import codesquad.handler.ResourceHandlerAdapter;
+import codesquad.handler.*;
 import codesquad.http.HttpMethod;
 import codesquad.http.HttpResponseSerializer;
 import codesquad.middleware.MiddleWareChain;
@@ -13,6 +10,7 @@ import codesquad.middleware.SessionMiddleWare;
 import codesquad.model.User;
 import codesquad.model.business.LoginUserLogic;
 import codesquad.model.business.RegisterUserLogic;
+import codesquad.model.business.user.GetUserInfoLogic;
 import codesquad.processor.*;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.processor.argumentresolver.LoginArgumentResolver;
@@ -50,6 +48,12 @@ public class Main {
         // 로그아웃 API
         LogoutRequestHandlerAdapter logoutRequestHandlerAdapter = new LogoutRequestHandlerAdapter();
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/logout", logoutRequestHandlerAdapter, o -> null);
+
+        // User Info API
+        GetUserInfoLogic getUserInfoLogic = new GetUserInfoLogic(userDatabase);
+        GetUserInfoRequestHandlerAdapter userInfoHandler = new GetUserInfoRequestHandlerAdapter();
+        handlerRegistry.registerHandler(HttpMethod.GET, "/api/user-info", userInfoHandler, getUserInfoLogic);
+
 
         // 기본 리소스 핸들러
         ResourceHandlerAdapter<Void, Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
