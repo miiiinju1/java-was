@@ -18,7 +18,7 @@ public class LoginUserLogic implements Triggerable<LoginRequest, User> {
         final String password = loginRequest.getPassword();
 
         User user = userDatabase.findByCondition(u -> u.getUserId().equals(userId))
-                .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 사용자가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 가진 사용자가 없습니다."));
 
         if(!user.getPassword().equals(password)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
