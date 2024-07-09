@@ -2,7 +2,9 @@ package codesquad.http;
 
 import codesquad.http.header.HttpHeaders;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class HttpRequest {
 
@@ -11,6 +13,7 @@ public class HttpRequest {
     private final HttpVersion version;
     private final HttpHeaders httpHeaders;
     private final String body;
+    private final Map<String, Object> attributes;
 
     public HttpMethod getMethod() {
         return method;
@@ -32,6 +35,29 @@ public class HttpRequest {
         return body;
     }
 
+    public Optional<Object> getAttributes(String key) {
+        validateAttributeKey(key);
+
+        return Optional.ofNullable(attributes.get(key));
+    }
+
+    public void setAttributes(String key, Object value) {
+        validateAttributeKey(key);
+        validateAttributeValue(value);
+        attributes.put(key, value);
+    }
+
+    private void validateAttributeKey(String key) {
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("키는 null이거나 빈 문자열일 수 없습니다.");
+        }
+    }
+
+    private void validateAttributeValue(Object value) {
+        if (value == null) {
+            throw new IllegalArgumentException("값은 null일 수 없습니다.");
+        }
+    }
     public static Builder builder() {
         return new Builder();
     }
@@ -42,6 +68,7 @@ public class HttpRequest {
         this.version = HttpVersion.of(version);
         this.httpHeaders = HttpHeaders.of(headers);
         this.body = body;
+        this.attributes = new HashMap<>();
     }
 
     @Override
