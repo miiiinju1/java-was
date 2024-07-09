@@ -23,14 +23,6 @@ public class HandlerMapping<T, R> {
         return triggerable;
     }
 
-    public Pattern getPattern() {
-        return pattern;
-    }
-
-    public HttpMethod getHttpMethod() {
-        return httpMethod;
-    }
-
     public HttpHandlerAdapter<T, R> getHandler() {
         return handler;
     }
