@@ -5,7 +5,6 @@ import codesquad.http.HttpMethod;
 import codesquad.http.Path;
 
 import java.util.List;
-import java.util.regex.Matcher;
 
 public class HandlerRegistry {
 
@@ -27,12 +26,9 @@ public class HandlerRegistry {
     }
 
     public HandlerMapping<?, ?> getHandler(HttpMethod httpMethod, Path path) {
-        for (HandlerMapping<?, ?> mapping : handlerMappings) {
-            Matcher matcher = mapping.getPattern().matcher(path.getBasePath());
-            if (matcher.matches() && mapping.getHttpMethod() == httpMethod) {
-                return mapping;
-            }
-        }
-        return null;
+        return handlerMappings.stream()
+                .filter(mapping -> mapping.matchRequest(httpMethod, path.getBasePath()))
+                .findFirst()
+                .orElse(null);
     }
 }

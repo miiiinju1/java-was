@@ -35,6 +35,10 @@ public class HandlerMapping<T, R> {
         return handler;
     }
 
+    public boolean matchRequest(final HttpMethod httpMethod, final String basePath) {
+        return this.httpMethod.equals(httpMethod) && pattern.matcher(basePath).matches();
+    }
+
     private HttpMethod validateHttpMethod(HttpMethod httpMethod) {
         if(httpMethod == null) {
             throw new IllegalArgumentException("httpMethod이 null입니다.");
