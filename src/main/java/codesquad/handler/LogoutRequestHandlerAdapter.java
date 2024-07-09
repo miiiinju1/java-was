@@ -1,27 +1,24 @@
 package codesquad.handler;
 
+import codesquad.authorization.AuthorizationContext;
+import codesquad.authorization.AuthorizationContextHolder;
 import codesquad.database.SessionDatabase;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
-import codesquad.http.header.HttpHeaders;
-
-import java.util.Optional;
+import codesquad.http.Session;
 
 public class LogoutRequestHandlerAdapter extends ApiRequestHandlerAdapter<Void, Void> {
     @Override
     public void afterHandle(Void request, Void response, HttpRequest httpRequest, HttpResponse httpResponse) {
-        HttpHeaders headers = httpRequest.getHeaders();
-
-        Optional<String> maybeCookieValue = headers.getSubValueOfHeader("Cookie", "sid");
-
-        if (!maybeCookieValue.isPresent()) {
+        if (!AuthorizationContextHolder.isAuthorized()) {
             httpResponse.setStatus(HttpStatus.BAD_REQUEST);
             return;
         }
-        SessionDatabase.delete(maybeCookieValue.get());
+        AuthorizationContext context = AuthorizationContextHolder.getContext();
+        Session session = context.getSession();
+        SessionDatabase.delete(session.getSessionId());
         httpResponse.setStatus(HttpStatus.OK);
-
     }
 
     @Override
