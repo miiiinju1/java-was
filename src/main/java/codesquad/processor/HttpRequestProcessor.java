@@ -1,5 +1,7 @@
 package codesquad.processor;
 
+import codesquad.authorization.AuthorizationContextHolder;
+import codesquad.authorization.SecurePathManager;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
@@ -26,16 +28,14 @@ public class HttpRequestProcessor {
         final HttpRequest httpRequest = httpRequestParser.parseRequest(requestStream);
         final HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
 
+        // 여기에서 로그인 된 경우 ThreadLocal에 context 저장하고
         middleWareChain.applyMiddleWares(httpRequest, httpResponse);
 
-        // 위에서 return하지 말고
-
-        // 권한이 설정됐는지 검사해서
-
-        // 권한이 없으면 401을 리턴하고 return해버리게 만들기
-
-        // 그럼 middleWareChain은 boolean이 아니라 void로 바꿔도 됨
-
+        // 만약 권한이 필요한데 권한이 없는 경우 401을 반환하고 종료
+        if (SecurePathManager.isSecurePath(httpRequest.getPath(), httpRequest.getMethod()) && !AuthorizationContextHolder.isAuthorized()) {
+            httpResponseWriter.writeResponse(clientSocket, HttpResponse.unauthorizedOf(httpRequest.getPath().getBasePath()));
+            return;
+        }
 
         try {
             httpRequestDispatcher.handleConnection(httpRequest, httpResponse);

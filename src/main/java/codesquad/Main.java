@@ -1,5 +1,6 @@
 package codesquad;
 
+import codesquad.authorization.SecurePathManager;
 import codesquad.database.Database;
 import codesquad.handler.LoginRequestHandlerAdapter;
 import codesquad.handler.LogoutRequestHandlerAdapter;
@@ -65,6 +66,8 @@ public class Main {
 
         // Processor 생성
         HttpRequestProcessor httpRequestProcessor = new HttpRequestProcessor(requestParser, httpRequestDispatcher, httpResponseWriter, middleWareChain);
+
+        SecurePathManager.addSecurePath("/api/user-info", HttpMethod.GET);
 
         try {
             serverInitializer.startServer(8080, httpRequestProcessor);
