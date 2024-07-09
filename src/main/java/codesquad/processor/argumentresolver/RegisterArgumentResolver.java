@@ -11,8 +11,6 @@ public class RegisterArgumentResolver implements ArgumentResolver<RegisterReques
     @Override
     public RegisterRequest resolve(HttpRequest httpRequest) {
 
-        //아직 PathVariable을 처리하는 방법은 생각하지 않았음
-        // 임시로 RegisterRequest를 만들기, TODO 필요에 따라 다양하게 만들 수 있게 수정
         Map<String, String> bodyParameters = RequestBodyParseHelper.bodyParameters(httpRequest.getBody());
 
         final String email = bodyParameters.get("email");
