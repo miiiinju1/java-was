@@ -4,7 +4,6 @@ import codesquad.http.Session;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionDatabase {
@@ -16,6 +15,10 @@ public class SessionDatabase {
         Session session = new Session(userPk, LocalDateTime.now(), 3600);
         registry.put(key, session);
         return session;
+    }
+
+    protected static void clear() {
+        registry.clear();
     }
 
     public static Session find(String key) {
