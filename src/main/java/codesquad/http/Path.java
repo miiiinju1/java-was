@@ -105,43 +105,19 @@ public class Path {
         }
         return queryParameters;
     }
-//
-//    private List<String> parseSegments(String path) {
-//        String pathWithoutQuery = path.split("\\?")[0]; // 쿼리 파라미터를 제외한 경로
-//        List<String> segments = new ArrayList<>();
-//        String[] parts = pathWithoutQuery.split("/");
-//
-//        for (String part : parts) {
-//            if (!part.isEmpty()) {
-//                segments.add(part);
-//            }
-//        }
-//
-//        return segments;
-//    }
 
-//    private Map<String, String> parseQueryParameters(String path) {
-//        Map<String, String> queryParameters = new HashMap<>();
-//        String[] parts = path.split("\\?");
-//
-//        // 만약 ?이후가 있는 경우
-//        if (parts.length > 1) {
-//            String queryString = parts[1];
-//            String[] pairs = queryString.split("&");
-//
-//            for (String pair : pairs) {
-//                String[] keyValue = pair.split("=");
-//                try {
-//                    String key = URLDecoder.decode(keyValue[0], "UTF-8");
-//                    String value = keyValue.length > 1 ? URLDecoder.decode(keyValue[1], "UTF-8") : "";
-//                    queryParameters.put(key, value);
-//                } catch (IllegalArgumentException | UnsupportedEncodingException e) {
-//                    throw new IllegalArgumentException("쿼리 파라미터를 디코딩하는 중 오류가 발생했습니다.");
-//                }
-//            }
-//        }
-//        return queryParameters;
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Path path = (Path) o;
+        return Objects.equals(basePath, path.basePath) && Objects.equals(query, path.query) && Objects.equals(segments, path.segments) && Objects.equals(queryParameters, path.queryParameters);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(basePath, query, segments, queryParameters);
+    }
 
     @Override
     public String toString() {
