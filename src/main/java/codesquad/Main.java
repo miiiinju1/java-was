@@ -2,6 +2,7 @@ package codesquad;
 
 import codesquad.database.Database;
 import codesquad.handler.LoginRequestHandlerAdapter;
+import codesquad.handler.LogoutRequestHandlerAdapter;
 import codesquad.handler.RegisterRequestHandlerAdapter;
 import codesquad.handler.ResourceHandlerAdapter;
 import codesquad.http.HttpMethod;
@@ -48,6 +49,10 @@ public class Main {
         ArgumentResolver<LoginRequest> loginArgumentResolver = new LoginArgumentResolver();
         LoginRequestHandlerAdapter loginUserHandler = new LoginRequestHandlerAdapter(loginArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/login", loginUserHandler, loginUserLogic);
+
+        // 로그아웃 API
+        LogoutRequestHandlerAdapter logoutRequestHandlerAdapter = new LogoutRequestHandlerAdapter();
+        handlerRegistry.registerHandler(HttpMethod.POST, "/users/logout", logoutRequestHandlerAdapter, o -> null);
 
         // 기본 리소스 핸들러
         ResourceHandlerAdapter<Void, Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
