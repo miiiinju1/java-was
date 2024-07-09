@@ -8,6 +8,10 @@ public class AuthorizationContextHolder {
         contextHolder.set(context);
     }
 
+    public static boolean isAuthorized() {
+        return contextHolder.get() != null;
+    }
+
     public static AuthorizationContext getContext() {
         return contextHolder.get();
     }
