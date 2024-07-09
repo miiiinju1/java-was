@@ -8,7 +8,7 @@ import codesquad.web.user.RegisterRequest;
 public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
 
     private final Database<User> userDatabase;
-    // TODO 임시 비즈니스 로직
+
     public Long registerUser(RegisterRequest registerRequest) {
         String email = registerRequest.getEmail();
         String userId = registerRequest.getUserId();
