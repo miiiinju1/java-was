@@ -6,7 +6,7 @@ import codesquad.http.HttpStatus;
 import codesquad.http.header.HeaderConstants;
 import codesquad.web.user.response.UserInfoResponse;
 
-public class GetUserInfoRequestHandlerAdapter extends ApiRequestHandlerAdapter<Void, UserInfoResponse> {
+public class GetUserInfoRequestHandler extends ApiRequestHandler<Void, UserInfoResponse> {
 
     @Override
     public String serializeResponse(UserInfoResponse response) {

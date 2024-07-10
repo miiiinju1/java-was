@@ -8,7 +8,7 @@ import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
 import codesquad.http.Session;
 
-public class LogoutRequestHandlerAdapter extends ApiRequestHandlerAdapter<Void, Void> {
+public class LogoutRequestHandler extends ApiRequestHandler<Void, Void> {
     @Override
     public void afterHandle(Void request, Void response, HttpRequest httpRequest, HttpResponse httpResponse) {
         if (!AuthorizationContextHolder.isAuthorized()) {

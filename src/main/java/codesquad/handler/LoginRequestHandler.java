@@ -10,7 +10,7 @@ import codesquad.model.User;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.web.user.LoginRequest;
 
-public class LoginRequestHandlerAdapter extends ApiRequestHandlerAdapter<LoginRequest, User> {
+public class LoginRequestHandler extends ApiRequestHandler<LoginRequest, User> {
 
     private final ArgumentResolver<LoginRequest> argumentResolver;
 
@@ -34,7 +34,7 @@ public class LoginRequestHandlerAdapter extends ApiRequestHandlerAdapter<LoginRe
         httpResponse.setHeader(HeaderConstants.LOCATION, "/");
     }
 
-    public LoginRequestHandlerAdapter(ArgumentResolver<LoginRequest> argumentResolver) {
+    public LoginRequestHandler(ArgumentResolver<LoginRequest> argumentResolver) {
         this.argumentResolver = argumentResolver;
     }
 }

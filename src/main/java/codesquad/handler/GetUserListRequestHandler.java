@@ -7,7 +7,7 @@ import codesquad.web.user.response.UserListResponse;
 
 import java.util.stream.Collectors;
 
-public class GetUserListRequestHandler extends ApiRequestHandlerAdapter<Void, UserListResponse> {
+public class GetUserListRequestHandler extends ApiRequestHandler<Void, UserListResponse> {
 
 
     @Override

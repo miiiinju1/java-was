@@ -6,9 +6,9 @@ import codesquad.processor.Triggerable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ApiRequestHandlerAdapter<T, R> implements HttpHandlerAdapter<T, R> {
+public abstract class ApiRequestHandler<T, R> implements HttpHandlerAdapter<T, R> {
 
-    private static final Logger log = LoggerFactory.getLogger(ApiRequestHandlerAdapter.class);
+    private static final Logger log = LoggerFactory.getLogger(ApiRequestHandler.class);
 
     @Override
     public final void handle(HttpRequest httpRequest, HttpResponse response, Triggerable<T, R> triggerable) throws Exception {

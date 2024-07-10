@@ -7,7 +7,7 @@ import codesquad.http.header.HeaderConstants;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.web.user.RegisterRequest;
 
-public class RegisterRequestHandlerAdapter extends ApiRequestHandlerAdapter<RegisterRequest, Long> {
+public class RegisterRequestHandler extends ApiRequestHandler<RegisterRequest, Long> {
 
     private final ArgumentResolver<RegisterRequest> argumentResolver;
 
@@ -28,7 +28,7 @@ public class RegisterRequestHandlerAdapter extends ApiRequestHandlerAdapter<Regi
         httpResponse.setHeader(HeaderConstants.LOCATION, "/");
     }
 
-    public RegisterRequestHandlerAdapter(ArgumentResolver<RegisterRequest> argumentResolver) {
+    public RegisterRequestHandler(ArgumentResolver<RegisterRequest> argumentResolver) {
         this.argumentResolver = argumentResolver;
     }
 }

@@ -37,22 +37,22 @@ public class Main {
         // 회원 가입 로직
         RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDatabase);
         ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
-        RegisterRequestHandlerAdapter registerUserHandler = new RegisterRequestHandlerAdapter(registerArgumentResolver);
+        RegisterRequestHandler registerUserHandler = new RegisterRequestHandler(registerArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
 
         // 로그인 로직
         LoginUserLogic loginUserLogic = new LoginUserLogic(userDatabase);
         ArgumentResolver<LoginRequest> loginArgumentResolver = new LoginArgumentResolver();
-        LoginRequestHandlerAdapter loginUserHandler = new LoginRequestHandlerAdapter(loginArgumentResolver);
+        LoginRequestHandler loginUserHandler = new LoginRequestHandler(loginArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/login", loginUserHandler, loginUserLogic);
 
         // 로그아웃 API
-        LogoutRequestHandlerAdapter logoutRequestHandlerAdapter = new LogoutRequestHandlerAdapter();
+        LogoutRequestHandler logoutRequestHandlerAdapter = new LogoutRequestHandler();
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/logout", logoutRequestHandlerAdapter, o -> null);
 
         // User Info API
         GetUserInfoLogic getUserInfoLogic = new GetUserInfoLogic(userDatabase);
-        GetUserInfoRequestHandlerAdapter userInfoHandler = new GetUserInfoRequestHandlerAdapter();
+        GetUserInfoRequestHandler userInfoHandler = new GetUserInfoRequestHandler();
         handlerRegistry.registerHandler(HttpMethod.GET, "/api/user-info", userInfoHandler, getUserInfoLogic);
 
         // User List API
