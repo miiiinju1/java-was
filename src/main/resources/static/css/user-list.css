@@ -1,0 +1,50 @@
+.user-list-container {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-list__item {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-list__item__name {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.user-list__item__email {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.user-list__error-container {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.user-list__error {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #ffecec;
+    color: #d9534f;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
