@@ -12,16 +12,16 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ResourceHandlerAdapter<T, R> implements HttpHandlerAdapter<T,R> {
+public class ResourceHandler<T, R> implements HttpHandler<T,R> {
 
     private static final String STATIC_PATH = "static";
-    private static final Logger log = LoggerFactory.getLogger(ResourceHandlerAdapter.class);
+    private static final Logger log = LoggerFactory.getLogger(ResourceHandler.class);
 
     @Override
     public void handle(HttpRequest request, HttpResponse response, Triggerable<T, R> triggerable) throws Exception {
         final String filePath = request.getPath().getBasePath();
 
-        ClassLoader classLoader = ResourceHandlerAdapter.class.getClassLoader();
+        ClassLoader classLoader = ResourceHandler.class.getClassLoader();
 
 
         // 자원 스트림을 가져오고 읽어서 body에 쓰기

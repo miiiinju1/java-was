@@ -17,7 +17,7 @@ class ResourceHandlerTest {
     @Test
     void readFileAsStream() throws Exception {
         // given
-        ResourceHandlerAdapter<Void, Void> resourceHandler = new ResourceHandlerAdapter<>();
+        ResourceHandler<Void, Void> resourceHandler = new ResourceHandler<>();
         String filePath = "/readStaticFileOf.txt";
         HttpRequest request = TestHttpRequestFactory.createGetResourceRequest(filePath);
         HttpResponse response = new HttpResponse(HttpVersion.HTTP_1_1);
@@ -37,7 +37,7 @@ class ResourceHandlerTest {
     @Test
     void readFileAsStream_notFound() {
         // given
-        ResourceHandlerAdapter<Void, Void> resourceHandler = new ResourceHandlerAdapter<>();
+        ResourceHandler<Void, Void> resourceHandler = new ResourceHandler<>();
         String filePath = "/invalid.txt";
         HttpRequest request = TestHttpRequestFactory.createGetResourceRequest(filePath);
 

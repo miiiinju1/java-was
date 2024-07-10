@@ -1,6 +1,6 @@
 package codesquad.processor;
 
-import codesquad.handler.HttpHandlerAdapter;
+import codesquad.handler.HttpHandler;
 import codesquad.http.HttpMethod;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class HandlerMappingTest {
 
-    private HttpHandlerAdapter<String, String> dummyHandler = (req, res, trigger) -> {};
+    private HttpHandler<String, String> dummyHandler = (req, res, trigger) -> {};
     private Triggerable<String, String> dummyTriggerable = (req) -> "response";
 
     @DisplayName("HandlerMapping: 정상적인 생성")
@@ -74,7 +74,7 @@ class HandlerMappingTest {
         // given
         HttpMethod method = HttpMethod.GET;
         String url = "/test";
-        HttpHandlerAdapter<String, String> handler = null;
+        HttpHandler<String, String> handler = null;
 
         // when & then
         assertThatThrownBy(() -> new HandlerMapping<>(method, url, handler, dummyTriggerable))

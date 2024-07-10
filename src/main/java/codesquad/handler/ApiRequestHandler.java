@@ -6,7 +6,7 @@ import codesquad.processor.Triggerable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ApiRequestHandler<T, R> implements HttpHandlerAdapter<T, R> {
+public abstract class ApiRequestHandler<T, R> implements HttpHandler<T, R> {
 
     private static final Logger log = LoggerFactory.getLogger(ApiRequestHandler.class);
 

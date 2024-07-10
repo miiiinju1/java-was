@@ -62,7 +62,7 @@ public class Main {
 
 
         // 기본 리소스 핸들러
-        ResourceHandlerAdapter<Void, Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
+        ResourceHandler<Void, Void> defaultResourceHandler = new ResourceHandler<>();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
 

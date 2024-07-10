@@ -1,6 +1,6 @@
 package codesquad.processor;
 
-import codesquad.handler.HttpHandlerAdapter;
+import codesquad.handler.HttpHandler;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import org.slf4j.Logger;
@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 
 public class HttpRequestDispatcher {
 
-    private final HttpHandlerAdapter<?, ?> defaultHandler;
+    private final HttpHandler<?, ?> defaultHandler;
     private final HandlerRegistry handlerRegistry;
     private static final Logger log = LoggerFactory.getLogger(HttpRequestDispatcher.class);
 
     public HttpRequestDispatcher(
-                         HttpHandlerAdapter<?,?> defaultHandler,
+                         HttpHandler<?,?> defaultHandler,
                          HandlerRegistry handlerRegistry
     ) {
         this.defaultHandler = defaultHandler;
@@ -35,7 +35,7 @@ public class HttpRequestDispatcher {
     }
 
     private <T, R> void handleRequestWithMapping(HttpRequest httpRequest, HttpResponse httpResponse, HandlerMapping<T, R> mapping) throws Exception {
-        HttpHandlerAdapter<T, R> handler = mapping.getHandler();
+        HttpHandler<T, R> handler = mapping.getHandler();
         Triggerable<T, R> triggerable = mapping.getTrigger();
         handler.handle(httpRequest, httpResponse, triggerable);
     }
