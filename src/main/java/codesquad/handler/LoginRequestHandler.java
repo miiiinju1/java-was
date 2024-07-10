@@ -30,7 +30,7 @@ public class LoginRequestHandler extends ApiRequestHandler<LoginRequest, User> {
         Session session = SessionDatabase.save(response.getUserPk());
 
         httpResponse.setStatus(HttpStatus.FOUND);
-        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=" + session.getSessionId() + "; Path=/ ; Max-Age=" + session.getTimeout());// + "; HttpOnly");
+        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=" + session.getSessionId() + "; Path=/ ; Max-Age=" + session.getTimeout() + "; HttpOnly");
         httpResponse.setHeader(HeaderConstants.LOCATION, "/");
     }
 
