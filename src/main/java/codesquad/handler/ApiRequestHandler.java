@@ -2,6 +2,7 @@ package codesquad.handler;
 
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
+import codesquad.http.HttpStatus;
 import codesquad.processor.Triggerable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ public abstract class ApiRequestHandler<T, R> implements HttpHandler<T, R> {
     @Override
     public final void handle(HttpRequest httpRequest, HttpResponse response, Triggerable<T, R> triggerable) throws Exception {
         T request = resolveArgument(httpRequest);
+        response.setStatus(HttpStatus.OK);
         try {
             R res = triggerable.run(request);
             log.debug("res = {}", res);
@@ -22,7 +24,6 @@ public abstract class ApiRequestHandler<T, R> implements HttpHandler<T, R> {
                 return;
             }
             String serializedResponse = serializeResponse(res);
-
             response.getBody().write(serializedResponse.getBytes());
         }
         catch (RuntimeException e) {
