@@ -2,6 +2,7 @@ package codesquad.handler;
 
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
+import codesquad.http.HttpStatus;
 import codesquad.http.header.HeaderConstants;
 import codesquad.web.user.response.UserInfoResponse;
 
@@ -21,6 +22,7 @@ public class GetUserInfoRequestHandlerAdapter extends ApiRequestHandlerAdapter<V
     @Override
     public void afterHandle(Void request, UserInfoResponse response, HttpRequest httpRequest, HttpResponse httpResponse) {
         httpResponse.getHttpHeaders().addHeader(HeaderConstants.CONTENT_TYPE, "application/json");
+        httpResponse.setStatus(HttpStatus.OK);
     }
 
     @Override
