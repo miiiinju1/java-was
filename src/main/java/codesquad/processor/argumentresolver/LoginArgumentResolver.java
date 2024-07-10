@@ -12,7 +12,7 @@ public class LoginArgumentResolver implements ArgumentResolver<LoginRequest> {
     public LoginRequest resolve(HttpRequest httpRequest) {
         final String bodyStr = httpRequest.getBody();
 
-        final Map<String, String> bodyParameters = RequestBodyParseHelper.bodyParameters(bodyStr);
+        final Map<String, String> bodyParameters = RequestBodyParseHelper.urlEncodedParameters(bodyStr);
 
         final String userId = bodyParameters.get("userId");
         final String password = bodyParameters.get("password");

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class RequestBodyParseHelper {
 
-    public static Map<String, String> bodyParameters(final String bodyString) {
+    public static Map<String, String> urlEncodedParameters(final String bodyString) {
         return Arrays.stream(bodyString.split("&"))
                 .map(s -> {
                     String[] split = s.split("=");
