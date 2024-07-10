@@ -11,6 +11,7 @@ import codesquad.model.User;
 import codesquad.model.business.LoginUserLogic;
 import codesquad.model.business.RegisterUserLogic;
 import codesquad.model.business.user.GetUserInfoLogic;
+import codesquad.model.business.user.GetUserListLogic;
 import codesquad.processor.*;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.processor.argumentresolver.LoginArgumentResolver;
@@ -54,6 +55,11 @@ public class Main {
         GetUserInfoRequestHandlerAdapter userInfoHandler = new GetUserInfoRequestHandlerAdapter();
         handlerRegistry.registerHandler(HttpMethod.GET, "/api/user-info", userInfoHandler, getUserInfoLogic);
 
+        // User List API
+        GetUserListLogic getUserListLogic = new GetUserListLogic(userDatabase);
+        GetUserListRequestHandler userListHandler = new GetUserListRequestHandler();
+        handlerRegistry.registerHandler(HttpMethod.GET, "/api/users", userListHandler, getUserListLogic);
+
 
         // 기본 리소스 핸들러
         ResourceHandlerAdapter<Void, Void> defaultResourceHandler = new ResourceHandlerAdapter<>();
@@ -72,6 +78,7 @@ public class Main {
         HttpRequestProcessor httpRequestProcessor = new HttpRequestProcessor(requestParser, httpRequestDispatcher, httpResponseWriter, middleWareChain);
 
         SecurePathManager.addSecurePath("/api/user-info", HttpMethod.GET);
+        SecurePathManager.addSecurePath("/api/users", HttpMethod.GET);
 
         try {
             serverInitializer.startServer(8080, httpRequestProcessor);
