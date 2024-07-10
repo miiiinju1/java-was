@@ -19,16 +19,34 @@
                     userListContainer.innerHTML = '';
 
                     if (response.ok) {
-                        const users = await response.json();
+                        const data = await response.json();
+                        const users = data.userList;
+
+                        const table = document.createElement('table');
+                        table.className = 'user-list';
+
+                        const header = document.createElement('thead');
+                        header.innerHTML = `
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+            `;
+                        table.appendChild(header);
+
+                        const body = document.createElement('tbody');
                         users.forEach(user => {
-                            const userItem = document.createElement('div');
-                            userItem.className = 'user-list__item';
-                            userItem.innerHTML = `
-                <span class="user-list__item__name">${user.name}</span>
-                <span class="user-list__item__email">${user.email}</span>
+                            const row = document.createElement('tr');
+                            row.className = 'user-list__item';
+                            row.innerHTML = `
+                <td class="user-list__item__name">${user.name}</td>
+                <td class="user-list__item__email">${user.email}</td>
               `;
-                            userListContainer.appendChild(userItem);
+                            body.appendChild(row);
                         });
+                        table.appendChild(body);
+
+                        userListContainer.appendChild(table);
                     } else {
                         const errorContainer = document.createElement('div');
                         errorContainer.className = 'user-list__error-container';
