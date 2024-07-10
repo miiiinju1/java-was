@@ -18,7 +18,9 @@
                     const userListContainer = document.querySelector('.user-list');
                     userListContainer.innerHTML = '';
 
-                    if (response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = '/';
+                    } else if (response.ok) {
                         const data = await response.json();
                         const users = data.userList;
 
