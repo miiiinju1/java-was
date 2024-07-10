@@ -1,7 +1,7 @@
 package codesquad.processor.argumentresolver;
 
 import codesquad.http.HttpRequest;
-import codesquad.web.user.LoginRequest;
+import codesquad.web.user.request.LoginRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

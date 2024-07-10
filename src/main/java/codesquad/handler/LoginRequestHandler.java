@@ -8,7 +8,7 @@ import codesquad.http.Session;
 import codesquad.http.header.HeaderConstants;
 import codesquad.model.User;
 import codesquad.processor.argumentresolver.ArgumentResolver;
-import codesquad.web.user.LoginRequest;
+import codesquad.web.user.request.LoginRequest;
 
 public class LoginRequestHandler extends ApiRequestHandler<LoginRequest, User> {
 

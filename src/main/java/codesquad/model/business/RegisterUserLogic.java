@@ -3,7 +3,7 @@ package codesquad.model.business;
 import codesquad.database.Database;
 import codesquad.model.User;
 import codesquad.processor.Triggerable;
-import codesquad.web.user.RegisterRequest;
+import codesquad.web.user.request.RegisterRequest;
 
 public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
 

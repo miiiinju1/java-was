@@ -17,8 +17,8 @@ import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.processor.argumentresolver.LoginArgumentResolver;
 import codesquad.processor.argumentresolver.RegisterArgumentResolver;
 import codesquad.server.ServerInitializer;
-import codesquad.web.user.LoginRequest;
-import codesquad.web.user.RegisterRequest;
+import codesquad.web.user.request.LoginRequest;
+import codesquad.web.user.request.RegisterRequest;
 
 import java.util.ArrayList;
 

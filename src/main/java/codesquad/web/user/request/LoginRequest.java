@@ -1,4 +1,4 @@
-package codesquad.web.user;
+package codesquad.web.user.request;
 
 public class LoginRequest {
 

@@ -3,7 +3,7 @@ package codesquad.model.business;
 import codesquad.database.Database;
 import codesquad.model.User;
 import codesquad.processor.Triggerable;
-import codesquad.web.user.LoginRequest;
+import codesquad.web.user.request.LoginRequest;
 
 public class LoginUserLogic implements Triggerable<LoginRequest, User> {
 

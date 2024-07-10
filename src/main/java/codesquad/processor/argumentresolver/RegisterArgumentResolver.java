@@ -2,7 +2,7 @@ package codesquad.processor.argumentresolver;
 
 import codesquad.helper.RequestBodyParseHelper;
 import codesquad.http.HttpRequest;
-import codesquad.web.user.RegisterRequest;
+import codesquad.web.user.request.RegisterRequest;
 
 import java.util.Map;
 

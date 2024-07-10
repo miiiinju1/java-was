@@ -5,7 +5,7 @@ import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
 import codesquad.http.header.HeaderConstants;
 import codesquad.processor.argumentresolver.ArgumentResolver;
-import codesquad.web.user.RegisterRequest;
+import codesquad.web.user.request.RegisterRequest;
 
 public class RegisterRequestHandler extends ApiRequestHandler<RegisterRequest, Long> {
 
