@@ -1,5 +1,6 @@
 package codesquad.http;
 
+import codesquad.http.header.HeaderConstants;
 import codesquad.http.header.HttpHeaders;
 
 import java.io.ByteArrayOutputStream;
@@ -18,7 +19,8 @@ public class HttpResponse {
         byte[] responseBytes = ("<html><body><h1>401 Unauthorized " + basePath + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
         HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
         httpResponse.httpStatus = HttpStatus.UNAUTHORIZED;
-        httpResponse.httpHeaders = HttpHeaders.of(Map.of("Content-Type", List.of("text/html", "charset=UTF-8")));
+        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=; Path=/ ; Max-Age=0; HttpOnly");
+        httpResponse.httpHeaders = HttpHeaders.of(Map.of(HeaderConstants.CONTENT_TYPE, List.of("text/html", "charset=UTF-8")));
         httpResponse.body.write(responseBytes, 0, responseBytes.length);
 
         return httpResponse;
