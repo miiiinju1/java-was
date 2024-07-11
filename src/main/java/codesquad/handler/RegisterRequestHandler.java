@@ -3,7 +3,6 @@ package codesquad.handler;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpResponse;
 import codesquad.http.HttpStatus;
-import codesquad.http.header.HeaderConstants;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.web.user.request.RegisterRequest;
 
@@ -19,13 +18,9 @@ public class RegisterRequestHandler extends ApiRequestHandler<RegisterRequest, L
     }
 
     @Override
-    public void applyExceptionHandler(RuntimeException e, HttpResponse response) {
+    public void applyExceptionHandler(RuntimeException e, HttpResponse response) throws IOException {
         response.setStatus(HttpStatus.BAD_REQUEST);
-        try {
-            response.getBody().write(e.getMessage().getBytes());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        response.getBody().write(e.getMessage().getBytes());
     }
 
     @Override

@@ -7,6 +7,8 @@ import codesquad.processor.Triggerable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 public abstract class ApiRequestHandler<T, R> implements HttpHandler<T, R> {
 
     private static final Logger log = LoggerFactory.getLogger(ApiRequestHandler.class);
@@ -42,6 +44,6 @@ public abstract class ApiRequestHandler<T, R> implements HttpHandler<T, R> {
 
     public abstract T resolveArgument(HttpRequest httpRequest);
 
-    public abstract void applyExceptionHandler(RuntimeException e, HttpResponse response);
+    public abstract void applyExceptionHandler(RuntimeException e, HttpResponse response) throws IOException;
 
 }
