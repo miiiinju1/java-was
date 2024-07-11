@@ -27,11 +27,10 @@ public class HttpRequestDispatcher {
 
         if(mapping != null) {
             handleRequestWithMapping(httpRequest, httpResponse, mapping);
+            return ;
         }
         // 만약 API 핸들러가 없다면 디폴트 핸들러 (리소스 핸들러) 실행
-        else {
-            handleRequestWithDefaultHandler(httpRequest, httpResponse);
-        }
+        handleRequestWithDefaultHandler(httpRequest, httpResponse);
     }
 
     private <T, R> void handleRequestWithMapping(HttpRequest httpRequest, HttpResponse httpResponse, HandlerMapping<T, R> mapping) throws Exception {
