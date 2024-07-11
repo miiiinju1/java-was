@@ -13,9 +13,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class DatabaseTest {
     private Database<String> database;
 
+    static class TestDatabase extends Database<String> {
+    }
+
     @BeforeEach
     void setUp() {
-        database = new Database<>();
+        database = new TestDatabase();
     }
 
     @DisplayName("Save: 일반적인 데이터 저장")
