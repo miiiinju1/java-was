@@ -7,6 +7,8 @@ import codesquad.http.header.HeaderConstants;
 import codesquad.processor.argumentresolver.ArgumentResolver;
 import codesquad.web.user.request.RegisterRequest;
 
+import java.io.IOException;
+
 public class RegisterRequestHandler extends ApiRequestHandler<RegisterRequest, Long> {
 
     private final ArgumentResolver<RegisterRequest> argumentResolver;
@@ -18,14 +20,17 @@ public class RegisterRequestHandler extends ApiRequestHandler<RegisterRequest, L
 
     @Override
     public void applyExceptionHandler(RuntimeException e, HttpResponse response) {
-        response.setStatus(HttpStatus.FOUND);
-        response.setHeader(HeaderConstants.LOCATION, "/users/register_failed.html");
+        response.setStatus(HttpStatus.BAD_REQUEST);
+        try {
+            response.getBody().write(e.getMessage().getBytes());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void afterHandle(RegisterRequest request, Long response, HttpRequest httpRequest, HttpResponse httpResponse) {
-        httpResponse.setStatus(HttpStatus.FOUND);
-        httpResponse.setHeader(HeaderConstants.LOCATION, "/");
+        httpResponse.setStatus(HttpStatus.OK);
     }
 
     public RegisterRequestHandler(ArgumentResolver<RegisterRequest> argumentResolver) {
