@@ -8,7 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
-public class Database<T> {
+public abstract class Database<T> {
+
     private final Map<Long, T> database = new ConcurrentHashMap<>();
     private AtomicLong id = new AtomicLong(0);
 
