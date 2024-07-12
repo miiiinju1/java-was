@@ -8,44 +8,42 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserDatabaseTest {
 
-    @DisplayName("putIfAbsent는 key가 존재하지 않을 때 value를 추가하고 null을 반환한다.")
-    @Test
-    void putIfAbsentWhenKeyDoesNotExist() {
-        // given
-        ConcurrentHashMap<String, String> userIdUnique = new ConcurrentHashMap<>();
-
-        String a = "test";
-        String a_ = "value";
-
-        // when
-        String s1 = userIdUnique.putIfAbsent(a, a_);
-
-        // then
-        assertThat(s1).isNull();
-    }
-
-    @DisplayName("putIfAbsent는 key가 이미 존재하면 기존 value를 반환한다.")
+    @DisplayName("userDatabase에 save할 때 userID가 이미 존재하면 IllegalArgumentException을 던진다.")
     @Test
     void putIfAbsentWhenKeyExists() {
         // given
-        ConcurrentHashMap<String, String> userIdUnique = new ConcurrentHashMap<>();
+        UserDatabase userDatabase = new UserDatabase();
 
-        String a = "test";
-        String b = "test";
-        String a_ = "value";
-        String b_ = "value";
-        userIdUnique.putIfAbsent(a, a_);
+        User user1 = new User("userId", "password", "name", "email");
+        User user2 = new User("userId", "pasdf", "name2", "email2");
+
+        userDatabase.save(user1);
+
+
+        // when & then
+        assertThatThrownBy(() -> userDatabase.save(user2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("이미 존재하는 userId 입니다.");
+    }
+
+    @DisplayName("userDatabase에 save할 때 userID가 없으면 저장에 성공한다.")
+    @Test
+    void putIfAbsentWhenKeyDoesNotExists() {
+        // given
+        UserDatabase userDatabase = new UserDatabase();
+
+        User user1 = new User("userId", "password", "name", "email");
 
         // when
-        String s2 = userIdUnique.putIfAbsent(b, b_);
+        long save = userDatabase.save(user1);
 
         // then
-        assertThat(s2).isEqualTo(a_);
+        assertEquals(1, save);
     }
 
 
