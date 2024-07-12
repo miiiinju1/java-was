@@ -4,6 +4,7 @@ import codesquad.handler.HttpHandler;
 import codesquad.http.HttpMethod;
 import codesquad.http.Path;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class HandlerRegistry {
@@ -12,6 +13,7 @@ public class HandlerRegistry {
     public HandlerRegistry(List<HandlerMapping<?,?>> handlerMappings) {
         this.handlerMappings = handlerMappings;
     }
+    private final HashSet<String> registeredUrls = new HashSet<>();
 
     /**
      * 지정된 HTTP 메서드와 URL 패턴에 대해 핸들러를 등록합니다.
@@ -22,6 +24,10 @@ public class HandlerRegistry {
      * @param handler    등록할 핸들러
      */
     public <T, R> void registerHandler(HttpMethod httpMethod, String url, HttpHandler<T, R> handler, Triggerable<T, R> triggerable) {
+        if(registeredUrls.contains(url+httpMethod)) {
+            throw new IllegalArgumentException("이미 등록된 URL입니다.");
+        }
+        registeredUrls.add(url+httpMethod);
         handlerMappings.add(new HandlerMapping<>(httpMethod, url, handler, triggerable));
     }
 
