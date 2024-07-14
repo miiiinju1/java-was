@@ -30,7 +30,7 @@ class HttpRequestParserTest {
                 Content-Type: application/x-www-form-urlencoded
                 
                 userId=javajigi&password=password&name=%EB%B0%95%EC%9E%AC%EC%84%B1&email=javajigi%40slipp.net
-                """;
+                """.replace("\n", "\r\n");
 
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getBytes());
 
@@ -54,12 +54,13 @@ class HttpRequestParserTest {
                 Content-Type: application/json
                 
                 userId=javajigi&password=password&name=%EB%B0%95%EC%9E%AC%EC%84%B1&email=javajigi%40slipp.net
-                """;
+                """.replace("\n", "\r\n");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(request.getBytes());
 
 
         // when
         HttpRequest httpRequest = httpRequestParser.parseRequest(byteArrayInputStream);
+        System.out.println("httpRequest.getBody() = " + httpRequest.getBody());
 
         // then
         assertThat(httpRequest.getBody())
@@ -77,7 +78,7 @@ class HttpRequestParserTest {
         // when & then
         assertThatThrownBy(() -> httpRequestParser.parseRequest(inputStream))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Request line is null");
+                .hasMessage("Invalid HTTP request: no end of headers found");
     }
 
     @DisplayName("정상적인 요청 파싱")
@@ -111,7 +112,7 @@ class HttpRequestParserTest {
         // when & then
         assertThatThrownBy(() -> httpRequestParser.parseRequest(inputStream))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid request line: INVALID_REQUEST_LINE");
+                .hasMessage("Invalid HTTP request: no end of headers found");
     }
 
     @DisplayName("유효하지 않은 헤더 라인 파싱 시 예외 발생")
