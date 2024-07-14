@@ -11,7 +11,7 @@ public class RegisterArgumentResolver implements ArgumentResolver<RegisterReques
     @Override
     public RegisterRequest resolve(HttpRequest httpRequest) {
 
-        Map<String, String> bodyParameters = RequestBodyParseHelper.urlEncodedParameters(httpRequest.getBody());
+        Map<String, String> bodyParameters = RequestBodyParseHelper.urlEncodedParameters(new String(httpRequest.getBody().readAllBytes()));
 
         final String email = bodyParameters.get("email");
         final String userId = bodyParameters.get("userId");

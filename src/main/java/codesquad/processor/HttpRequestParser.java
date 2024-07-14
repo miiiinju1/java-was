@@ -3,6 +3,7 @@ package codesquad.processor;
 import codesquad.http.HttpRequest;
 import codesquad.http.HttpVersion;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -114,7 +115,7 @@ public class HttpRequestParser {
                 .path(path)
                 .version(httpVersion.getVersion())
                 .headers(headerMap)
-                .body(new String(body, CHARSET))
+                .body(new ByteArrayInputStream(body))
                 .build();
     }
 

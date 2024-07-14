@@ -10,7 +10,7 @@ public class LoginArgumentResolver implements ArgumentResolver<LoginRequest> {
 
     @Override
     public LoginRequest resolve(HttpRequest httpRequest) {
-        final String bodyStr = httpRequest.getBody();
+        final String bodyStr = new String(httpRequest.getBody().readAllBytes());
 
         final Map<String, String> bodyParameters = RequestBodyParseHelper.urlEncodedParameters(bodyStr);
 

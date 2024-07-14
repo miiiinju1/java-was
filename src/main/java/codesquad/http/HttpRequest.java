@@ -2,6 +2,7 @@ package codesquad.http;
 
 import codesquad.http.header.HttpHeaders;
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class HttpRequest {
     private final Path path;
     private final HttpVersion version;
     private final HttpHeaders httpHeaders;
-    private final String body;
+    private final ByteArrayInputStream body;
     private final Map<String, Object> attributes;
 
     public HttpMethod getMethod() {
@@ -32,7 +33,7 @@ public class HttpRequest {
         return httpHeaders;
     }
 
-    public String getBody() {
+    public ByteArrayInputStream getBody() {
         return body;
     }
 
@@ -61,7 +62,7 @@ public class HttpRequest {
         return new Builder();
     }
 
-    public HttpRequest(String method, String path, String version, Map<String, List<String>> headers, String body) {
+    public HttpRequest(String method, String path, String version, Map<String, List<String>> headers, ByteArrayInputStream body) {
         this.method = HttpMethod.of(method);
         this.path = Path.of(path);
         this.version = HttpVersion.of(version);
@@ -86,7 +87,7 @@ public class HttpRequest {
         private String path;
         private String version;
         private Map<String, List<String>> headers;
-        private String body;
+        private ByteArrayInputStream body;
 
         public Builder method(String method) {
             this.method = method;
@@ -108,7 +109,7 @@ public class HttpRequest {
             return this;
         }
 
-        public Builder body(String body) {
+        public Builder body(ByteArrayInputStream body) {
             this.body = body;
             return this;
         }
