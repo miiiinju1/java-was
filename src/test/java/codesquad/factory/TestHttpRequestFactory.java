@@ -1,6 +1,6 @@
 package codesquad.factory;
 
-import codesquad.http.HttpRequest;
+import codesquad.webserver.http.HttpRequest;
 
 import java.util.List;
 import java.util.Map;
