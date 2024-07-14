@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ class HttpRequestDispatcherTest {
                 .path("/")
                 .version("HTTP/1.1")
                 .headers(headers)
-                .body("")
+                .body(new ByteArrayInputStream("".getBytes()))
                 .build();
 
         httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);

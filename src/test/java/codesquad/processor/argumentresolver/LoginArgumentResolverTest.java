@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +31,7 @@ class LoginArgumentResolverTest {
                 .path("/login")
                 .version("HTTP/1.1")
                 .headers(new HashMap<>())
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build();
 
         // when
@@ -53,7 +54,7 @@ class LoginArgumentResolverTest {
                 .path("/login")
                 .version("HTTP/1.1")
                 .headers(new HashMap<>())
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build();
 
         // when & then
@@ -72,7 +73,7 @@ class LoginArgumentResolverTest {
                 .path("/login")
                 .version("HTTP/1.1")
                 .headers(new HashMap<>())
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build();
 
         // when & then
@@ -91,7 +92,7 @@ class LoginArgumentResolverTest {
                 .path("/login")
                 .version("HTTP/1.1")
                 .headers(new HashMap<>())
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build();
 
         // when & then

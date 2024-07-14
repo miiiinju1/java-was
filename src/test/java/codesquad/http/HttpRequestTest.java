@@ -4,6 +4,7 @@ import codesquad.http.header.HttpHeaders;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +33,12 @@ class HttpRequestTest {
                 .path(path)
                 .version(version)
                 .headers(headers)
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build();
 
         // then
         assertThat(request).isNotNull()
-                .extracting(HttpRequest::getMethod, HttpRequest::getPath, HttpRequest::getVersion, HttpRequest::getBody)
+                .extracting(HttpRequest::getMethod, HttpRequest::getPath, HttpRequest::getVersion, req -> new String(req.getBody().readAllBytes()))
                 .doesNotContainNull()
                 .containsExactly(HttpMethod.GET, Path.of("/"), HttpVersion.HTTP_1_1, body);
     }
@@ -59,7 +60,7 @@ class HttpRequestTest {
                 .path(path)
                 .version(version)
                 .headers(headers)
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("HTTP Method cannot be null");
@@ -82,7 +83,7 @@ class HttpRequestTest {
                 .path(path)
                 .version(version)
                 .headers(headers)
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Invalid HTTP Method : invalid");
@@ -105,7 +106,7 @@ class HttpRequestTest {
                 .path(path)
                 .version(version)
                 .headers(headers)
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Path는 null이거나 비어있을 수 없습니다.");
@@ -128,7 +129,7 @@ class HttpRequestTest {
                 .path(path)
                 .version(version)
                 .headers(headers)
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("HTTP Version cannot be null");
@@ -151,7 +152,7 @@ class HttpRequestTest {
                 .path(path)
                 .version(version)
                 .headers(headers)
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build();
 
         // then
@@ -177,12 +178,12 @@ class HttpRequestTest {
                 .path(path)
                 .version(version)
                 .headers(headers)
-                .body(body)
+                .body(new ByteArrayInputStream(body.getBytes()))
                 .build();
 
         // then
         assertThat(request).isNotNull()
-                .extracting(HttpRequest::getBody)
+                .extracting(req -> new String(req.getBody().readAllBytes()))
                 .isEqualTo(body);
     }
 
@@ -195,7 +196,7 @@ class HttpRequestTest {
                 .path("/")
                 .version("HTTP/1.1")
                 .headers(new HashMap<>())
-                .body("")
+                .body(new ByteArrayInputStream("".getBytes()))
                 .build();
         String attributeName = "testAttribute";
         String attributeValue = "value";
@@ -220,7 +221,7 @@ class HttpRequestTest {
                 .path("/")
                 .version("HTTP/1.1")
                 .headers(new HashMap<>())
-                .body("")
+                .body(new ByteArrayInputStream("".getBytes()))
                 .build();
         String attributeName = "nonExistentAttribute";
 
@@ -241,7 +242,7 @@ class HttpRequestTest {
                 .path("/")
                 .version("HTTP/1.1")
                 .headers(new HashMap<>())
-                .body("")
+                .body(new ByteArrayInputStream("".getBytes()))
                 .build();
 
         String attributeValue = "value";
@@ -261,7 +262,7 @@ class HttpRequestTest {
                 .path("/")
                 .version("HTTP/1.1")
                 .headers(new HashMap<>())
-                .body("")
+                .body(new ByteArrayInputStream("".getBytes()))
                 .build();
         String attributeName = "testAttribute";
 

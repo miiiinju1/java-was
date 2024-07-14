@@ -38,7 +38,7 @@ class HttpRequestParserTest {
         HttpRequest httpRequest = httpRequestParser.parseRequest(byteArrayInputStream);
 
         // then
-        assertThat(httpRequest.getBody())
+        assertThat(new String(httpRequest.getBody().readAllBytes()))
                 .isEqualTo("userId=javajigi&password=password&name=박재성&email=javajigi@slipp.net");
     }
 
@@ -63,7 +63,7 @@ class HttpRequestParserTest {
         System.out.println("httpRequest.getBody() = " + httpRequest.getBody());
 
         // then
-        assertThat(httpRequest.getBody())
+        assertThat(new String(httpRequest.getBody().readAllBytes()))
                 .isEqualTo("userId=javajigi&password=password&name=%EB%B0%95%EC%9E%AC%EC%84%B1&email=javajigi%40slipp.net");
     }
 
@@ -96,7 +96,7 @@ class HttpRequestParserTest {
 
         // then
         assertThat(request).isNotNull()
-                .extracting(HttpRequest::getMethod, HttpRequest::getPath, HttpRequest::getVersion, HttpRequest::getBody)
+                .extracting(HttpRequest::getMethod, HttpRequest::getPath, HttpRequest::getVersion, req -> new String(req.getBody().readAllBytes()))
                 .containsExactly(HttpMethod.GET, Path.of("/test"), HttpVersion.HTTP_1_1, "");
         assertThat(request.getHeaders().getHeader("Host")).containsExactly("localhost");
     }
@@ -175,7 +175,7 @@ class HttpRequestParserTest {
 
         // then
         assertThat(request).isNotNull()
-                .extracting(HttpRequest::getMethod, HttpRequest::getPath, HttpRequest::getVersion, HttpRequest::getBody)
+                .extracting(HttpRequest::getMethod, HttpRequest::getPath, HttpRequest::getVersion, req -> new String(req.getBody().readAllBytes()))
                 .containsExactly(HttpMethod.GET, Path.of("/test"), HttpVersion.HTTP_1_1, "");
         assertThat(request.getHeaders().getValues()).isEmpty();
     }
