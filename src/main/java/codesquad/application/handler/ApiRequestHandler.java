@@ -14,7 +14,7 @@ public abstract class ApiRequestHandler<T, R> implements HttpHandler<T, R> {
     private static final Logger log = LoggerFactory.getLogger(ApiRequestHandler.class);
 
     @Override
-    public final void handle(Request httpRequest, Response httpResponse, Triggerable<T, R> triggerable) throws Exception {
+    public final void handle(Request httpRequest, Response httpResponse, Triggerable<T, R> triggerable) throws IOException {
         T request = resolveArgument(httpRequest);
         httpResponse.setStatus(HttpStatus.OK);
         try {

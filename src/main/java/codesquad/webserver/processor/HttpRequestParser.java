@@ -1,12 +1,10 @@
 package codesquad.webserver.processor;
 
+import codesquad.webserver.exception.BadRequestException;
 import codesquad.webserver.http.HttpRequest;
 import codesquad.webserver.http.HttpVersion;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URLDecoder;
 import java.util.*;
 
@@ -48,12 +46,12 @@ public class HttpRequestParser {
         String[] requestLines = headers.split("\r\n");
         String requestLine = requestLines[0];
         if (requestLine == null || requestLine.isEmpty()) {
-            throw new IllegalArgumentException("Request line is null");
+            throw new BadRequestException("Request line is null");
         }
 
         String[] requestLineParts = requestLine.split(" ");
         if (requestLineParts.length < 3) {
-            throw new IllegalArgumentException("Invalid request line: " + requestLine);
+            throw new BadRequestException("Invalid request line: " + requestLine);
         }
         String method = requestLineParts[0];
         String path = requestLineParts[1];
@@ -68,7 +66,7 @@ public class HttpRequestParser {
         while (i < requestLines.length && !requestLines[i].isEmpty()) {
             int colonIndex = requestLines[i].indexOf(":");
             if (colonIndex == -1) {
-                throw new IllegalArgumentException("Invalid header line: " + requestLines[i]);
+                throw new BadRequestException("Invalid header line: " + requestLines[i]);
             }
             String key = requestLines[i].substring(0, colonIndex).trim();
             String valuesString = requestLines[i].substring(colonIndex + 1).trim();
@@ -101,8 +99,8 @@ public class HttpRequestParser {
             try {
                 String decodedBody = URLDecoder.decode(new String(body, CHARSET), CHARSET);
                 body = decodedBody.getBytes(CHARSET);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("인코딩 에러가 발생했습니다.");
+            } catch (UnsupportedEncodingException | IllegalArgumentException e) {
+                throw new BadRequestException("인코딩 에러가 발생했습니다.");
             }
         }
 

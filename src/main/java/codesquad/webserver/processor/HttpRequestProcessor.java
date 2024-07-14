@@ -5,8 +5,8 @@ import codesquad.api.Request;
 import codesquad.api.Response;
 import codesquad.webserver.authorization.AuthorizationContextHolder;
 import codesquad.webserver.authorization.SecurePathManager;
+import codesquad.webserver.exception.BadRequestException;
 import codesquad.webserver.http.HttpResponse;
-import codesquad.webserver.http.HttpStatus;
 import codesquad.webserver.http.HttpVersion;
 import codesquad.webserver.middleware.MiddleWareChain;
 import org.slf4j.Logger;
@@ -16,10 +16,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
+import static codesquad.webserver.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 public class HttpRequestProcessor {
 
     private final HttpRequestParser httpRequestParser;
-    private final Dispatcher requestdispatcher;
+    private final Dispatcher requestDispatcher;
     private final HttpResponseWriter httpResponseWriter;
 
     private final MiddleWareChain middleWareChain;
@@ -27,23 +29,31 @@ public class HttpRequestProcessor {
 
     public void process(final Socket clientSocket) throws IOException {
         final InputStream requestStream = clientSocket.getInputStream();
-        final Request httpRequest = httpRequestParser.parseRequest(requestStream);
-        final Response httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
+        try {
+            final Request httpRequest = httpRequestParser.parseRequest(requestStream);
+            final Response httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
+            forwarding(clientSocket, httpRequest, httpResponse);
+        } catch (BadRequestException e) {
+            log.error("Processor : {}", e.getMessage());
+            httpResponseWriter.writeResponse(clientSocket, HttpResponse.badRequestOf());
+        } finally {
+            AuthorizationContextHolder.clearContext();
+        }
+    }
 
-        // 여기에서 로그인 된 경우 ThreadLocal에 context 저장하고
+    private void forwarding(final Socket clientSocket, final Request httpRequest, final Response httpResponse) throws IOException {
         middleWareChain.applyMiddleWares(httpRequest, httpResponse);
 
         // 만약 권한이 필요한데 권한이 없는 경우 401을 반환하고 종료
         if (SecurePathManager.isSecurePath(httpRequest.getPath(), httpRequest.getMethod()) && !AuthorizationContextHolder.isAuthorized()) {
-            httpResponseWriter.writeResponse(clientSocket, HttpResponse.unauthorizedOf(httpRequest.getPath().getBasePath()));
+            httpResponseWriter.writeResponse(clientSocket, HttpResponse.unauthorizedOf(""));
             return;
         }
 
         try {
-            requestdispatcher.handleRequest(httpRequest, httpResponse);
+            requestDispatcher.handleRequest(httpRequest, httpResponse);
             httpResponseWriter.writeResponse(clientSocket, httpResponse);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Processor : {}", e.getMessage());
             switch (httpResponse.getHttpStatus()) {
                 case NOT_FOUND:
@@ -53,16 +63,16 @@ public class HttpRequestProcessor {
                     httpResponseWriter.writeResponse(clientSocket, HttpResponse.internalServerErrorOf(httpRequest.getPath().getBasePath()));
                     break;
                 default:
-                    httpResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                    httpResponse.setStatus(INTERNAL_SERVER_ERROR);
                     httpResponseWriter.writeResponse(clientSocket, httpResponse);
                     break;
             }
         }
     }
 
-    public HttpRequestProcessor(HttpRequestParser httpRequestParser, Dispatcher requestdispatcher, HttpResponseWriter httpResponseWriter, MiddleWareChain middleWareChain) {
+    public HttpRequestProcessor(HttpRequestParser httpRequestParser, Dispatcher requestDispatcher, HttpResponseWriter httpResponseWriter, MiddleWareChain middleWareChain) {
         this.httpRequestParser = httpRequestParser;
-        this.requestdispatcher = requestdispatcher;
+        this.requestDispatcher = requestDispatcher;
         this.httpResponseWriter = httpResponseWriter;
         this.middleWareChain = middleWareChain;
     }

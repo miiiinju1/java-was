@@ -1,10 +1,10 @@
 package codesquad.webserver.processor;
 
+import codesquad.webserver.exception.BadRequestException;
 import codesquad.webserver.http.HttpMethod;
 import codesquad.webserver.http.HttpRequest;
 import codesquad.webserver.http.HttpVersion;
 import codesquad.webserver.http.Path;
-import codesquad.webserver.processor.HttpRequestParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -127,7 +127,7 @@ class HttpRequestParserTest {
 
         // when & then
         assertThatThrownBy(() -> httpRequestParser.parseRequest(inputStream))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BadRequestException.class)
                 .hasMessage("Invalid header line: Invalid-Header");
     }
 
@@ -160,7 +160,7 @@ class HttpRequestParserTest {
 
         // when & then
         assertThatThrownBy(() -> httpRequestParser.parseRequest(inputStream))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BadRequestException.class)
                 .hasMessage("인코딩 에러가 발생했습니다.");
     }
     @DisplayName("헤더가 없는 요청 파싱")

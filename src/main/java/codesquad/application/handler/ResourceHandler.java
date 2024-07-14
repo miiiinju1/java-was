@@ -18,7 +18,7 @@ public class ResourceHandler<T, R> implements HttpHandler<T,R> {
     private static final Logger log = LoggerFactory.getLogger(ResourceHandler.class);
 
     @Override
-    public void handle(Request httpRequest, Response httpResponse, Triggerable<T, R> triggerable) throws Exception {
+    public void handle(Request httpRequest, Response httpResponse, Triggerable<T, R> triggerable) throws IOException {
         final String filePath = httpRequest.getPath().getBasePath();
 
         ClassLoader classLoader = ResourceHandler.class.getClassLoader();

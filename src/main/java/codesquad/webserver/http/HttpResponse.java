@@ -16,17 +16,6 @@ public class HttpResponse implements Response {
     private HttpHeaders httpHeaders;
     private final ByteArrayOutputStream body;
 
-    public static HttpResponse unauthorizedOf(String basePath) {
-        byte[] responseBytes = ("<html><body><h1>401 Unauthorized " + basePath + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
-        HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
-        httpResponse.httpStatus = HttpStatus.UNAUTHORIZED;
-        httpResponse.httpHeaders = HttpHeaders.of(Map.of(HeaderConstants.CONTENT_TYPE, List.of("text/html", "charset=UTF-8")));
-        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=; Path=/ ; Max-Age=0; HttpOnly");
-        httpResponse.body.write(responseBytes, 0, responseBytes.length);
-
-        return httpResponse;
-    }
-
     @Override
     public HttpVersion getHttpVersion() {
         return httpVersion;
@@ -82,6 +71,28 @@ public class HttpResponse implements Response {
 
         return httpResponse;
     }
+
+    public static HttpResponse unauthorizedOf(String basePath) {
+        byte[] responseBytes = ("<html><body><h1>401 Unauthorized " + basePath + "</h1></body></html>").getBytes(StandardCharsets.UTF_8);
+        HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
+        httpResponse.httpStatus = HttpStatus.UNAUTHORIZED;
+        httpResponse.httpHeaders = HttpHeaders.of(Map.of(HeaderConstants.CONTENT_TYPE, List.of("text/html", "charset=UTF-8")));
+        httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=; Path=/ ; Max-Age=0; HttpOnly");
+        httpResponse.body.write(responseBytes, 0, responseBytes.length);
+
+        return httpResponse;
+    }
+
+    public static HttpResponse badRequestOf() {
+        byte[] responseBytes = ("<html><body><h1>400 Bad Request </h1></body></html>").getBytes(StandardCharsets.UTF_8);
+        HttpResponse httpResponse = new HttpResponse(HttpVersion.HTTP_1_1);
+        httpResponse.httpStatus = HttpStatus.BAD_REQUEST;
+        httpResponse.httpHeaders = HttpHeaders.of(Map.of(HeaderConstants.CONTENT_TYPE, List.of("text/html", "charset=UTF-8")));
+        httpResponse.body.write(responseBytes, 0, responseBytes.length);
+
+        return httpResponse;
+    }
+
 
     private HttpVersion validateHttpVersion(HttpVersion httpVersion) {
         if (httpVersion == null) {
