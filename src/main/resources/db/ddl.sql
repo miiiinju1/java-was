@@ -11,8 +11,7 @@ CREATE TABLE posts (
                        post_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                        user_id BIGINT NOT NULL,
                        content VARCHAR(255) NOT NULL,
-                       image_path VARCHAR(255) NOT NULL,
-                       FOREIGN KEY (user_id) REFERENCES users(user_id)
+                       image_path VARCHAR(255) NOT NULL
 );
 
 
@@ -21,7 +20,5 @@ CREATE TABLE comments (
                           post_id INT NOT NULL,
                           user_id INT NOT NULL,
                           content TEXT NOT NULL,
-                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                          FOREIGN KEY (post_id) REFERENCES posts(post_id),
-                          FOREIGN KEY (user_id) REFERENCES users(user_id)
+                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
