@@ -124,7 +124,10 @@ public class UserDao implements Database<UserVO> {
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, userId);
-            pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new RuntimeException("존재하지 않는 User입니다.");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
