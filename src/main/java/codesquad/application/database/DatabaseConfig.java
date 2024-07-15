@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConfig {
-    private String jdbcUrl;
-    private String jdbcUser;
-    private String jdbcPassword;
+    private final String jdbcUrl;
+    private final String jdbcUser;
+    private final String jdbcPassword;
 
     public DatabaseConfig(String jdbcUrl, String jdbcUser, String jdbcPassword) {
         this.jdbcUrl = jdbcUrl;
