@@ -31,9 +31,16 @@ public class Post {
             String content,
             String imagePath
     ) {
+        validateUserId(userId);
         this.userId = userId;
         this.content = new Content(content);
         this.imagePath = new ImagePath(imagePath);
+    }
+
+    private void validateUserId(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("사용자 아이디가 없습니다.");
+        }
     }
 
 }
