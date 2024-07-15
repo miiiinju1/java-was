@@ -1,4 +1,4 @@
-package codesquad.database;
+package codesquad.application.database;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

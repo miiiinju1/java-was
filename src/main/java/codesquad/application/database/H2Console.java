@@ -1,4 +1,4 @@
-package codesquad.database;
+package codesquad.application.database;
 
 import org.h2.tools.Server;
 

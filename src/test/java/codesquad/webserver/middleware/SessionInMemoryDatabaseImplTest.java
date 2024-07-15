@@ -1,18 +1,15 @@
 package codesquad.webserver.middleware;
 
 import codesquad.webserver.http.Session;
-import codesquad.webserver.middleware.SessionDatabase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.*;
 
-class SessionDatabaseTest {
+class SessionInMemoryDatabaseImplTest {
 
     private Long validUserPk;
     private String sessionKey;
