@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// TODO UserDAO 인터페이스를 상속하여 다양한 타입의 DAO를 구현하는게 맞지 않을까? 라는 생각이 들었음
 public class UserDao implements Database<UserVO> {
 
     private final DatabaseConfig databaseConfig;
