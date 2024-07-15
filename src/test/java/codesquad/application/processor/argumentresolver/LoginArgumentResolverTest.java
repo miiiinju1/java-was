@@ -1,7 +1,6 @@
 package codesquad.application.processor.argumentresolver;
 
 import codesquad.webserver.http.HttpRequest;
-import codesquad.application.processor.argumentresolver.LoginArgumentResolver;
 import codesquad.application.web.user.request.LoginRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +25,7 @@ class LoginArgumentResolverTest {
     @Test
     void resolveWithValidParameters() {
         // given
-        String body = "userId=test@example.com&password=secret";
+        String body = "username=test@example.com&password=secret";
         HttpRequest request = HttpRequest.builder()
                 .method("POST")
                 .path("/login")
@@ -41,7 +40,7 @@ class LoginArgumentResolverTest {
         // then
         assertThat(loginRequest)
                 .isNotNull()
-                .extracting(LoginRequest::getUserId, LoginRequest::getPassword)
+                .extracting(LoginRequest::getUsername, LoginRequest::getPassword)
                 .containsExactly("test@example.com", "secret");
     }
 

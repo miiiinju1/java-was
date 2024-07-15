@@ -1,6 +1,5 @@
 package codesquad.webserver.http;
 
-import codesquad.webserver.http.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ class SessionTest {
 
         assertThat(session)
                 .isNotNull()
-                .extracting(Session::getSessionId, Session::getUserPk, Session::getCreationTime, Session::getLastAccessTime, Session::getTimeout)
+                .extracting(Session::getSessionId, Session::getUserId, Session::getCreationTime, Session::getLastAccessTime, Session::getTimeout)
                 .doesNotContainNull()
                 .containsExactly(session.getSessionId(), validUserPk, nowDateTime, nowDateTime, validTimeout);
     }

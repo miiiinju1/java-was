@@ -7,10 +7,10 @@ public class UserMapper {
 
     public static UserVO toUserVO(User user) {
         return new UserVO(
-                user.getUserPk(),
                 user.getUserId(),
+                user.getUsername(),
                 user.getPassword(),
-                user.getName(),
+                user.getNickname(),
                 user.getEmail(),
                 null
         );

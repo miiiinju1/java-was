@@ -17,10 +17,10 @@ public class GetUserListRequestHandler extends ApiRequestHandler<Void, UserListR
         String userListJson = response.getUserList().stream()
                 .map(userInfo -> """
                 {
-                    "name": "%s",
+                    "nickname": "%s",
                     "email": "%s"
                 }
-                """.formatted(userInfo.getName(), userInfo.getEmail()))
+                """.formatted(userInfo.getNickname(), userInfo.getEmail()))
                 .collect(Collectors.joining(", ", "[", "]"));
 
         return """

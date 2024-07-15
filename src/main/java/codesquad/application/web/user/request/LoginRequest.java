@@ -2,19 +2,19 @@ package codesquad.application.web.user.request;
 
 public class LoginRequest {
 
-    private final String userId;
+    private final String username;
     private final String password;
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public LoginRequest(String userId, String password) {
-        this.userId = userId;
+    public LoginRequest(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 }

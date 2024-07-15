@@ -36,7 +36,7 @@ class UserMapperTest {
 
         // then
         assertThat(user)
-                .extracting("userPk", "userId", "password", "name", "email")
+                .extracting("userId", "username", "password", "nickname", "email")
                 .containsExactly(1L, "user123", "password", "name", "email@example.com");
     }
 }

@@ -16,7 +16,7 @@ public class LoginUserLogic implements Triggerable<LoginRequest, User> {
     }
 
     public User login(LoginRequest loginRequest) {
-        final String userId = loginRequest.getUserId();
+        final String userId = loginRequest.getUsername();
         final String password = loginRequest.getPassword();
 
         UserVO userVO = userDao.findByUsername(userId)

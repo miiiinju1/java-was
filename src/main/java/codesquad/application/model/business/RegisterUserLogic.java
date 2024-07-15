@@ -12,9 +12,9 @@ public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
 
     public Long registerUser(RegisterRequest registerRequest) {
         String email = registerRequest.getEmail();
-        String userId = registerRequest.getUserId();
+        String userId = registerRequest.getUsername();
         String password = registerRequest.getPassword();
-        String name = registerRequest.getName();
+        String name = registerRequest.getNickname();
 
         User user = new User(userId, password, name, email);
         long savedPk = userDao.save(UserMapper.toUserVO(user));

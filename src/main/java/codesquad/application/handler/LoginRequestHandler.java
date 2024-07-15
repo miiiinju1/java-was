@@ -27,7 +27,7 @@ public class LoginRequestHandler extends ApiRequestHandler<LoginRequest, User> {
 
     @Override
     public void afterHandle(LoginRequest request, User response, Request httpRequest, Response httpResponse) {
-        Session session = SessionDatabase.save(response.getUserPk());
+        Session session = SessionDatabase.save(response.getUserId());
 
         httpResponse.setStatus(HttpStatus.FOUND);
         httpResponse.setHeader(HeaderConstants.SET_COOKIE, "sid=" + session.getSessionId() + "; Path=/ ; Max-Age=" + session.getTimeout() + "; HttpOnly");

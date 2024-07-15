@@ -1,53 +1,53 @@
 package codesquad.application.model;
 
 public class User {
-    private Long userPk;
-    private final String userId;
+    private Long userId;
+    private final String username;
     private final String password;
-    private final String name;
+    private final String nickname;
     private final String email;
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public Long getUserPk() {
-        return userPk;
+    public Long getUserId() {
+        return userId;
     }
 
     public void initUserPk(Long userPk) {
-        if(this.userPk != null) {
+        if(this.userId != null) {
             throw new IllegalArgumentException("이미 PK가 존재합니다.");
         }
-        this.userPk = userPk;
+        this.userId = userPk;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId='" + userId + '\'' +
+                "userId='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + nickname + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
 
-    public User(String userId, String password, String name, String email) {
-        this.userId = userId;
+    public User(String username, String password, String nickname, String email) {
+        this.username = username;
         this.password = password;
-        this.name = name;
+        this.nickname = nickname;
         this.email = email;
     }
 

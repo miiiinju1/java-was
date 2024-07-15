@@ -6,14 +6,14 @@ import java.util.UUID;
 public class Session {
 
     private final String sessionId;
-    private final Long userPk;
+    private final Long userId;
     private final LocalDateTime creationTime;
     private LocalDateTime lastAccessTime;
     private final long timeout;
 
-    public Session(Long userPk, LocalDateTime nowDateTime, long timeout) {
+    public Session(Long userId, LocalDateTime nowDateTime, long timeout) {
         this.sessionId = UUID.randomUUID().toString();
-        this.userPk = validateUserPk(userPk);
+        this.userId = validateUserPk(userId);
         this.creationTime = validateNowDateTime(nowDateTime);
         this.lastAccessTime = this.creationTime;
         this.timeout = validateTimeout(timeout);
@@ -23,8 +23,8 @@ public class Session {
         return sessionId;
     }
 
-    public Long getUserPk() {
-        return userPk;
+    public Long getUserId() {
+        return userId;
     }
 
     public LocalDateTime getCreationTime() {

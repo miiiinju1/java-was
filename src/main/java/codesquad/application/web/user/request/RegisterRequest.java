@@ -2,31 +2,31 @@ package codesquad.application.web.user.request;
 
 public class RegisterRequest {
     private final String email;
-    private final String userId;
+    private final String username;
     private final String password;
-    private final String name;
+    private final String nickname;
 
     public String getEmail() {
         return email;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public RegisterRequest(String email, String userId, String password, String name) {
+    public RegisterRequest(String email, String username, String password, String nickname) {
         this.email = email;
-        this.userId = userId;
+        this.username = username;
         this.password = password;
-        this.name = name;
+        this.nickname = nickname;
     }
 
 }

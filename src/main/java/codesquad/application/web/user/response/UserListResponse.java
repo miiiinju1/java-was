@@ -23,26 +23,26 @@ public class UserListResponse {
 
     private UserListResponse(List<User> users) {
         this.userList = users.stream()
-                    .map(u -> new UserInfo(u.getName(), u.getEmail()))
+                    .map(u -> new UserInfo(u.getNickname(), u.getEmail()))
                     .toList();
         this.count = userList.size();
     }
 
     public static class UserInfo{
 
-        private final String name;
+        private final String nickname;
         private final String email;
 
-        public String getName() {
-            return name;
+        public String getNickname() {
+            return nickname;
         }
 
         public String getEmail() {
             return email;
         }
 
-        public UserInfo(String name, String email) {
-            this.name = name;
+        public UserInfo(String nickname, String email) {
+            this.nickname = nickname;
             this.email = email;
         }
     }

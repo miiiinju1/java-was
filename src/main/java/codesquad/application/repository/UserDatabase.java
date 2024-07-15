@@ -16,7 +16,7 @@ public class UserDatabase extends InMemoryDatabaseImpl<User> {
         // 사용자 ID unique의 동기화 문제 해결을 위해 ConcurrentHashMap의 putIfAbsent 사용
 
         // 적절한 방식
-        Object value = unique.putIfAbsent(user.getUserId(), PRESENT);
+        Object value = unique.putIfAbsent(user.getUsername(), PRESENT);
         if (value != null) {
             throw new IllegalArgumentException("이미 존재하는 userId 입니다.");
         }

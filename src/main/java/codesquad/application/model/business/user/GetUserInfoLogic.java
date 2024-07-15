@@ -21,7 +21,7 @@ public class GetUserInfoLogic implements Triggerable<Void, UserInfoResponse> {
         }
         Session session = context.getSession();
 
-        Long userPk = session.getUserPk();
+        Long userPk = session.getUserId();
         UserVO userVO = userDao.findById(userPk)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 

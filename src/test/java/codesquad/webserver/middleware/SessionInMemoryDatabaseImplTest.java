@@ -32,7 +32,7 @@ class SessionInMemoryDatabaseImplTest {
         // then
         assertThat(session)
                 .isNotNull()
-                .extracting(Session::getUserPk, Session::getCreationTime, Session::getLastAccessTime, Session::getTimeout)
+                .extracting(Session::getUserId, Session::getCreationTime, Session::getLastAccessTime, Session::getTimeout)
                 .doesNotContainNull()
                 .containsExactly(validUserPk, session.getCreationTime(), session.getLastAccessTime(), 3600L);
     }
@@ -78,7 +78,7 @@ class SessionInMemoryDatabaseImplTest {
         // then
         assertThat(foundSession)
                 .isNotNull()
-                .extracting(Session::getUserPk)
+                .extracting(Session::getUserId)
                 .isEqualTo(validUserPk);
     }
 
