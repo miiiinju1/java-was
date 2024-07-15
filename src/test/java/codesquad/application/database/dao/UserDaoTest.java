@@ -181,4 +181,16 @@ class UserDaoTest {
         // then
         assertThat(userDao.findById(savedId)).isEmpty();
     }
+
+    @DisplayName("delete: 존재하지 않는 UserVo 삭제 시 예외 발생")
+    @Test
+    void deleteWithNonExistentUserVo() {
+        // given
+        long 삭제_하려는_ID = 1L;
+
+        // when & then
+        assertThatThrownBy(() -> userDao.delete(삭제_하려는_ID))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("존재하지 않는 User입니다.");
+    }
 }
