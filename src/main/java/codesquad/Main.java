@@ -3,6 +3,7 @@ package codesquad;
 import codesquad.application.handler.*;
 import codesquad.application.processor.HandlerRegistry;
 import codesquad.application.processor.HttpRequestDispatcher;
+import codesquad.database.H2Console;
 import codesquad.webserver.authorization.SecurePathManager;
 import codesquad.application.database.Database;
 import codesquad.application.database.UserDatabase;
@@ -26,13 +27,14 @@ import codesquad.application.web.user.request.LoginRequest;
 import codesquad.application.web.user.request.RegisterRequest;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 public class Main {
 
 
     public static void main(String[] args) {
         ServerInitializer serverInitializer = new ServerInitializer();
-
+        CompletableFuture.runAsync(H2Console::main);
         HandlerRegistry handlerRegistry = new HandlerRegistry(new ArrayList<>());
         HttpRequestParser requestParser = new HttpRequestParser();
 
