@@ -39,7 +39,7 @@ public class Main {
         HttpRequestParser requestParser = new HttpRequestParser();
 
         // User DB
-        Database<User> userDatabase = new UserDatabase();
+        UserDatabase userDatabase = new UserDatabase();
 
         // 회원 가입 로직
         RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDatabase);
