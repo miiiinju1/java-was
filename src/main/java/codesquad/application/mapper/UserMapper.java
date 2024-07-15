@@ -10,8 +10,8 @@ public class UserMapper {
                 user.getUserPk(),
                 user.getUserId(),
                 user.getPassword(),
-                user.getEmail(),
                 user.getName(),
+                user.getEmail(),
                 null
         );
     }
