@@ -1,15 +1,15 @@
 package codesquad.application.model.business;
 
-import codesquad.application.database.Database;
+import codesquad.application.database.InMemoryDatabaseImpl;
 import codesquad.application.processor.Triggerable;
 import codesquad.application.web.user.request.LoginRequest;
 import codesquad.application.model.User;
 
 public class LoginUserLogic implements Triggerable<LoginRequest, User> {
 
-    private final Database<User> userDatabase;
+    private final InMemoryDatabaseImpl<User> userDatabase;
 
-    public LoginUserLogic(Database<User> userDatabase) {
+    public LoginUserLogic(InMemoryDatabaseImpl<User> userDatabase) {
         this.userDatabase = userDatabase;
     }
 

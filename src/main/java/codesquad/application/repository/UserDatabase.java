@@ -1,10 +1,11 @@
-package codesquad.application.database;
+package codesquad.application.repository;
 
+import codesquad.application.database.InMemoryDatabaseImpl;
 import codesquad.application.model.User;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class UserDatabase extends Database<User> {
+public class UserDatabase extends InMemoryDatabaseImpl<User> {
 
     private final ConcurrentHashMap<String, Object> unique = new ConcurrentHashMap<>();
     private static final Object PRESENT = new Object();

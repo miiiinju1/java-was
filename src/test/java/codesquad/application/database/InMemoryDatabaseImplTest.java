@@ -1,6 +1,5 @@
 package codesquad.application.database;
 
-import codesquad.application.database.Database;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,10 +10,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class DatabaseTest {
-    private Database<String> database;
+class InMemoryDatabaseImplTest {
+    private InMemoryDatabaseImpl<String> database;
 
-    static class TestDatabase extends Database<String> {
+    static class TestDatabase extends InMemoryDatabaseImpl<String> {
     }
 
     @BeforeEach

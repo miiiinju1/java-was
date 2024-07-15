@@ -1,6 +1,6 @@
 package codesquad.application.database;
 
-import codesquad.application.database.UserDatabase;
+import codesquad.application.repository.UserDatabase;
 import codesquad.application.model.User;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class UserDatabaseTest {
+class UserInMemoryDatabaseImplTest {
 
     @DisplayName("userDatabase에 save할 때 userID가 이미 존재하면 IllegalArgumentException을 던진다.")
     @Test
