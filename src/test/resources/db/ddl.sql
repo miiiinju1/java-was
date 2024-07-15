@@ -9,12 +9,10 @@ CREATE TABLE users (
 
 
 CREATE TABLE posts (
-       post_id INT PRIMARY KEY AUTO_INCREMENT,
-       user_id INT NOT NULL,
-       title VARCHAR(255) NOT NULL,
-       content TEXT NOT NULL,
-       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+       post_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+       user_id BIGINT NOT NULL,
+       content VARCHAR(255) NOT NULL,
+       image_path VARCHAR(255) NOT NULL,
        FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
