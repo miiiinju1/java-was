@@ -83,7 +83,7 @@ class UserDaoTest {
                 .containsExactly(1L, userVO1.username(), userVO1.password(), userVO1.name(), userVO1.email());
     }
 
-    @DisplayName("findById: 존재하지 않는 UserVo 조회 시 Optioanl에 null이 들어간 값 반환")
+    @DisplayName("findById: 존재하지 않는 UserVo 조회 시 Optional에 null이 들어간 값 반환")
     @Test
     void findByIdWithNonExistentUserVo() {
         // given
@@ -192,5 +192,47 @@ class UserDaoTest {
         assertThatThrownBy(() -> userDao.delete(삭제_하려는_ID))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("존재하지 않는 User입니다.");
+    }
+    
+    @DisplayName("findByUsername: 존재하는 username으로 UserVo 조회")
+    @Test
+    void findByUsernameWithExistentUsername() {
+        // given
+        UserVO userVO = TestUserVOFactory.createDefaultUserVO();
+        userDao.save(userVO);
+
+        // when
+        Optional<UserVO> maybeUserVO = userDao.findByUsername(userVO.username());
+
+        // then
+        assertThat(maybeUserVO).isPresent()
+                .get()
+                .extracting("userId", "username", "password", "name", "email")
+                .containsExactly(1L, userVO.username(), userVO.password(), userVO.name(), userVO.email());
+    }
+    
+    @DisplayName("findByUsername: 존재하지 않는 username으로 UserVo 조회 시 Optional에 null이 들어간 값 반환")
+    @Test
+    void findByUsernameWithNonExistentUsername() {
+        // given
+        String 존재하지_않는_username = "존재하지_않는_username";
+
+        // when
+        Optional<UserVO> maybeUserVO = userDao.findByUsername(존재하지_않는_username);
+
+        // then
+        assertThat(maybeUserVO).isEmpty();
+    }
+
+    @DisplayName("findByUsername: username이 null인 경우 예외 발생")
+    @Test
+    void findByUsernameWithNullUsername() {
+        // given
+        String nullUsername = null;
+
+        // when & then
+        assertThatThrownBy(() -> userDao.findByUsername(nullUsername))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("username은 null이거나 빈 문자열일 수 없습니다.");
     }
 }
