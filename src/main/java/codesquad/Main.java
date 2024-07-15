@@ -2,27 +2,28 @@ package codesquad;
 
 import codesquad.application.database.DatabaseConfig;
 import codesquad.application.database.H2Console;
-import codesquad.webserver.authorization.SecurePathManager;
-import codesquad.application.database.Database;
-import codesquad.application.repository.UserDatabase;
-import codesquad.webserver.http.HttpMethod;
-import codesquad.webserver.processor.HttpResponseSerializer;
-import codesquad.webserver.middleware.MiddleWareChain;
-import codesquad.webserver.middleware.SessionMiddleWare;
-import codesquad.application.model.User;
+import codesquad.application.database.dao.UserDao;
+import codesquad.application.handler.*;
 import codesquad.application.model.business.LoginUserLogic;
 import codesquad.application.model.business.RegisterUserLogic;
 import codesquad.application.model.business.user.GetUserInfoLogic;
 import codesquad.application.model.business.user.GetUserListLogic;
+import codesquad.application.processor.HandlerRegistry;
+import codesquad.application.processor.HttpRequestDispatcher;
 import codesquad.application.processor.argumentresolver.ArgumentResolver;
 import codesquad.application.processor.argumentresolver.LoginArgumentResolver;
 import codesquad.application.processor.argumentresolver.RegisterArgumentResolver;
-import codesquad.webserver.processor.HttpRequestParser;
-import codesquad.webserver.processor.HttpRequestProcessor;
-import codesquad.webserver.processor.HttpResponseWriter;
-import codesquad.webserver.server.ServerInitializer;
 import codesquad.application.web.user.request.LoginRequest;
 import codesquad.application.web.user.request.RegisterRequest;
+import codesquad.webserver.authorization.SecurePathManager;
+import codesquad.webserver.http.HttpMethod;
+import codesquad.webserver.middleware.MiddleWareChain;
+import codesquad.webserver.middleware.SessionMiddleWare;
+import codesquad.webserver.processor.HttpRequestParser;
+import codesquad.webserver.processor.HttpRequestProcessor;
+import codesquad.webserver.processor.HttpResponseSerializer;
+import codesquad.webserver.processor.HttpResponseWriter;
+import codesquad.webserver.server.ServerInitializer;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -39,16 +40,16 @@ public class Main {
         HttpRequestParser requestParser = new HttpRequestParser();
 
         // User DB
-        UserDatabase userDatabase = new UserDatabase();
+        UserDao userDao = new UserDao(databaseConfig);
 
         // 회원 가입 로직
-        RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDatabase);
+        RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDao);
         ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
         RegisterRequestHandler registerUserHandler = new RegisterRequestHandler(registerArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
 
         // 로그인 로직
-        LoginUserLogic loginUserLogic = new LoginUserLogic(userDatabase);
+        LoginUserLogic loginUserLogic = new LoginUserLogic(userDao);
         ArgumentResolver<LoginRequest> loginArgumentResolver = new LoginArgumentResolver();
         LoginRequestHandler loginUserHandler = new LoginRequestHandler(loginArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/login", loginUserHandler, loginUserLogic);
@@ -58,12 +59,12 @@ public class Main {
         handlerRegistry.registerHandler(HttpMethod.POST, "/users/logout", logoutRequestHandlerAdapter, o -> null);
 
         // User Info API
-        GetUserInfoLogic getUserInfoLogic = new GetUserInfoLogic(userDatabase);
+        GetUserInfoLogic getUserInfoLogic = new GetUserInfoLogic(userDao);
         GetUserInfoRequestHandler userInfoHandler = new GetUserInfoRequestHandler();
         handlerRegistry.registerHandler(HttpMethod.GET, "/api/user-info", userInfoHandler, getUserInfoLogic);
 
         // User List API
-        GetUserListLogic getUserListLogic = new GetUserListLogic(userDatabase);
+        GetUserListLogic getUserListLogic = new GetUserListLogic(userDao);
         GetUserListRequestHandler userListHandler = new GetUserListRequestHandler();
         handlerRegistry.registerHandler(HttpMethod.GET, "/api/users", userListHandler, getUserListLogic);
 

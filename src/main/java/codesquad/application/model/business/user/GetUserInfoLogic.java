@@ -1,16 +1,16 @@
 package codesquad.application.model.business.user;
 
-import codesquad.application.database.Database;
+import codesquad.application.database.dao.UserDao;
 import codesquad.application.processor.Triggerable;
+import codesquad.application.repository.vo.UserVO;
 import codesquad.application.web.user.response.UserInfoResponse;
 import codesquad.webserver.authorization.AuthorizationContext;
 import codesquad.webserver.authorization.AuthorizationContextHolder;
 import codesquad.webserver.http.Session;
-import codesquad.application.model.User;
 
 public class GetUserInfoLogic implements Triggerable<Void, UserInfoResponse> {
 
-    private final Database<User> userDatabase;
+    private final UserDao userDao;
 
     public UserInfoResponse getUserInfo() {
         AuthorizationContext context = AuthorizationContextHolder.getContext();
@@ -22,14 +22,14 @@ public class GetUserInfoLogic implements Triggerable<Void, UserInfoResponse> {
         Session session = context.getSession();
 
         Long userPk = session.getUserPk();
-        User user = userDatabase.findById(userPk)
+        UserVO userVO = userDao.findById(userPk)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        return new UserInfoResponse(user.getName());
+        return new UserInfoResponse(userVO.name());
     }
 
-    public GetUserInfoLogic(Database<User> userDatabase) {
-        this.userDatabase = userDatabase;
+    public GetUserInfoLogic(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override

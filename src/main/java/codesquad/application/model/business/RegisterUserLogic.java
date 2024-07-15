@@ -1,13 +1,14 @@
 package codesquad.application.model.business;
 
-import codesquad.application.database.Database;
+import codesquad.application.database.dao.UserDao;
+import codesquad.application.mapper.UserMapper;
+import codesquad.application.model.User;
 import codesquad.application.processor.Triggerable;
 import codesquad.application.web.user.request.RegisterRequest;
-import codesquad.application.model.User;
 
 public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
 
-    private final Database<User> userDatabase;
+    private final UserDao userDao;
 
     public Long registerUser(RegisterRequest registerRequest) {
         String email = registerRequest.getEmail();
@@ -16,7 +17,7 @@ public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
         String name = registerRequest.getName();
 
         User user = new User(userId, password, name, email);
-        long savedPk = userDatabase.save(user);
+        long savedPk = userDao.save(UserMapper.toUserVO(user));
         user.initUserPk(savedPk);
 
         return savedPk;
@@ -26,7 +27,7 @@ public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
     public Long run(RegisterRequest request) {
         return registerUser(request);
     }
-    public RegisterUserLogic(Database<User> userDatabase) {
-        this.userDatabase = userDatabase;
+    public RegisterUserLogic(UserDao userDao) {
+        this.userDao = userDao;
     }
 }
