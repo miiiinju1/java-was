@@ -16,20 +16,20 @@ public class Post {
         return postId;
     }
 
-    public String getContent() {
-        return content.getValue();
+    public Content getContent() {
+        return content;
     }
 
-    public String getImagePath() {
-        return imagePath.getValue();
+    public ImagePath getImagePath() {
+        return imagePath;
     }
 
     public void initPostId(Long postId) {
         this.postId = postId;
     }
 
-    public List<Comment> getComments() {
-        return comments.getValues();
+    public Comments getComments() {
+        return comments;
     }
 
     public Post(
