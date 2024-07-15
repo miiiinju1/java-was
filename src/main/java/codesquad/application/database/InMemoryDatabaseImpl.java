@@ -42,6 +42,7 @@ public abstract class InMemoryDatabaseImpl<T> implements Database<T> {
         database.put(id, data);
     }
 
+    @Override
     public Collection<T> findAll() {
         return database.values();
     }

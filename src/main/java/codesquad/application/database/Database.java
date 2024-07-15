@@ -1,5 +1,6 @@
 package codesquad.application.database;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface Database<T> {
@@ -8,4 +9,5 @@ public interface Database<T> {
     Optional<T> findById(long id);
     void delete(long id);
     void update(long id, T data);
+    Collection<T> findAll();
 }
