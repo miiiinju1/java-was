@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class UserDaoTest {
+class UserDaoImplTest {
 
     private final H2TestDatabaseConfig h2TestDatabaseConfig = new H2TestDatabaseConfig();
-    private final UserDao userDao = new UserDao(h2TestDatabaseConfig);
+    private final UserDaoImpl userDao = new UserDaoImpl(h2TestDatabaseConfig);
 
     @AfterEach
     void tearDown() {

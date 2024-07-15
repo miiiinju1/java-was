@@ -3,6 +3,7 @@ package codesquad;
 import codesquad.application.database.DatabaseConfig;
 import codesquad.application.database.H2Console;
 import codesquad.application.database.dao.UserDao;
+import codesquad.application.database.dao.UserDaoImpl;
 import codesquad.application.handler.*;
 import codesquad.application.model.business.LoginUserLogic;
 import codesquad.application.model.business.RegisterUserLogic;
@@ -40,7 +41,7 @@ public class Main {
         HttpRequestParser requestParser = new HttpRequestParser();
 
         // User DB
-        UserDao userDao = new UserDao(databaseConfig);
+        UserDao userDao = new UserDaoImpl(databaseConfig);
 
         // 회원 가입 로직
         RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDao);
