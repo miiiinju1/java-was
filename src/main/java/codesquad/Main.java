@@ -1,8 +1,6 @@
 package codesquad;
 
-import codesquad.application.handler.*;
-import codesquad.application.processor.HandlerRegistry;
-import codesquad.application.processor.HttpRequestDispatcher;
+import codesquad.application.database.DatabaseConfig;
 import codesquad.application.database.H2Console;
 import codesquad.webserver.authorization.SecurePathManager;
 import codesquad.application.database.Database;
@@ -34,7 +32,9 @@ public class Main {
 
     public static void main(String[] args) {
         ServerInitializer serverInitializer = new ServerInitializer();
-        CompletableFuture.runAsync(H2Console::main);
+        DatabaseConfig databaseConfig = new DatabaseConfig("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "sa", "");
+
+        CompletableFuture.runAsync(() -> H2Console.main(databaseConfig));
         HandlerRegistry handlerRegistry = new HandlerRegistry(new ArrayList<>());
         HttpRequestParser requestParser = new HttpRequestParser();
 
