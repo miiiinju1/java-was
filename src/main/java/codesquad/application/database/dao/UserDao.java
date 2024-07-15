@@ -43,6 +43,32 @@ public class UserDao implements Database<UserVO> {
         return -1;
     }
 
+    public Optional<UserVO> findByUsername(
+            final String username
+    ) {
+        validateUsername(username);
+        String sql = "SELECT * FROM users WHERE username = ?";
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(new UserVO(
+                            rs.getLong("user_id"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getTimestamp("created_at").toLocalDateTime()
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.empty();
+    }
+
     @Override
     public Optional<UserVO> findById(
             final long id
@@ -138,6 +164,14 @@ public class UserDao implements Database<UserVO> {
     ) {
         if(userVO == null) {
             throw new IllegalArgumentException("UserVo는 null일 수 없습니다.");
+        }
+    }
+
+    private void validateUsername(
+            final String username
+    ) {
+        if(username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("username은 null이거나 빈 문자열일 수 없습니다.");
         }
     }
 }
