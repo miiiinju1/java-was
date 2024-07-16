@@ -33,7 +33,7 @@ public class PostCreateLogic implements Triggerable<PostCreateRequest, Void> {
 
             postDao.save(PostMapper.toPostVO(post));
         } catch (Exception e) {
-            throw new RuntimeException("파일 저장에 실패했습니다.");
+            throw new RuntimeException("파일 저장에 실패했습니다." + e.getMessage());
         }
     }
 
