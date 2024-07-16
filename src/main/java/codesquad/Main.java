@@ -80,7 +80,7 @@ public class Main {
 
 
         // 기본 리소스 핸들러
-        ResourceHandler<Void, Void> defaultResourceHandler = new ResourceHandler<>();
+        StaticResourceHandler<Void, Void> defaultResourceHandler = new StaticResourceHandler<>();
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
 

@@ -1,6 +1,5 @@
 package codesquad.application.handler;
 
-import codesquad.application.handler.ResourceHandler;
 import codesquad.factory.TestHttpRequestFactory;
 import codesquad.webserver.http.HttpRequest;
 import codesquad.webserver.http.HttpResponse;
@@ -12,13 +11,13 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ResourceHandlerTest {
+class StaticResourceHandlerTest {
 
     @DisplayName("static 파일을 읽어온다.")
     @Test
     void readFileAsStream() throws Exception {
         // given
-        ResourceHandler<Void, Void> resourceHandler = new ResourceHandler<>();
+        StaticResourceHandler<Void, Void> resourceHandler = new StaticResourceHandler<>();
         String filePath = "/readStaticFileOf.txt";
         HttpRequest request = TestHttpRequestFactory.createGetResourceRequest(filePath);
         HttpResponse response = new HttpResponse(HttpVersion.HTTP_1_1);
@@ -38,7 +37,7 @@ class ResourceHandlerTest {
     @Test
     void readFileAsStream_notFound() {
         // given
-        ResourceHandler<Void, Void> resourceHandler = new ResourceHandler<>();
+        StaticResourceHandler<Void, Void> resourceHandler = new StaticResourceHandler<>();
         String filePath = "/invalid.txt";
         HttpRequest request = TestHttpRequestFactory.createGetResourceRequest(filePath);
 
