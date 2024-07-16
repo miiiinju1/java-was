@@ -18,6 +18,9 @@ public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
 
         User user = new User(userId, password, name, email);
         long savedPk = userDao.save(UserMapper.toUserVO(user));
+        if(savedPk == -1) {
+            throw new IllegalArgumentException("이미 존재하는 username 입니다.");
+        }
         user.initUserPk(savedPk);
 
         return savedPk;
