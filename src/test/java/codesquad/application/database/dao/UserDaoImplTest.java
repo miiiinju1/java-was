@@ -42,8 +42,8 @@ class UserDaoImplTest {
                     assertAll(
                             () -> assertThat(maybeUserVO).isPresent()
                                     .get()
-                                    .extracting("userId", "username", "password", "name", "email")
-                                    .containsExactly(1L, userVO.username(), userVO.password(), userVO.name(), userVO.email()),
+                                    .extracting("userId", "username", "password", "nickname", "email")
+                                    .containsExactly(1L, userVO.username(), userVO.password(), userVO.nickname(), userVO.email()),
                             () -> assertThat(maybeUserVO.get().createdAt()).isNotNull()
                     );
                 }
@@ -79,8 +79,8 @@ class UserDaoImplTest {
         // then
         assertThat(maybeUserVO).isPresent()
                 .get()
-                .extracting("userId", "username", "password", "name", "email")
-                .containsExactly(1L, userVO1.username(), userVO1.password(), userVO1.name(), userVO1.email());
+                .extracting("userId", "username", "password", "nickname", "email")
+                .containsExactly(1L, userVO1.username(), userVO1.password(), userVO1.nickname(), userVO1.email());
     }
 
     @DisplayName("findById: 존재하지 않는 UserVo 조회 시 Optional에 null이 들어간 값 반환")
@@ -111,10 +111,10 @@ class UserDaoImplTest {
 
         // then
         assertThat(allUserVOs).hasSize(2)
-                .extracting("userId", "username", "password", "name", "email")
+                .extracting("userId", "username", "password", "nickname", "email")
                 .containsExactly(
-                        tuple(1L, userVO1.username(), userVO1.password(), userVO1.name(), userVO1.email()),
-                        tuple(2L, userVO2.username(), userVO2.password(), userVO2.name(), userVO2.email())
+                        tuple(1L, userVO1.username(), userVO1.password(), userVO1.nickname(), userVO1.email()),
+                        tuple(2L, userVO2.username(), userVO2.password(), userVO2.nickname(), userVO2.email())
                 );
     }
 
@@ -142,8 +142,8 @@ class UserDaoImplTest {
         assertAll(
                 () -> assertThat(maybeUserVO).isPresent()
                         .get()
-                        .extracting("userId", "username", "password", "name", "email")
-                        .containsExactly(savedId, 업데이트_하려는_VO.username(), 업데이트_하려는_VO.password(), 업데이트_하려는_VO.name(), 업데이트_하려는_VO.email()),
+                        .extracting("userId", "username", "password", "nickname", "email")
+                        .containsExactly(savedId, 업데이트_하려는_VO.username(), 업데이트_하려는_VO.password(), 업데이트_하려는_VO.nickname(), 업데이트_하려는_VO.email()),
                 () -> assertThat(maybeUserVO.get().createdAt()).isNotNull()
         );
     }
@@ -207,8 +207,8 @@ class UserDaoImplTest {
         // then
         assertThat(maybeUserVO).isPresent()
                 .get()
-                .extracting("userId", "username", "password", "name", "email")
-                .containsExactly(1L, userVO.username(), userVO.password(), userVO.name(), userVO.email());
+                .extracting("userId", "username", "password", "nickname", "email")
+                .containsExactly(1L, userVO.username(), userVO.password(), userVO.nickname(), userVO.email());
     }
     
     @DisplayName("findByUsername: 존재하지 않는 username으로 UserVo 조회 시 Optional에 null이 들어간 값 반환")

@@ -6,7 +6,7 @@ public record UserVO(
         Long userId,
         String username,
         String password,
-        String name,
+        String nickname,
         String email,
         LocalDateTime createdAt
 ) {

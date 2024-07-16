@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, user.username());
             pstmt.setString(2, user.password());
-            pstmt.setString(3, user.name());
+            pstmt.setString(3, user.nickname());
             pstmt.setString(4, user.email());
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -57,7 +57,7 @@ public class UserDaoImpl implements UserDao {
                             rs.getLong("user_id"),
                             rs.getString("username"),
                             rs.getString("password"),
-                            rs.getString("name"),
+                            rs.getString("nickname"),
                             rs.getString("email"),
                             rs.getTimestamp("created_at").toLocalDateTime()
                     ));
@@ -83,7 +83,7 @@ public class UserDaoImpl implements UserDao {
                             rs.getLong("user_id"),
                             rs.getString("username"),
                             rs.getString("password"),
-                            rs.getString("name"),
+                            rs.getString("nickname"),
                             rs.getString("email"),
                             rs.getTimestamp("created_at").toLocalDateTime()
                     ));
@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserDao {
                         rs.getLong("user_id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("name"),
+                        rs.getString("nickname"),
                         rs.getString("email"),
                         rs.getTimestamp("created_at").toLocalDateTime()
                 ));
@@ -130,7 +130,7 @@ public class UserDaoImpl implements UserDao {
             pstmt.setString(1, user.username());
             pstmt.setString(2, user.password());
             pstmt.setString(3, user.email());
-            pstmt.setString(4, user.name());
+            pstmt.setString(4, user.nickname());
             pstmt.setLong(5, userId);
             pstmt.executeUpdate();
             int rowsAffected = pstmt.executeUpdate();

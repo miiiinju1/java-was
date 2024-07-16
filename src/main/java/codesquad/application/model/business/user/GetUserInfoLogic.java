@@ -25,7 +25,7 @@ public class GetUserInfoLogic implements Triggerable<Void, UserInfoResponse> {
         UserVO userVO = userDao.findById(userPk)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        return new UserInfoResponse(userVO.name());
+        return new UserInfoResponse(userVO.nickname());
     }
 
     public GetUserInfoLogic(UserDao userDao) {

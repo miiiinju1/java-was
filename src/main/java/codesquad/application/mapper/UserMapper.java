@@ -17,7 +17,7 @@ public class UserMapper {
     }
 
     public static User toUser(UserVO userVO) {
-        User user = new User(userVO.username(), userVO.password(), userVO.name(), userVO.email());
+        User user = new User(userVO.username(), userVO.password(), userVO.nickname(), userVO.email());
         user.initUserPk(userVO.userId());
         return user;
     }
