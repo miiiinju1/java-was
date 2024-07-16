@@ -20,6 +20,23 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .photo-preview {
+            margin-top: 16px;
+            text-align: center;
+        }
+        .photo-preview img {
+            max-width: 600px;
+            max-height: 600px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        .error-message {
+            display: none;
+            margin-top: 16px;
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -45,10 +62,11 @@
                     if (response.ok) {
                         window.location.href = '/';
                     } else {
-                        console.error('Failed to post');
+                        showErrorMessage();
                     }
                 } catch (error) {
                     console.error('Error:', error);
+                    showErrorMessage();
                 }
             });
 
@@ -66,6 +84,14 @@
                     console.error('Error:', error);
                     window.location.href = '/';
                 }
+            };
+
+            const showErrorMessage = () => {
+                const errorMessage = document.querySelector('.error-message');
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
             };
 
             checkLoginStatus();
@@ -89,6 +115,30 @@
                     }
                 } catch (error) {
                     console.error('Error:', error);
+                }
+            });
+
+            // 파일 첨부 시 미리보기 기능 추가
+            const fileInput = document.getElementById('photo-upload');
+            const previewContainer = document.createElement('div');
+            previewContainer.classList.add('photo-preview');
+            fileInput.parentNode.insertBefore(previewContainer, fileInput.nextSibling);
+
+            fileInput.addEventListener('change', (event) => {
+                const files = event.target.files;
+                previewContainer.innerHTML = ''; // Clear previous preview
+
+                if (files.length > 0) {
+                    const file = files[0];
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        previewContainer.appendChild(img);
+                    };
+
+                    reader.readAsDataURL(file);
                 }
             });
         });
@@ -123,6 +173,7 @@
             <div class="photo-upload-container">
                 <input type="file" id="photo-upload" accept="image/*" />
                 <label for="photo-upload">사진 첨부</label>
+                <div class="photo-preview"></div>
             </div>
             <button
                     id="registration-btn"
@@ -132,6 +183,7 @@
             >
                 작성 완료
             </button>
+            <div class="error-message">작성에 실패했습니다. 다시 시도해 주세요.</div>
         </form>
     </div>
 </div>
