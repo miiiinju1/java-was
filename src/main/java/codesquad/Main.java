@@ -7,6 +7,8 @@ import codesquad.application.database.dao.PostDaoImpl;
 import codesquad.application.database.dao.UserDao;
 import codesquad.application.database.dao.UserDaoImpl;
 import codesquad.application.domain.images.handler.ImageResourceHandler;
+import codesquad.application.domain.post.business.GetPostListLogic;
+import codesquad.application.domain.post.handler.GetPostListRequestHandler;
 import codesquad.application.handler.*;
 import codesquad.application.model.business.LoginUserLogic;
 import codesquad.application.model.business.RegisterUserLogic;
@@ -129,10 +131,10 @@ public class Main {
         PostCreateRequestHandler postCreateRequestHandler = new PostCreateRequestHandler(postCreateArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/api/posts", postCreateRequestHandler, postCreateLogic);
 
-//        PostListLogic postListLogic = new PostListLogic(postDao);
-//        PostListRequestHandler postListRequestHandler = new PostListRequestHandler();
-//        handlerRegistry.registerHandler(HttpMethod.GET, "/api/posts", postListRequestHandler, postListLogic);
-//
+        GetPostListLogic getPostListLogic = new GetPostListLogic(postDao);
+        GetPostListRequestHandler getPostListRequestHandler = new GetPostListRequestHandler();
+        handlerRegistry.registerHandler(HttpMethod.GET, "/api/posts", getPostListRequestHandler, getPostListLogic);
+
 //        PostDeleteLogic postDeleteLogic = new PostDeleteLogic(postDao);
 //        ArgumentResolver<PostDeleteRequest> postDeleteArgumentResolver = new PostDeleteArgumentResolver();
 //        PostDeleteRequestHandler postDeleteRequestHandler = new PostDeleteRequestHandler(postDeleteArgumentResolver);
