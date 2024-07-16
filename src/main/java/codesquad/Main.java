@@ -2,10 +2,7 @@ package codesquad;
 
 import codesquad.application.database.DatabaseConfig;
 import codesquad.application.database.H2Console;
-import codesquad.application.database.dao.PostDao;
-import codesquad.application.database.dao.PostDaoImpl;
-import codesquad.application.database.dao.UserDao;
-import codesquad.application.database.dao.UserDaoImpl;
+import codesquad.application.database.dao.*;
 import codesquad.application.domain.images.handler.ImageResourceHandler;
 import codesquad.application.domain.post.business.GetPostListLogic;
 import codesquad.application.domain.post.handler.GetPostListRequestHandler;
@@ -55,6 +52,9 @@ public class Main {
         // Post DB
         PostDao postDao = new PostDaoImpl(databaseConfig);
 
+        // Comment DB
+        CommentDao commentDao = new CommentDaoImpl(databaseConfig);
+
         // 회원 가입 로직
         RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDao);
         ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
@@ -91,7 +91,7 @@ public class Main {
         registerImageHandler(handlerRegistry);
 
         // Post
-        registerPostApi(handlerRegistry, userDao, postDao);
+        registerPostApi(handlerRegistry, userDao, postDao, commentDao);
 
         // 디스패처 생성
         HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(defaultResourceHandler, handlerRegistry);
@@ -124,14 +124,15 @@ public class Main {
     private static void registerPostApi(
             HandlerRegistry handlerRegistry,
             UserDao userDao,
-            PostDao postDao
+            PostDao postDao,
+            CommentDao commentDao
     ) {
         PostCreateLogic postCreateLogic = new PostCreateLogic(userDao, postDao);
         ArgumentResolver<PostCreateRequest> postCreateArgumentResolver = new PostCreateArgumentResolver();
         PostCreateRequestHandler postCreateRequestHandler = new PostCreateRequestHandler(postCreateArgumentResolver);
         handlerRegistry.registerHandler(HttpMethod.POST, "/api/posts", postCreateRequestHandler, postCreateLogic);
 
-        GetPostListLogic getPostListLogic = new GetPostListLogic(postDao);
+        GetPostListLogic getPostListLogic = new GetPostListLogic(postDao, commentDao);
         GetPostListRequestHandler getPostListRequestHandler = new GetPostListRequestHandler();
         handlerRegistry.registerHandler(HttpMethod.GET, "/api/posts", getPostListRequestHandler, getPostListLogic);
 
