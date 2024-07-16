@@ -9,7 +9,10 @@ import codesquad.application.domain.post.response.PostResponse;
 import codesquad.application.processor.Triggerable;
 import codesquad.application.repository.vo.CommentVO;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GetPostListLogic implements Triggerable<Void, PostListResponse> {
 
@@ -30,8 +33,8 @@ public class GetPostListLogic implements Triggerable<Void, PostListResponse> {
                             .toList();
                     return new PostResponse(post.postId(), "nickname", post.content(), post.imagePath(), CommentListResponse.of(post.postId(), commentResponse));
                 })
-                .toList();
-
+                .collect(Collectors.toCollection(ArrayList::new));
+        Collections.reverse(postResponseList);
         return PostListResponse.of(postResponseList);
     }
 
