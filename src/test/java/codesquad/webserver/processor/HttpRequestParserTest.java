@@ -5,6 +5,7 @@ import codesquad.webserver.http.HttpMethod;
 import codesquad.webserver.http.HttpRequest;
 import codesquad.webserver.http.HttpVersion;
 import codesquad.webserver.http.Path;
+import codesquad.webserver.http.header.HeaderConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,47 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class HttpRequestParserTest {
 
     private final HttpRequestParser httpRequestParser = new HttpRequestParser();
+
+    @DisplayName("parseRequest: MultiPart 요청이 적절하게 파싱되는지 확인")
+    @Test
+    void parseMultiPartRequest() throws IOException {
+        // given
+        String request = "POST /upload HTTP/1.1\r\n" +
+                "Host: localhost\r\n" +
+                "Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW\r\n" +
+                "Content-Length: 327\r\n" +
+                "\r\n" +
+                "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\n" +
+                "Content-Disposition: form-data; name=\"content\"\r\n" +
+                "\r\n" +
+                "This is the content\r\n" +
+                "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\n" +
+                "Content-Disposition: form-data; name=\"image\"; filename=\"example.png\"\r\n" +
+                "Content-Type: image/png\r\n" +
+                "\r\n" +
+                "<binary data of example.png>\r\n" +
+                "------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+
+        InputStream inputStream = new ByteArrayInputStream(request.getBytes());
+        HttpRequestParser parser = new HttpRequestParser();
+
+        // when
+        HttpRequest httpRequest = parser.parseRequest(inputStream);
+
+        // then
+        assertThat(httpRequest)
+                .extracting(HttpRequest::getMethod, req -> req.getPath().getBasePath(), HttpRequest::getVersion)
+                .containsExactly(HttpMethod.POST, "/upload", HttpVersion.HTTP_1_1);
+
+        assertThat(httpRequest.getHeaders().getHeader(HeaderConstants.CONTENT_TYPE)).isNotNull()
+                .contains("multipart/form-data", "boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW");
+
+        byte[] body = httpRequest.getBody().readAllBytes();
+        String bodyString = new String(body);
+        assertThat(bodyString)
+                .contains("This is the content")
+                .contains("<binary data of example.png>");
+    }
 
     @DisplayName("urlencoded된 요청이 오는 경우에는 decode된 body를 HttpRequest에 저장한다.")
     @Test
