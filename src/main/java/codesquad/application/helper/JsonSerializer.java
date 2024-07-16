@@ -1,11 +1,12 @@
 package codesquad.application.helper;
 
+import codesquad.application.domain.comment.response.CommentListResponse;
+import codesquad.application.domain.comment.response.CommentResponse;
 import codesquad.application.domain.post.response.PostListResponse;
 import codesquad.application.domain.post.response.PostResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 public class JsonSerializer {
 
@@ -14,7 +15,7 @@ public class JsonSerializer {
         json.append("{");
 
         json.append("\"postResponses\":");
-        json.append(toJson(postListResponse.postResponses()));
+        json.append(toJsonPostResponseList(postListResponse.postResponses()));
 
         json.append(",\"totalCount\":");
         json.append(postListResponse.totalCount());
@@ -23,14 +24,14 @@ public class JsonSerializer {
         return json.toString();
     }
 
-    private static String toJson(List<PostResponse> postResponses) {
+    private static String toJsonPostResponseList(List<PostResponse> postResponses) {
         String jsonArray = postResponses.stream()
-                .map(JsonSerializer::toJson)
+                .map(JsonSerializer::toJsonPostResponse)
                 .collect(Collectors.joining(","));
         return "[" + jsonArray + "]";
     }
 
-    private static String toJson(PostResponse postResponse) {
+    private static String toJsonPostResponse(PostResponse postResponse) {
         StringBuilder json = new StringBuilder();
         json.append("{");
 
@@ -47,6 +48,52 @@ public class JsonSerializer {
 
         json.append(",\"imageName\":\"");
         json.append(postResponse.imageName());
+        json.append("\"");
+
+        json.append(",\"commentList\":");
+        json.append(toJsonCommentListResponse(postResponse.commentList()));
+
+        json.append("}");
+        return json.toString();
+    }
+
+    private static String toJsonCommentListResponse(CommentListResponse commentListResponse) {
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+
+        json.append("\"postId\":");
+        json.append(commentListResponse.postId());
+
+        json.append(",\"commentList\":");
+        json.append(toJsonCommentResponseList(commentListResponse.commentList()));
+
+        json.append(",\"commentCount\":");
+        json.append(commentListResponse.commentCount());
+
+        json.append("}");
+        return json.toString();
+    }
+
+    private static String toJsonCommentResponseList(List<CommentResponse> commentResponses) {
+        String jsonArray = commentResponses.stream()
+                .map(JsonSerializer::toJsonCommentResponse)
+                .collect(Collectors.joining(","));
+        return "[" + jsonArray + "]";
+    }
+
+    private static String toJsonCommentResponse(CommentResponse commentResponse) {
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+
+        json.append("\"commentId\":");
+        json.append(commentResponse.commentId());
+
+        json.append(",\"nickname\":\"");
+        json.append(commentResponse.nickname());
+        json.append("\"");
+
+        json.append(",\"content\":\"");
+        json.append(commentResponse.content());
         json.append("\"");
 
         json.append("}");
