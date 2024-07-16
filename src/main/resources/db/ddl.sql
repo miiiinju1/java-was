@@ -23,13 +23,21 @@ CREATE TABLE IF NOT EXISTS comments (
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO USERS (USER_ID, USERNAME, PASSWORD, EMAIL, NAME, CREATED_AT) VALUES
-    (1, 'd', 'd', 'd@n', 'd', '2024-07-16 14:35:37.823662');
 
-INSERT INTO POSTS (POST_ID, USER_ID, CONTENT, IMAGE_PATH) VALUES
-    (1, 1, 'asdf', '3479a814-0272-49d8-8699-e318f23cc902.png');
+INSERT INTO users (username, password, email, name, created_at) VALUES
+    ('d', 'd', 'd@n', 'd', '2024-07-16 14:35:37.823662');
 
-INSERT INTO COMMENTS (COMMENT_ID, POST_ID, USER_ID, CONTENT, CREATED_AT) VALUES
-     (1, 1, 1001, 'This is the first comment.', '2024-07-16 14:30:00'),
-     (2, 1, 1002, 'This is the second comment.', '2024-07-16 14:31:00'),
-     (3, 1, 1003, 'This is the third comment.', '2024-07-16 14:32:00');
+INSERT INTO posts (user_id, content, image_path) VALUES
+    (1, 'asdf', '3479a814-0272-49d8-8699-e318f23cc902.png');
+
+-- Users must exist in users table before inserting comments
+INSERT INTO users (username, password, email, name) VALUES
+    ('user1001', 'password', 'user1001@example.com', 'User 1001'),
+    ('user1002', 'password', 'user1002@example.com', 'User 1002'),
+    ('user1003', 'password', 'user1003@example.com', 'User 1003');
+
+-- Insert comments with existing user_ids
+INSERT INTO comments (post_id, user_id, content, created_at) VALUES
+     (1, 1, 'This is the first comment.', '2024-07-16 14:30:00'),
+     (1, 2, 'This is the second comment.', '2024-07-16 14:31:00'),
+     (1, 3, 'This is the third comment.', '2024-07-16 14:32:00');
