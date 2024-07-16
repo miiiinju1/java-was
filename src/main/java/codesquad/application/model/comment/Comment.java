@@ -7,7 +7,7 @@ public class Comment {
     private Long commentId;
     private final Long postId;
     private final Long userId;
-    private final String content;
+    private final CommentContent content;
     private final LocalDateTime createdAt;
 
     public void initCommentId(Long commentId) {
@@ -25,17 +25,23 @@ public class Comment {
         return userId;
     }
 
-    public String getContent() {
+    public CommentContent getContent() {
         return content;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    public Comment(Long postId, Long userId, String content, LocalDateTime createdAt) {
+
+    public Comment(
+            Long postId,
+            Long userId,
+            String content,
+            LocalDateTime createdAt
+    ) {
         this.postId = postId;
         this.userId = userId;
-        this.content = content;
+        this.content = new CommentContent(content);
         this.createdAt = createdAt;
     }
 }
