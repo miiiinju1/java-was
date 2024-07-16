@@ -3,6 +3,10 @@ package codesquad;
 import codesquad.application.database.DatabaseConfig;
 import codesquad.application.database.H2Console;
 import codesquad.application.database.dao.*;
+import codesquad.application.domain.comment.argumentresolver.CreateCommentArgumentResolver;
+import codesquad.application.domain.comment.business.CreateCommentLogic;
+import codesquad.application.domain.comment.handler.CreateCommentRequestHandler;
+import codesquad.application.domain.comment.request.CreateCommentRequest;
 import codesquad.application.domain.images.handler.ImageResourceHandler;
 import codesquad.application.domain.post.business.GetPostListLogic;
 import codesquad.application.domain.post.handler.GetPostListRequestHandler;
@@ -93,6 +97,9 @@ public class Main {
         // Post
         registerPostApi(handlerRegistry, userDao, postDao, commentDao);
 
+        // Comment
+        registerCommentApi(handlerRegistry, commentDao);
+
         // 디스패처 생성
         HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(defaultResourceHandler, handlerRegistry);
 
@@ -106,6 +113,9 @@ public class Main {
 
         SecurePathManager.addSecurePath("/api/user-info", HttpMethod.GET);
         SecurePathManager.addSecurePath("/api/users", HttpMethod.GET);
+        SecurePathManager.addSecurePath("/api/posts", HttpMethod.POST);
+        SecurePathManager.addSecurePath("/api/comments/{postId}", HttpMethod.POST);
+
 
         try {
             serverInitializer.startServer(8080, httpRequestProcessor);
@@ -141,4 +151,15 @@ public class Main {
 //        PostDeleteRequestHandler postDeleteRequestHandler = new PostDeleteRequestHandler(postDeleteArgumentResolver);
 //        handlerRegistry.registerHandler(HttpMethod.DELETE, "/api/posts", postDeleteRequestHandler, postDeleteLogic);
     }
+
+    private static void registerCommentApi(
+            HandlerRegistry handlerRegistry,
+            CommentDao commentDao
+    ) {
+        CreateCommentLogic createCommentLogic = new CreateCommentLogic(commentDao);
+        ArgumentResolver<CreateCommentRequest> argumentResolver = new CreateCommentArgumentResolver();
+        CreateCommentRequestHandler createCommentRequestHandler = new CreateCommentRequestHandler(argumentResolver);
+        handlerRegistry.registerHandler(HttpMethod.POST, "/api/comments/{postId}", createCommentRequestHandler, createCommentLogic);
+    }
+
 }
