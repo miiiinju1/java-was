@@ -2,6 +2,8 @@ package codesquad;
 
 import codesquad.application.database.DatabaseConfig;
 import codesquad.application.database.H2Console;
+import codesquad.application.database.dao.PostDao;
+import codesquad.application.database.dao.PostDaoImpl;
 import codesquad.application.database.dao.UserDao;
 import codesquad.application.database.dao.UserDaoImpl;
 import codesquad.application.handler.*;
@@ -9,6 +11,10 @@ import codesquad.application.model.business.LoginUserLogic;
 import codesquad.application.model.business.RegisterUserLogic;
 import codesquad.application.model.business.user.GetUserInfoLogic;
 import codesquad.application.model.business.user.GetUserListLogic;
+import codesquad.application.post.argumentresolver.PostCreateArgumentResolver;
+import codesquad.application.post.business.PostCreateLogic;
+import codesquad.application.post.handler.PostCreateRequestHandler;
+import codesquad.application.post.request.PostCreateRequest;
 import codesquad.application.processor.HandlerRegistry;
 import codesquad.application.processor.HttpRequestDispatcher;
 import codesquad.application.processor.argumentresolver.ArgumentResolver;
@@ -43,6 +49,9 @@ public class Main {
         // User DB
         UserDao userDao = new UserDaoImpl(databaseConfig);
 
+        // Post DB
+        PostDao postDao = new PostDaoImpl(databaseConfig);
+
         // 회원 가입 로직
         RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDao);
         ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
@@ -75,6 +84,9 @@ public class Main {
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
 
+        // Post
+        registerPostApi(handlerRegistry, userDao, postDao);
+
         // 디스패처 생성
         HttpRequestDispatcher httpRequestDispatcher = new HttpRequestDispatcher(defaultResourceHandler, handlerRegistry);
 
@@ -94,5 +106,25 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void registerPostApi(
+            HandlerRegistry handlerRegistry,
+            UserDao userDao,
+            PostDao postDao
+    ) {
+        PostCreateLogic postCreateLogic = new PostCreateLogic(userDao, postDao);
+        ArgumentResolver<PostCreateRequest> postCreateArgumentResolver = new PostCreateArgumentResolver();
+        PostCreateRequestHandler postCreateRequestHandler = new PostCreateRequestHandler(postCreateArgumentResolver);
+        handlerRegistry.registerHandler(HttpMethod.POST, "/api/posts", postCreateRequestHandler, postCreateLogic);
+
+//        PostListLogic postListLogic = new PostListLogic(postDao);
+//        PostListRequestHandler postListRequestHandler = new PostListRequestHandler();
+//        handlerRegistry.registerHandler(HttpMethod.GET, "/api/posts", postListRequestHandler, postListLogic);
+//
+//        PostDeleteLogic postDeleteLogic = new PostDeleteLogic(postDao);
+//        ArgumentResolver<PostDeleteRequest> postDeleteArgumentResolver = new PostDeleteArgumentResolver();
+//        PostDeleteRequestHandler postDeleteRequestHandler = new PostDeleteRequestHandler(postDeleteArgumentResolver);
+//        handlerRegistry.registerHandler(HttpMethod.DELETE, "/api/posts", postDeleteRequestHandler, postDeleteLogic);
     }
 }
