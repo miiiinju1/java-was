@@ -1,7 +1,7 @@
 package codesquad.application.mapper;
 
-import codesquad.application.model.comment.Comment;
-import codesquad.application.repository.vo.CommentVO;
+import codesquad.application.domain.comment.model.Comment;
+import codesquad.application.database.CommentVO;
 
 public class CommentMapper {
     public static CommentVO toCommentVO(Comment comment) {

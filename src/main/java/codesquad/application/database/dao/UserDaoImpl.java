@@ -1,7 +1,7 @@
 package codesquad.application.database.dao;
 
 import codesquad.application.database.DatabaseConfig;
-import codesquad.application.repository.vo.UserVO;
+import codesquad.application.database.UserVO;
 
 import java.sql.*;
 import java.util.ArrayList;

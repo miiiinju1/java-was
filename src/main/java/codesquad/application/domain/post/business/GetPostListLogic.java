@@ -7,7 +7,7 @@ import codesquad.application.domain.comment.response.CommentResponse;
 import codesquad.application.domain.post.response.PostListResponse;
 import codesquad.application.domain.post.response.PostResponse;
 import codesquad.application.processor.Triggerable;
-import codesquad.application.repository.vo.CommentVO;
+import codesquad.application.database.CommentVO;
 
 import java.util.ArrayList;
 import java.util.Collections;

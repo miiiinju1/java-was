@@ -2,7 +2,7 @@ package codesquad.application.domain.post.argumentresolver;
 
 import codesquad.api.Request;
 import codesquad.application.domain.post.request.PostCreateRequest;
-import codesquad.application.processor.argumentresolver.ArgumentResolver;
+import codesquad.application.processor.ArgumentResolver;
 import codesquad.webserver.helper.MultiPartParseHelper;
 import codesquad.webserver.http.header.HttpHeaders;
 

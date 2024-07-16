@@ -1,7 +1,6 @@
 package codesquad.application.database;
 
-import codesquad.application.repository.UserDatabase;
-import codesquad.application.model.User;
+import codesquad.application.domain.user.model.User;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

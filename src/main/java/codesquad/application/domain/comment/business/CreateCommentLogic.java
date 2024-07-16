@@ -3,7 +3,7 @@ package codesquad.application.domain.comment.business;
 import codesquad.application.database.dao.CommentDao;
 import codesquad.application.domain.comment.request.CreateCommentRequest;
 import codesquad.application.mapper.CommentMapper;
-import codesquad.application.model.comment.Comment;
+import codesquad.application.domain.comment.model.Comment;
 import codesquad.application.processor.Triggerable;
 import codesquad.webserver.authorization.AuthorizationContextHolder;
 import codesquad.webserver.http.Session;

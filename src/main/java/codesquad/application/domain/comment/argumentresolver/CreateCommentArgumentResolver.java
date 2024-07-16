@@ -3,7 +3,7 @@ package codesquad.application.domain.comment.argumentresolver;
 import codesquad.api.Request;
 import codesquad.application.domain.comment.request.CreateCommentRequest;
 import codesquad.application.helper.JsonDeserializer;
-import codesquad.application.processor.argumentresolver.ArgumentResolver;
+import codesquad.application.processor.ArgumentResolver;
 import codesquad.webserver.http.Path;
 
 import java.util.Map;

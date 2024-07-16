@@ -1,8 +1,8 @@
 package codesquad.application.database.dao;
 
 import codesquad.application.database.DatabaseConfig;
-import codesquad.application.repository.vo.PostListVO;
-import codesquad.application.repository.vo.PostVO;
+import codesquad.application.database.PostListVO;
+import codesquad.application.database.PostVO;
 
 import java.sql.*;
 import java.util.ArrayList;

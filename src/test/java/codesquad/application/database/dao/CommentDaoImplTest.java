@@ -1,7 +1,7 @@
 package codesquad.application.database.dao;
 
 import codesquad.application.config.H2TestDatabaseConfig;
-import codesquad.application.repository.vo.CommentVO;
+import codesquad.application.database.CommentVO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

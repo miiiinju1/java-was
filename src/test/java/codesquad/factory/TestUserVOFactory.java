@@ -1,6 +1,6 @@
 package codesquad.factory;
 
-import codesquad.application.repository.vo.UserVO;
+import codesquad.application.database.UserVO;
 
 public class TestUserVOFactory {
 

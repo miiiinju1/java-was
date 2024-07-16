@@ -4,7 +4,7 @@ import codesquad.api.Request;
 import codesquad.api.Response;
 import codesquad.application.domain.comment.request.CreateCommentRequest;
 import codesquad.application.handler.ApiRequestHandler;
-import codesquad.application.processor.argumentresolver.ArgumentResolver;
+import codesquad.application.processor.ArgumentResolver;
 
 import java.io.IOException;
 
