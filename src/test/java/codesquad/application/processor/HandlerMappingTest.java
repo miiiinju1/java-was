@@ -15,6 +15,23 @@ class HandlerMappingTest {
     private HttpHandler<String, String> dummyHandler = (req, res, trigger) -> {};
     private Triggerable<String, String> dummyTriggerable = (req) -> "response";
 
+
+    @DisplayName("이미지 요청 시 정상적으로 처리")
+    @Test
+    void testImageRequest() {
+        // given
+        HttpMethod method = HttpMethod.GET;
+        String registeredUrl = "/images/{filename}";
+        String url = "/images/9c433d0c-42e0-47eb-b339-c3b8d99aa343.png";
+        HandlerMapping<String, String> handlerMapping = new HandlerMapping<>(method, registeredUrl, dummyHandler, dummyTriggerable);
+
+        // when
+        boolean result = handlerMapping.matchRequest(HttpMethod.GET, url);
+
+        // then
+        assertThat(result).isTrue();
+
+    }
     @DisplayName("HandlerMapping: 정상적인 생성")
     @Test
     void testHandlerMappingCreation() {
