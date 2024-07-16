@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
             final UserVO user
     ) {
         validateUserVo(user);
-        String sql = "INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, password, nickname, email) VALUES (?, ?, ?, ?)";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, user.username());
@@ -124,7 +124,7 @@ public class UserDaoImpl implements UserDao {
             final UserVO user
     ) {
         validateUserVo(user);
-        String sql = "UPDATE users SET username = ?, password = ?, email = ?, name = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET username = ?, password = ?, email = ?, nickname = ? WHERE user_id = ?";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.username());
