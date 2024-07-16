@@ -19,8 +19,11 @@ public class RegisterRequestHandler extends ApiRequestHandler<RegisterRequest, L
 
     @Override
     public void applyExceptionHandler(RuntimeException e, Response response) throws IOException {
-        if(e instanceof IllegalArgumentException) {
+        if (e instanceof IllegalArgumentException) {
             response.setStatus(HttpStatus.BAD_REQUEST);
+            response.getBody().write(e.getMessage().getBytes());
+        } else if (e instanceof RuntimeException) {
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             response.getBody().write(e.getMessage().getBytes());
         }
     }
