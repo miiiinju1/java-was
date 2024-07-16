@@ -104,9 +104,6 @@ public class HttpRequestParser {
             }
         }
 
-        if (contentType.contains("multipart/form-data")) {
-            handleMultipart(body, contentType);
-        }
 
         return HttpRequest.builder()
                 .method(method)
@@ -124,58 +121,5 @@ public class HttpRequestParser {
             }
         }
         return "";
-    }
-
-    private void handleMultipart(byte[] requestData, String contentType) throws IOException {
-        String boundary = "--" + contentType.split("boundary=")[1];
-        byte[] boundaryBytes = boundary.getBytes(CHARSET);
-
-        int index = indexOf(requestData, HEADER_END.getBytes(CHARSET), 0) + 4;
-        byte[] body = Arrays.copyOfRange(requestData, index, requestData.length);
-
-        int startIndex = 0;
-
-        while (true) {
-            int boundaryIndex = indexOf(body, boundaryBytes, startIndex);
-            if (boundaryIndex == -1) {
-                break;
-            }
-
-            int endIndex = indexOf(body, boundaryBytes, boundaryIndex + boundaryBytes.length);
-            if (endIndex == -1) {
-                endIndex = body.length;
-            }
-
-            byte[] partBytes = Arrays.copyOfRange(body, boundaryIndex + boundaryBytes.length, endIndex);
-
-            // Process each part's headers and body
-            int partHeaderEndIndex = indexOf(partBytes, HEADER_END.getBytes(CHARSET), 0) + 4;
-            byte[] partHeaders = Arrays.copyOfRange(partBytes, 0, partHeaderEndIndex);
-            byte[] partBody = Arrays.copyOfRange(partBytes, partHeaderEndIndex, partBytes.length);
-
-//            System.out.println("Part headers: " + new String(partHeaders, CHARSET));
-//            System.out.println("Part body size: " + partBody.length);
-
-            // 추가로 파일 처리 로직을 추가할 수 있습니다.
-            // 예: 파일 저장, 데이터베이스에 저장 등
-
-            startIndex = endIndex + boundaryBytes.length;
-        }
-    }
-
-    private int indexOf(byte[] array, byte[] target, int start) {
-        for (int i = start; i <= array.length - target.length; i++) {
-            boolean found = true;
-            for (int j = 0; j < target.length; j++) {
-                if (array[i + j] != target[j]) {
-                    found = false;
-                    break;
-                }
-            }
-            if (found) {
-                return i;
-            }
-        }
-        return -1;
     }
 }
