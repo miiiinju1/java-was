@@ -4,7 +4,7 @@ import codesquad.application.model.comment.Comment;
 import codesquad.application.repository.vo.CommentVO;
 
 public class CommentMapper {
-    public static CommentVO toVo(Comment comment) {
+    public static CommentVO toCommentVO(Comment comment) {
         return new CommentVO(
                 comment.getCommentId(),
                 comment.getPostId(),

@@ -19,7 +19,7 @@ public class CreateCommentLogic implements Triggerable<CreateCommentRequest, Voi
         Long userId = session.getUserId();
         Comment comment = new Comment(createCommentRequest.postId(), userId, createCommentRequest.content(), null);
 
-        commentDao.save(CommentMapper.toVo(comment));
+        commentDao.save(CommentMapper.toCommentVO(comment));
     }
 
     @Override
