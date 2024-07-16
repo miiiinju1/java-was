@@ -6,6 +6,7 @@ import codesquad.application.repository.vo.CommentVO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class CommentDaoImpl implements CommentDao {
@@ -110,6 +111,30 @@ public class CommentDaoImpl implements CommentDao {
                         rs.getString("content"),
                         rs.getTimestamp("created_at").toLocalDateTime()
                 ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return comments;
+    }
+
+    @Override
+    public List<CommentVO> findByPostId(Long postId) {
+        String sql = "SELECT * FROM comments WHERE post_id = ?";
+        List<CommentVO> comments = new ArrayList<>();
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, postId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    comments.add(new CommentVO(
+                            rs.getLong("comment_id"),
+                            rs.getLong("post_id"),
+                            rs.getLong("user_id"),
+                            rs.getString("content"),
+                            rs.getTimestamp("created_at").toLocalDateTime()
+                    ));
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
