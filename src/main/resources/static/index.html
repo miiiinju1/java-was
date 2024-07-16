@@ -19,7 +19,7 @@
     }
 
     .comment-input {
-      flex: 1;
+      width: calc(100% - 110px); /* Adjusted width for better alignment */
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
@@ -30,6 +30,9 @@
       display: flex;
       align-items: center;
       margin-top: 10px;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
     }
 
     .post {
@@ -69,6 +72,27 @@
       margin-top: 10px;
     }
 
+    .post__menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .post__menu__personal {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .post__menu__btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
     .comment__list {
       margin-top: 10px;
       padding-left: 0;
@@ -88,6 +112,19 @@
     .comment__item__user__nickname {
       font-weight: bold;
       margin-right: 5px;
+    }
+
+    .submit-comment-btn {
+      background-color: #4CAF50; /* Green background */
+      color: white; /* White text */
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .submit-comment-btn:hover {
+      background-color: #45a049; /* Darker green on hover */
     }
 
     .no-posts-message {
@@ -198,11 +235,28 @@
               <p class="post__account__nickname">${post.nickname}</p>
             </div>
             <img class="post__img" src="/images/${post.imageName}" alt="Post Image" />
+            <div class="post__menu">
+              <ul class="post__menu__personal">
+                <li>
+                  <button class="post__menu__btn">
+                    <img src="../img/like.svg" alt="Like" />
+                  </button>
+                </li>
+                <li>
+                  <button class="post__menu__btn">
+                    <img src="../img/sendLink.svg" alt="Send Link" />
+                  </button>
+                </li>
+              </ul>
+              <button class="post__menu__btn">
+                <img src="../img/bookMark.svg" alt="Bookmark" />
+              </button>
+            </div>
             <p class="post__article">${post.content}</p>
             <ul class="comment__list" data-post-id="${post.postId}"></ul>
             <div class="comment-form">
               <input type="text" class="comment-input" placeholder="댓글을 입력하세요" data-post-id="${post.postId}">
-              <button class="btn btn_ghost btn_size_m submit-comment-btn" data-post-id="${post.postId}">댓글 작성</button>
+              <button class="submit-comment-btn" data-post-id="${post.postId}">댓글 작성</button>
             </div>
           `;
 
@@ -218,24 +272,6 @@
             submitComment(postId);
           });
         });
-      };
-
-      const loadComments = async (postId) => {
-        try {
-          const response = await fetch(`/api/comments/${postId}`, {
-            method: 'GET',
-            credentials: 'include',
-          });
-
-          if (response.ok) {
-            const comments = await response.json();
-            renderComments(postId, comments);
-          } else {
-            console.error('Failed to load comments');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-        }
       };
 
       const renderComments = (postId, comments) => {
@@ -266,7 +302,7 @@
         }
 
         try {
-          const response = await fetch(`/api/comments/${postId}`, {
+          const response = await fetch(`/api/posts/${postId}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -276,7 +312,8 @@
           });
 
           if (response.ok) {
-            loadComments(postId); // Reload comments after submitting
+            // Reload posts to reflect new comment
+            loadPosts();
             commentInput.value = ''; // Clear the input
           } else {
             console.error('Failed to submit comment');
@@ -294,9 +331,16 @@
 <body>
 <div class="container">
   <header class="header">
-    <a href="/"><img src="./img/signiture.svg" alt="Signiture" /></a>
+    <a href="/main"><img src="/img/signiture.svg" /></a>
     <ul class="header__menu">
-      <!-- 로그인/로그아웃 버튼이 여기에 추가됨 -->
+      <li class="header__menu__item">
+        <a class="btn btn_contained btn_size_s" href="/post">글쓰기</a>
+      </li>
+      <li class="header__menu__item">
+        <button id="logout-btn" class="btn btn_ghost btn_size_s">
+          로그아웃
+        </button>
+      </li>
     </ul>
   </header>
   <div class="wrapper">
