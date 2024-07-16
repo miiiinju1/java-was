@@ -6,6 +6,7 @@ import codesquad.application.database.dao.PostDao;
 import codesquad.application.database.dao.PostDaoImpl;
 import codesquad.application.database.dao.UserDao;
 import codesquad.application.database.dao.UserDaoImpl;
+import codesquad.application.domain.images.handler.ImageResourceHandler;
 import codesquad.application.handler.*;
 import codesquad.application.model.business.LoginUserLogic;
 import codesquad.application.model.business.RegisterUserLogic;
@@ -84,6 +85,9 @@ public class Main {
         HttpResponseSerializer httpResponseSerializer = new HttpResponseSerializer();
         HttpResponseWriter httpResponseWriter = new HttpResponseWriter(httpResponseSerializer);
 
+        // 이미지 리소스 핸들러
+        registerImageHandler(handlerRegistry);
+
         // Post
         registerPostApi(handlerRegistry, userDao, postDao);
 
@@ -106,6 +110,13 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void registerImageHandler(
+            HandlerRegistry handlerRegistry
+    ) {
+        ImageResourceHandler imageHandler = new ImageResourceHandler();
+        handlerRegistry.registerHandler(HttpMethod.GET, "/images/{filename}", imageHandler, o -> null);
     }
 
     private static void registerPostApi(
