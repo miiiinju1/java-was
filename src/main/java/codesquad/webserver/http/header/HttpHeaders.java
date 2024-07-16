@@ -24,6 +24,16 @@ public class HttpHeaders {
         return valueMap.containsKey(key);
     }
 
+    public Optional<String> getMultipartBoundary() {
+        if(!valueMap.containsKey(HeaderConstants.CONTENT_TYPE)
+                || !valueMap.get(HeaderConstants.CONTENT_TYPE).contains("multipart/form-data")) {
+            throw new IllegalArgumentException("Content-Type이 multipart/form-data가 아닙니다.");
+        }
+        return valueMap.get(HeaderConstants.CONTENT_TYPE).stream()
+                .filter(value -> value.contains("boundary"))
+                .map(value -> value.split("boundary=")[1])
+                .findFirst();
+    }
     public List<String> getHeader(final String key) {
         List<String> values = valueMap.get(key);
         if (values == null) {
