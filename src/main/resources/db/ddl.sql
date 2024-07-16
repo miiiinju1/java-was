@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
                        username VARCHAR(50) NOT NULL UNIQUE,
                        password VARCHAR(255) NOT NULL,
                        email VARCHAR(100) NOT NULL UNIQUE,
-                       name VARCHAR(100) NOT NULL,
+                       nickname VARCHAR(100) NOT NULL,
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS comments (
 );
 
 
-INSERT INTO users (username, password, email, name) VALUES
+INSERT INTO users (username, password, email, nickname) VALUES
     ('d', 'd', 'd@n', 'd'),
     ('user1001', 'password', 'user1001@example.com', 'User 1001'),
     ('user1002', 'password', 'user1002@example.com', 'User 1002'),
