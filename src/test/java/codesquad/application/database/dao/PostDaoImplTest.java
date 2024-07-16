@@ -1,12 +1,15 @@
 package codesquad.application.database.dao;
 
 import codesquad.application.config.H2TestDatabaseConfig;
+import codesquad.application.repository.vo.PostListVO;
 import codesquad.application.repository.vo.PostVO;
+import codesquad.application.repository.vo.UserVO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +24,27 @@ class PostDaoImplTest {
     @AfterEach
     void tearDown() {
         h2TestDatabaseConfig.resetDatabase();
+    }
+
+    @DisplayName("findAllJoinFetch: 모든 PostListVO 조회")
+    @Test
+    void findAllJoinFetch() {
+        // given
+        UserDao userDao = new UserDaoImpl(h2TestDatabaseConfig);
+        UserVO userVO = new UserVO(null, "userId1", "password1", "name1", "email1", null);
+        PostVO postVO = new PostVO(null, 1L, "content1", "/path/to/image1.jpg");
+
+        userDao.save(userVO);
+        postDao.save(postVO);
+
+        // when
+        List<PostListVO> allPosts = postDao.findAllJoinFetch();
+
+        // then
+        assertThat(allPosts).hasSize(1)
+                .extracting("userId", "nickname", "content", "imagePath")
+                .containsExactly(tuple(1L, "name1", "content1", "/path/to/image1.jpg"));
+
     }
 
     @DisplayName("save: 정상적인 PostVO 저장")
