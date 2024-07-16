@@ -1,5 +1,8 @@
 package codesquad.application.database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,6 +13,7 @@ import java.sql.Statement;
 public class DDLExecutor {
 
     private final DatabaseConfig databaseConfig;
+    private static final Logger log = LoggerFactory.getLogger(DDLExecutor.class);
 
     public DDLExecutor(DatabaseConfig databaseConfig) {
         this.databaseConfig = databaseConfig;
@@ -28,6 +32,7 @@ public class DDLExecutor {
                     sb.setLength(0);
                 }
             }
+            log.debug("DDL file executed successfully");
         } catch (Exception e) {
             throw new SQLException("Failed to execute DDL file", e);
         }
