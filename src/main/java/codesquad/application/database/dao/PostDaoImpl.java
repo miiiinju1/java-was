@@ -1,11 +1,13 @@
 package codesquad.application.database.dao;
 
 import codesquad.application.database.DatabaseConfig;
+import codesquad.application.repository.vo.PostListVO;
 import codesquad.application.repository.vo.PostVO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class PostDaoImpl implements PostDao {
@@ -105,4 +107,29 @@ public class PostDaoImpl implements PostDao {
         }
         return posts;
     }
+
+    @Override
+    public List<PostListVO> findAllJoinFetch() {
+        String sql = "SELECT p.post_id, p.user_id, p.content, p.image_path, u.nickname " +
+                "FROM posts p " +
+                "LEFT JOIN users u ON p.user_id = u.user_id";
+        List<PostListVO> posts = new ArrayList<>();
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                posts.add(new PostListVO(
+                        rs.getLong("post_id"),
+                        rs.getLong("user_id"),
+                        rs.getString("nickname"),
+                        rs.getString("content"),
+                        rs.getString("image_path")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return posts;
+    }
+
 }
