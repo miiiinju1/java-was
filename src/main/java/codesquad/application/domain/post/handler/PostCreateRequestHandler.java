@@ -1,9 +1,9 @@
-package codesquad.application.post.handler;
+package codesquad.application.domain.post.handler;
 
 import codesquad.api.Request;
 import codesquad.api.Response;
+import codesquad.application.domain.post.request.PostCreateRequest;
 import codesquad.application.handler.ApiRequestHandler;
-import codesquad.application.post.request.PostCreateRequest;
 import codesquad.application.processor.argumentresolver.ArgumentResolver;
 
 import java.io.IOException;

@@ -1,10 +1,10 @@
-package codesquad.application.post.business;
+package codesquad.application.domain.post.business;
 
 import codesquad.application.database.dao.PostDao;
 import codesquad.application.database.dao.UserDao;
+import codesquad.application.domain.post.request.PostCreateRequest;
 import codesquad.application.mapper.PostMapper;
 import codesquad.application.model.post.Post;
-import codesquad.application.post.request.PostCreateRequest;
 import codesquad.application.processor.Triggerable;
 import codesquad.webserver.authorization.AuthorizationContextHolder;
 import codesquad.webserver.helper.FileSaveHelper;

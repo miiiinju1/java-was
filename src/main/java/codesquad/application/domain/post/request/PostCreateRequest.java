@@ -1,4 +1,4 @@
-package codesquad.application.post.request;
+package codesquad.application.domain.post.request;
 
 public class PostCreateRequest {
 
