@@ -1,6 +1,7 @@
 package codesquad.application.database.dao;
 
 import codesquad.application.database.DatabaseConfig;
+import codesquad.application.database.vo.CommentListVO;
 import codesquad.application.database.CommentVO;
 
 import java.sql.*;
@@ -131,6 +132,35 @@ public class CommentDaoImpl implements CommentDao {
                             rs.getLong("comment_id"),
                             rs.getLong("post_id"),
                             rs.getLong("user_id"),
+                            rs.getString("content"),
+                            rs.getTimestamp("created_at").toLocalDateTime()
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return comments;
+    }
+
+    @Override
+    public List<CommentListVO> findCommentsJoinFetch(Long postId) {
+        String sql = "SELECT c.comment_id, c.post_id, c.user_id, u.nickname, c.content, c.created_at " +
+                "FROM comments c " +
+                "LEFT JOIN users u ON u.user_id = c.user_id " +
+                "WHERE c.post_id = ?";
+
+        List<CommentListVO> comments = new ArrayList<>();
+        try (Connection conn = databaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, postId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    comments.add(new CommentListVO(
+                            rs.getLong("comment_id"),
+                            rs.getLong("post_id"),
+                            rs.getLong("user_id"),
+                            rs.getString("nickname"),
                             rs.getString("content"),
                             rs.getTimestamp("created_at").toLocalDateTime()
                     ));
