@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JsonSerializerTest {
+class JsonSerializerTest {
 
     @DisplayName("PostListResponse를 JSON으로 직렬화")
     @Test
@@ -35,7 +35,8 @@ public class JsonSerializerTest {
                 .contains("\"imageName\":\"image.png\"")
                 .contains("\"commentId\":1")
                 .contains("\"commentCount\":1")
-                .contains("\"totalCount\":1");
+                .contains("\"totalCount\":1")
+                .contains("\"createdAt\":\"2021-05-31T00:00:00\"");
     }
 
     @DisplayName("PostResponse의 필드가 null일 때 JSON으로 직렬화")
@@ -54,13 +55,14 @@ public class JsonSerializerTest {
         // then
         assertThat(json).isNotNull()
                 .contains("\"postId\":1")
-                .contains("\"nickname\"")
+                .contains("\"nickname\":null")
                 .contains("\"content\":\"This is a post\"")
-                .contains("\"imageName\"")
+                .contains("\"imageName\":null")
                 .contains("\"commentId\":1")
-                .contains("\"nickname\"")
+                .contains("\"nickname\":null")
                 .contains("\"content\":\"Nice post!\"")
                 .contains("\"commentCount\":1")
-                .contains("\"totalCount\":1");
+                .contains("\"totalCount\":1")
+                .contains("\"createdAt\":\"2021-05-31T00:00:00\"");
     }
 }

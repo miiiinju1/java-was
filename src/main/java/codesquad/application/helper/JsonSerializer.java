@@ -5,10 +5,13 @@ import codesquad.application.domain.comment.response.CommentResponse;
 import codesquad.application.domain.post.response.PostListResponse;
 import codesquad.application.domain.post.response.PostResponse;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class JsonSerializer {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     public static String toJson(PostListResponse postListResponse) {
         StringBuilder json = new StringBuilder();
@@ -38,20 +41,33 @@ public class JsonSerializer {
         json.append("\"postId\":");
         json.append(postResponse.postId());
 
-        json.append(",\"nickname\":\"");
-        json.append(postResponse.nickname());
-        json.append("\"");
+        json.append(",\"nickname\":");
+        if (postResponse.nickname() != null) {
+            json.append("\"").append(postResponse.nickname()).append("\"");
+        } else {
+            json.append("null");
+        }
 
-        json.append(",\"content\":\"");
-        json.append(postResponse.content());
-        json.append("\"");
+        json.append(",\"content\":");
+        if (postResponse.content() != null) {
+            json.append("\"").append(postResponse.content()).append("\"");
+        } else {
+            json.append("null");
+        }
 
-        json.append(",\"imageName\":\"");
-        json.append(postResponse.imageName());
-        json.append("\"");
+        json.append(",\"imageName\":");
+        if (postResponse.imageName() != null) {
+            json.append("\"").append(postResponse.imageName()).append("\"");
+        } else {
+            json.append("null");
+        }
 
         json.append(",\"commentList\":");
         json.append(toJsonCommentListResponse(postResponse.commentList()));
+
+        json.append(",\"createdAt\":\"");
+        json.append(postResponse.createdAt().format(formatter));
+        json.append("\"");
 
         json.append("}");
         return json.toString();
@@ -88,12 +104,22 @@ public class JsonSerializer {
         json.append("\"commentId\":");
         json.append(commentResponse.commentId());
 
-        json.append(",\"nickname\":\"");
-        json.append(commentResponse.nickname());
-        json.append("\"");
+        json.append(",\"nickname\":");
+        if (commentResponse.nickname() != null) {
+            json.append("\"").append(commentResponse.nickname()).append("\"");
+        } else {
+            json.append("null");
+        }
 
-        json.append(",\"content\":\"");
-        json.append(commentResponse.content());
+        json.append(",\"content\":");
+        if (commentResponse.content() != null) {
+            json.append("\"").append(commentResponse.content()).append("\"");
+        } else {
+            json.append("null");
+        }
+
+        json.append(",\"createdAt\":\"");
+        json.append(commentResponse.createdAt().format(formatter));
         json.append("\"");
 
         json.append("}");
