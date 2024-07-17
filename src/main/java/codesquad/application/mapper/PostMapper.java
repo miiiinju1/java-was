@@ -1,7 +1,7 @@
 package codesquad.application.mapper;
 
 import codesquad.application.domain.post.model.Post;
-import codesquad.application.database.PostVO;
+import codesquad.application.database.vo.PostVO;
 
 public class PostMapper {
 

@@ -1,7 +1,7 @@
 package codesquad.application.mapper;
 
 import codesquad.application.domain.user.model.User;
-import codesquad.application.database.UserVO;
+import codesquad.application.database.vo.UserVO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -4,7 +4,7 @@ import codesquad.application.database.dao.UserDao;
 import codesquad.application.mapper.UserMapper;
 import codesquad.application.domain.user.model.User;
 import codesquad.application.processor.Triggerable;
-import codesquad.application.database.UserVO;
+import codesquad.application.database.vo.UserVO;
 import codesquad.application.domain.user.request.LoginRequest;
 
 public class LoginUserLogic implements Triggerable<LoginRequest, User> {

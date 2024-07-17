@@ -1,7 +1,7 @@
 package codesquad.application.mapper;
 
 import codesquad.application.domain.user.model.User;
-import codesquad.application.database.UserVO;
+import codesquad.application.database.vo.UserVO;
 
 public class UserMapper {
 

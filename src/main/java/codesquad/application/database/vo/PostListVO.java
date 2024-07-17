@@ -1,4 +1,4 @@
-package codesquad.application.database;
+package codesquad.application.database.vo;
 
 public record PostListVO (
         Long postId,

@@ -2,7 +2,7 @@ package codesquad.application.database.dao;
 
 import codesquad.application.database.DatabaseConfig;
 import codesquad.application.database.vo.CommentListVO;
-import codesquad.application.database.CommentVO;
+import codesquad.application.database.vo.CommentVO;
 
 import java.sql.*;
 import java.util.ArrayList;

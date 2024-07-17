@@ -1,7 +1,7 @@
 package codesquad.application.database.dao;
 
 import codesquad.application.database.Database;
-import codesquad.application.database.UserVO;
+import codesquad.application.database.vo.UserVO;
 
 import java.util.Optional;
 

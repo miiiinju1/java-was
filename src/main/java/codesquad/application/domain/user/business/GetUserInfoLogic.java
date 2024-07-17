@@ -2,7 +2,7 @@ package codesquad.application.domain.user.business;
 
 import codesquad.application.database.dao.UserDao;
 import codesquad.application.processor.Triggerable;
-import codesquad.application.database.UserVO;
+import codesquad.application.database.vo.UserVO;
 import codesquad.application.domain.user.response.UserInfoResponse;
 import codesquad.webserver.authorization.AuthorizationContext;
 import codesquad.webserver.authorization.AuthorizationContextHolder;

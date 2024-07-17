@@ -1,4 +1,4 @@
-package codesquad.application.database;
+package codesquad.application.database.vo;
 
 import java.time.LocalDateTime;
 
