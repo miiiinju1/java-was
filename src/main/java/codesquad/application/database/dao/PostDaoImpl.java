@@ -110,7 +110,7 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public List<PostListVO> findAllJoinFetch() {
-        String sql = "SELECT p.post_id, p.user_id, p.content, p.image_path, u.nickname " +
+        String sql = "SELECT p.post_id, p.user_id, p.content, p.image_path, u.nickname, p.created_at " +
                 "FROM posts p " +
                 "LEFT JOIN users u ON p.user_id = u.user_id";
         List<PostListVO> posts = new ArrayList<>();
@@ -123,7 +123,8 @@ public class PostDaoImpl implements PostDao {
                         rs.getLong("user_id"),
                         rs.getString("nickname"),
                         rs.getString("content"),
-                        rs.getString("image_path")
+                        rs.getString("image_path"),
+                        rs.getTimestamp("created_at").toLocalDateTime()
                 ));
             }
         } catch (SQLException e) {

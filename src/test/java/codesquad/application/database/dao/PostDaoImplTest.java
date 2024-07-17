@@ -44,6 +44,8 @@ class PostDaoImplTest {
         assertThat(allPosts).hasSize(1)
                 .extracting("userId", "nickname", "content", "imagePath")
                 .containsExactly(tuple(1L, "name1", "content1", "/path/to/image1.jpg"));
+        assertThat(allPosts.get(0))
+                .extracting("createdAt").isNotNull();
 
     }
 
