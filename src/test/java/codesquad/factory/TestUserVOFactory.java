@@ -9,21 +9,21 @@ public class TestUserVOFactory {
                 null,
                 "username",
                 "password",
-                "name",
+                "nickname",
                 "email",
                 null
         );
     }
     public static UserVO createBy(
             String username,
-            String name,
+            String nickname,
             String email
     ) {
         return new UserVO(
                 null,
                 username,
                 "password",
-                name,
+                nickname,
                 email,
                 null
         );
