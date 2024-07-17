@@ -133,6 +133,12 @@
       color: #888;
       margin-top: 50px;
     }
+
+    .post__timestamp, .comment__timestamp {
+      font-size: 0.8em;
+      color: #999;
+      margin-top: 5px;
+    }
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -229,6 +235,8 @@
           const postElement = document.createElement('div');
           postElement.className = 'post';
 
+          const postCreatedAt = new Date(post.createdAt).toLocaleString();
+
           postElement.innerHTML = `
             <div class="post__account">
               <img class="post__account__img" src="/images/${post.imageName}" alt="${post.nickname}" />
@@ -253,6 +261,7 @@
               </button>
             </div>
             <p class="post__article">${post.content}</p>
+            <p class="post__timestamp">작성일: ${postCreatedAt}</p>
             <ul class="comment__list" data-post-id="${post.postId}"></ul>
             <div class="comment-form">
               <input type="text" class="comment-input" placeholder="댓글을 입력하세요" data-post-id="${post.postId}">
@@ -282,10 +291,13 @@
           const commentItem = document.createElement('li');
           commentItem.className = 'comment__item';
 
+          const commentCreatedAt = new Date(comment.createdAt).toLocaleString();
+
           commentItem.innerHTML = `
             <div class="comment__item__content">
               <p class="comment__item__user__nickname">${comment.nickname}</p>
               <p>${comment.content}</p>
+              <p class="comment__timestamp">작성일: ${commentCreatedAt}</p>
             </div>
           `;
 
