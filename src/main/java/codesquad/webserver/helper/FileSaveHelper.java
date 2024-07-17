@@ -35,6 +35,11 @@ public class FileSaveHelper {
         return uuidFilename;
     }
 
+    public static boolean removeFile(String filename) {
+        File file = new File(UPLOAD_DIR, filename);
+        return file.delete();
+    }
+
     /**
      * 파일 확장자를 반환하는 메서드.
      *
