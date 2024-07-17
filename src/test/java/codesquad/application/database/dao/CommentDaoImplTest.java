@@ -2,12 +2,16 @@ package codesquad.application.database.dao;
 
 import codesquad.application.config.H2TestDatabaseConfig;
 import codesquad.application.database.CommentVO;
+import codesquad.application.database.PostVO;
+import codesquad.application.database.UserVO;
+import codesquad.application.database.vo.CommentListVO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -161,4 +165,31 @@ class CommentDaoImplTest {
         assertThatThrownBy(() -> commentDao.save(commentVO))
                 .isInstanceOf(RuntimeException.class);
     }
+
+    @DisplayName("findCommentsJoinFetch: postId에 따른 CommentListVO 조회")
+    @Test
+    void findCommentsJoinFetch() {
+        // given
+        Long postId = 1L;
+        UserDao userDao = new UserDaoImpl(h2TestDatabaseConfig);
+        UserVO userVO = new UserVO(null, "user1", "password1", "user1", "email1", null);
+        CommentVO postVO1 = new CommentVO(null, postId, 1L, "Comment 1", null);
+        CommentVO postVO2 = new CommentVO(null, postId, 1L, "Comment 2", null);
+
+        userDao.save(userVO);
+        commentDao.save(postVO1);
+        commentDao.save(postVO2);
+
+        // when
+        List<CommentListVO> comments = commentDao.findCommentsJoinFetch(postId);
+
+        // then
+        assertThat(comments).hasSize(2)
+                .extracting("commentId", "postId", "userId", "nickname", "content")
+                .containsExactlyInAnyOrder(
+                        tuple(1L, 1L, 1L, "user1", "Comment 1"),
+                        tuple(2L, 1L, 1L, "user1", "Comment 2")
+                );
+    }
+
 }
