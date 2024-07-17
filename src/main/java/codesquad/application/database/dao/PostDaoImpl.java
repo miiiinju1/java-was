@@ -50,7 +50,8 @@ public class PostDaoImpl implements PostDao {
                             rs.getLong("post_id"),
                             rs.getLong("user_id"),
                             rs.getString("content"),
-                            rs.getString("image_path")
+                            rs.getString("image_path"),
+                            rs.getTimestamp("created_at").toLocalDateTime()
                     ));
                 }
             }
@@ -99,7 +100,8 @@ public class PostDaoImpl implements PostDao {
                         rs.getLong("post_id"),
                         rs.getLong("user_id"),
                         rs.getString("content"),
-                        rs.getString("image_path")
+                        rs.getString("image_path"),
+                        rs.getTimestamp("created_at").toLocalDateTime()
                 ));
             }
         } catch (SQLException e) {

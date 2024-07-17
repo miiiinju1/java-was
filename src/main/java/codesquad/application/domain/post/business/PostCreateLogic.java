@@ -29,7 +29,7 @@ public class PostCreateLogic implements Triggerable<PostCreateRequest, Void> {
             String filename = FileSaveHelper.saveFile(postCreateRequest.getImage(), postCreateRequest.getImageName());
 
             // TODO 사용자가 존재하는지 확인하는 부분을 PostUpdater로 나중에 추상화해서 그 안에서 확인하기
-            Post post = new Post(userId, postCreateRequest.getContent(), filename);
+            Post post = new Post(userId, postCreateRequest.getContent(), filename, null);
 
             postDao.save(PostMapper.toPostVO(post));
         } catch (Exception e) {

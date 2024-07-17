@@ -16,7 +16,7 @@ class PostTest {
         String imagePath = "/path/to/image.jpg";
 
         // when
-        Post post = new Post(userId, content, imagePath);
+        Post post = new Post(userId, content, imagePath, null);
 
         // then
         assertThat(post)
@@ -28,7 +28,7 @@ class PostTest {
     @Test
     void initAndCheckPostId() {
         // given
-        Post post = new Post(1L, "content", "/path/to/image.jpg");
+        Post post = new Post(1L, "content", "/path/to/image.jpg", null);
         Long postId = 100L;
 
         // when
@@ -47,7 +47,7 @@ class PostTest {
         String imagePath = "/path/to/image.jpg";
 
         // when & then
-        assertThatThrownBy(() -> new Post(userId, content, imagePath))
+        assertThatThrownBy(() -> new Post(userId, content, imagePath, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("사용자 아이디가 없습니다.");
     }
@@ -61,7 +61,7 @@ class PostTest {
         String imagePath = "/path/to/image.jpg";
 
         // when & then
-        assertThatThrownBy(() -> new Post(userId, content, imagePath))
+        assertThatThrownBy(() -> new Post(userId, content, imagePath, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("내용이 없습니다.");
     }
@@ -75,7 +75,7 @@ class PostTest {
         String imagePath = "/path/to/image.jpg";
 
         // when & then
-        assertThatThrownBy(() -> new Post(userId, content, imagePath))
+        assertThatThrownBy(() -> new Post(userId, content, imagePath, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("내용이 없습니다.");
     }
@@ -89,7 +89,7 @@ class PostTest {
         String imagePath = "/path/to/image.jpg";
 
         // when & then
-        assertThatThrownBy(() -> new Post(userId, content, imagePath))
+        assertThatThrownBy(() -> new Post(userId, content, imagePath, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("내용은 500자 이하여야 합니다.");
     }
@@ -103,7 +103,7 @@ class PostTest {
         String imagePath = null;
 
         // when & then
-        assertThatThrownBy(() -> new Post(userId, content, imagePath))
+        assertThatThrownBy(() -> new Post(userId, content, imagePath, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미지 경로가 없습니다.");
     }
@@ -117,7 +117,7 @@ class PostTest {
         String imagePath = "";
 
         // when & then
-        assertThatThrownBy(() -> new Post(userId, content, imagePath))
+        assertThatThrownBy(() -> new Post(userId, content, imagePath, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미지 경로가 없습니다.");
     }

@@ -1,11 +1,14 @@
 package codesquad.application.domain.post.model;
 
+import java.time.LocalDateTime;
+
 public class Post {
 
     private Long postId;
     private final Long userId;
     private final Content content;
     private final ImagePath imagePath;
+    private final LocalDateTime createdAt;
 
     public Long getPostId() {
         return postId;
@@ -22,6 +25,10 @@ public class Post {
         return imagePath;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void initPostId(Long postId) {
         this.postId = postId;
     }
@@ -29,12 +36,14 @@ public class Post {
     public Post(
             Long userId,
             String content,
-            String imagePath
+            String imagePath,
+            LocalDateTime createdAt
     ) {
         validateUserId(userId);
         this.userId = userId;
         this.content = new Content(content);
         this.imagePath = new ImagePath(imagePath);
+        this.createdAt = createdAt;
     }
 
     private void validateUserId(Long userId) {

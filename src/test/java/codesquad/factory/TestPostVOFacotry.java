@@ -9,7 +9,8 @@ public class TestPostVOFacotry {
                     null,
                     userId,
                     "content",
-                    "imagePath"
+                    "imagePath",
+                    null
             );
         }
 
@@ -22,7 +23,8 @@ public class TestPostVOFacotry {
                     null,
                     userId,
                     content,
-                    imageName
+                    imageName,
+                    null
             );
         }
 }

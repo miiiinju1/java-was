@@ -10,7 +10,8 @@ public class PostMapper {
                 post.getPostId(),
                 post.getUserId(),
                 post.getContent().getValue(),
-                post.getImagePath().getValue()
+                post.getImagePath().getValue(),
+                post.getCreatedAt()
         );
     }
 
@@ -18,7 +19,8 @@ public class PostMapper {
         Post post = new Post(
                 postVO.userId(),
                 postVO.content(),
-                postVO.imagePath()
+                postVO.imagePath(),
+                postVO.createdAt()
         );
         post.initPostId(postVO.postId());
         return post;

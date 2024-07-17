@@ -32,7 +32,7 @@ class PostDaoImplTest {
         // given
         UserDao userDao = new UserDaoImpl(h2TestDatabaseConfig);
         UserVO userVO = new UserVO(null, "userId1", "password1", "name1", "email1", null);
-        PostVO postVO = new PostVO(null, 1L, "content1", "/path/to/image1.jpg");
+        PostVO postVO = new PostVO(null, 1L, "content1", "/path/to/image1.jpg", null);
 
         userDao.save(userVO);
         postDao.save(postVO);
@@ -53,7 +53,7 @@ class PostDaoImplTest {
     @Test
     void savePostVO() {
         // given
-        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg");
+        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg", null);
 
         // when
         long postId = postDao.save(postVO);
@@ -70,7 +70,7 @@ class PostDaoImplTest {
     @Test
     void findByIdWithExistentPostVO() {
         // given
-        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg");
+        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg", null);
         long 포스트_ID = postDao.save(postVO);
 
         // when
@@ -100,7 +100,7 @@ class PostDaoImplTest {
     @Test
     void deletePostVO() {
         // given
-        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg");
+        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg", null);
         long postId = postDao.save(postVO);
 
         // when
@@ -115,10 +115,10 @@ class PostDaoImplTest {
     @Test
     void updatePostVO() {
         // given
-        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg");
+        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg", null);
         long 포스트_ID = postDao.save(postVO);
 
-        PostVO updatedPostVO = new PostVO(포스트_ID, 1L, "updated content", "/new/path/to/image.jpg");
+        PostVO updatedPostVO = new PostVO(포스트_ID, 1L, "updated content", "/new/path/to/image.jpg", null);
 
         // when
         postDao.update(포스트_ID, updatedPostVO);
@@ -135,8 +135,8 @@ class PostDaoImplTest {
     @Test
     void findAllPosts() {
         // given
-        PostVO postVO1 = new PostVO(null, 1L, "content1", "/path/to/image1.jpg");
-        PostVO postVO2 = new PostVO(null, 2L, "content2", "/path/to/image2.jpg");
+        PostVO postVO1 = new PostVO(null, 1L, "content1", "/path/to/image1.jpg", null);
+        PostVO postVO2 = new PostVO(null, 2L, "content2", "/path/to/image2.jpg", null);
         postDao.save(postVO1);
         postDao.save(postVO2);
 
@@ -156,7 +156,7 @@ class PostDaoImplTest {
     @Test
     void savePostVOWithNullContent() {
         // given
-        PostVO postVO = new PostVO(null, 1L, null, "/path/to/image.jpg");
+        PostVO postVO = new PostVO(null, 1L, null, "/path/to/image.jpg", null);
 
         // when & then
         assertThatThrownBy(() -> postDao.save(postVO))
@@ -167,7 +167,7 @@ class PostDaoImplTest {
     @Test
     void savePostVOWithNullImagePath() {
         // given
-        PostVO postVO = new PostVO(null, 1L, "content", null);
+        PostVO postVO = new PostVO(null, 1L, "content", null, null);
 
         // when & then
         assertThatThrownBy(() -> postDao.save(postVO))
