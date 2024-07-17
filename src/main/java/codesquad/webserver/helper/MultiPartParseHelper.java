@@ -1,7 +1,6 @@
 package codesquad.webserver.helper;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +9,7 @@ public class MultiPartParseHelper {
 
     public static Map<String, MultiPart> parse(InputStream inputStream, String boundary) throws IOException {
         Map<String, MultiPart> parts = new HashMap<>();
-        byte[] boundaryBytes = ("--" + boundary).getBytes(StandardCharsets.UTF_8);
+        byte[] boundaryBytes = ("--" + boundary).getBytes("UTF-8");
         byte[] buffer = new byte[8192];
         int bytesRead;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -54,7 +53,7 @@ public class MultiPartParseHelper {
     }
 
     private static MultiPart parsePart(byte[] partData) throws IOException {
-        int headerEndIndex = indexOf(partData, "\r\n\r\n".getBytes(StandardCharsets.UTF_8), 0);
+        int headerEndIndex = indexOf(partData, "\r\n\r\n".getBytes("UTF-8"), 0);
         if (headerEndIndex == -1) {
             throw new IOException("Invalid part data: missing headers");
         }
@@ -62,7 +61,7 @@ public class MultiPartParseHelper {
         byte[] headerData = Arrays.copyOfRange(partData, 0, headerEndIndex);
         byte[] contentData = Arrays.copyOfRange(partData, headerEndIndex + 4, partData.length);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(headerData), StandardCharsets.UTF_8));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(headerData), "UTF-8"));
         String line;
         String name = null;
         String filename = null;
@@ -124,7 +123,11 @@ public class MultiPartParseHelper {
         }
 
         public String getTextContent() {
-            return new String(content, StandardCharsets.UTF_8);
+            try {
+                return new String(content, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
