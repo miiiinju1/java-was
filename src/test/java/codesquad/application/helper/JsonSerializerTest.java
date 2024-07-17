@@ -7,6 +7,7 @@ import codesquad.application.domain.post.response.PostResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,9 +18,10 @@ public class JsonSerializerTest {
     @Test
     void testToJson_PostListResponse() {
         // given
-        CommentResponse commentResponse = new CommentResponse(1L, "user1", "Nice post!");
+        LocalDateTime now = LocalDateTime.of(2021, 6, 1, 0, 0, 0, 0);
+        CommentResponse commentResponse = new CommentResponse(1L, "user1", "Nice post!", now);
         CommentListResponse commentListResponse = new CommentListResponse(1L, List.of(commentResponse), 1L);
-        PostResponse postResponse = new PostResponse(1L, "user1", "This is a post", "image.png", commentListResponse);
+        PostResponse postResponse = new PostResponse(1L, "user1", "This is a post", "image.png", commentListResponse, now.minusDays(1));
         PostListResponse postListResponse = new PostListResponse(List.of(postResponse), 1);
 
         // when
@@ -40,9 +42,10 @@ public class JsonSerializerTest {
     @Test
     void testToJson_PostResponseWithNullFields() {
         // given
-        CommentResponse commentResponse = new CommentResponse(1L, null, "Nice post!");
+        LocalDateTime now = LocalDateTime.of(2021, 6, 1, 0, 0, 0, 0);
+        CommentResponse commentResponse = new CommentResponse(1L, null, "Nice post!", now);
         CommentListResponse commentListResponse = new CommentListResponse(1L, List.of(commentResponse), 1L);
-        PostResponse postResponse = new PostResponse(1L, null, "This is a post", null, commentListResponse);
+        PostResponse postResponse = new PostResponse(1L, null, "This is a post", null, commentListResponse, now.minusDays(1));
         PostListResponse postListResponse = new PostListResponse(List.of(postResponse), 1);
 
         // when
