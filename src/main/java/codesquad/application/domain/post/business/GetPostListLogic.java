@@ -8,7 +8,6 @@ import codesquad.application.domain.comment.response.CommentResponse;
 import codesquad.application.domain.post.response.PostListResponse;
 import codesquad.application.domain.post.response.PostResponse;
 import codesquad.application.processor.Triggerable;
-import codesquad.application.database.vo.CommentVO;
 
 import java.util.ArrayList;
 import java.util.Collections;
