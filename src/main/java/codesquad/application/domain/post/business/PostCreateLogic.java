@@ -6,6 +6,7 @@ import codesquad.application.domain.post.request.PostCreateRequest;
 import codesquad.application.mapper.PostMapper;
 import codesquad.application.domain.post.model.Post;
 import codesquad.application.processor.Triggerable;
+import codesquad.webserver.authorization.AuthorizationContext;
 import codesquad.webserver.authorization.AuthorizationContextHolder;
 import codesquad.webserver.helper.FileSaveHelper;
 import codesquad.webserver.http.Session;
@@ -17,10 +18,11 @@ public class PostCreateLogic implements Triggerable<PostCreateRequest, Void> {
 
     private void createPost(PostCreateRequest postCreateRequest) {
 
-        Session session = AuthorizationContextHolder.getContext().getSession();
-        if(session == null) {
-            throw new IllegalArgumentException("로그인이 필요합니다.");
+        AuthorizationContext authorizationContext = AuthorizationContextHolder.getContext();
+        if(authorizationContext == null) {
+            throw new RuntimeException("로그인이 필요합니다.");
         }
+        Session session = authorizationContext.getSession();
 
         Long userId = session.getUserId();
 
