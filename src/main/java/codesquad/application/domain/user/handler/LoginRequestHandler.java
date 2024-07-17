@@ -22,8 +22,7 @@ public class LoginRequestHandler extends ApiRequestHandler<LoginRequest, User> {
 
     @Override
     public void applyExceptionHandler(RuntimeException e, Response response) {
-        response.setStatus(HttpStatus.FOUND);
-        response.setHeader(HeaderConstants.LOCATION, "/users/login_failed");
+        response.setStatus(HttpStatus.UNAUTHORIZED);
     }
 
     @Override
