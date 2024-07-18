@@ -69,32 +69,9 @@ public class Main {
         // Comment DB
         CommentDao commentDao = new CommentDaoImpl(databaseConfig);
 
-        // 회원 가입 로직
-        RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDao);
-        ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
-        RegisterRequestHandler registerUserHandler = new RegisterRequestHandler(registerArgumentResolver);
-        handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
 
-        // 로그인 로직
-        LoginUserLogic loginUserLogic = new LoginUserLogic(userDao);
-        ArgumentResolver<LoginRequest> loginArgumentResolver = new LoginArgumentResolver();
-        LoginRequestHandler loginUserHandler = new LoginRequestHandler(loginArgumentResolver);
-        handlerRegistry.registerHandler(HttpMethod.POST, "/users/login", loginUserHandler, loginUserLogic);
-
-        // 로그아웃 API
-        LogoutRequestHandler logoutRequestHandlerAdapter = new LogoutRequestHandler();
-        handlerRegistry.registerHandler(HttpMethod.POST, "/users/logout", logoutRequestHandlerAdapter, o -> null);
-
-        // User Info API
-        GetUserInfoLogic getUserInfoLogic = new GetUserInfoLogic(userDao);
-        GetUserInfoRequestHandler userInfoHandler = new GetUserInfoRequestHandler();
-        handlerRegistry.registerHandler(HttpMethod.GET, "/api/user-info", userInfoHandler, getUserInfoLogic);
-
-        // User List API
-        GetUserListLogic getUserListLogic = new GetUserListLogic(userDao);
-        GetUserListRequestHandler userListHandler = new GetUserListRequestHandler();
-        handlerRegistry.registerHandler(HttpMethod.GET, "/api/users", userListHandler, getUserListLogic);
-
+        // 사용자 API
+        registerUserApi(handlerRegistry, userDao);
 
         // 기본 리소스 핸들러
         StaticResourceHandler<Void, Void> defaultResourceHandler = new StaticResourceHandler<>();
@@ -141,6 +118,37 @@ public class Main {
         handlerRegistry.registerHandler(HttpMethod.GET, "/images/{filename}", imageHandler, o -> null);
     }
 
+    private static void registerUserApi(
+            HandlerRegistry handlerRegistry,
+            UserDao userDao
+    ) {
+        // 회원 가입 로직
+        RegisterUserLogic registerUserLogic = new RegisterUserLogic(userDao);
+        ArgumentResolver<RegisterRequest> registerArgumentResolver = new RegisterArgumentResolver();
+        RegisterRequestHandler registerUserHandler = new RegisterRequestHandler(registerArgumentResolver);
+        handlerRegistry.registerHandler(HttpMethod.POST, "/users/create", registerUserHandler, registerUserLogic);
+
+        // 로그인 로직
+        LoginUserLogic loginUserLogic = new LoginUserLogic(userDao);
+        ArgumentResolver<LoginRequest> loginArgumentResolver = new LoginArgumentResolver();
+        LoginRequestHandler loginUserHandler = new LoginRequestHandler(loginArgumentResolver);
+        handlerRegistry.registerHandler(HttpMethod.POST, "/users/login", loginUserHandler, loginUserLogic);
+
+        // 로그아웃 API
+        LogoutRequestHandler logoutRequestHandlerAdapter = new LogoutRequestHandler();
+        handlerRegistry.registerHandler(HttpMethod.POST, "/users/logout", logoutRequestHandlerAdapter, o -> null);
+
+        // User Info API
+        GetUserInfoLogic getUserInfoLogic = new GetUserInfoLogic(userDao);
+        GetUserInfoRequestHandler userInfoHandler = new GetUserInfoRequestHandler();
+        handlerRegistry.registerHandler(HttpMethod.GET, "/api/user-info", userInfoHandler, getUserInfoLogic);
+
+        // User List API
+        GetUserListLogic getUserListLogic = new GetUserListLogic(userDao);
+        GetUserListRequestHandler userListHandler = new GetUserListRequestHandler();
+        handlerRegistry.registerHandler(HttpMethod.GET, "/api/users", userListHandler, getUserListLogic);
+    }
+
     private static void registerPostApi(
             HandlerRegistry handlerRegistry,
             UserDao userDao,
@@ -156,10 +164,6 @@ public class Main {
         GetPostListRequestHandler getPostListRequestHandler = new GetPostListRequestHandler();
         handlerRegistry.registerHandler(HttpMethod.GET, "/api/posts", getPostListRequestHandler, getPostListLogic);
 
-//        PostDeleteLogic postDeleteLogic = new PostDeleteLogic(postDao);
-//        ArgumentResolver<PostDeleteRequest> postDeleteArgumentResolver = new PostDeleteArgumentResolver();
-//        PostDeleteRequestHandler postDeleteRequestHandler = new PostDeleteRequestHandler(postDeleteArgumentResolver);
-//        handlerRegistry.registerHandler(HttpMethod.DELETE, "/api/posts", postDeleteRequestHandler, postDeleteLogic);
     }
 
     private static void registerCommentApi(
