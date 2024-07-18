@@ -37,7 +37,7 @@ public class CsvExecutor {
         return null;
     }
 
-
+    @SuppressWarnings("unchecked")
     public static ResultSet getGeneratedKeyAndInsert(Map<SQLParserKey, Object> parsed) throws IOException {
         String tableName = (String) parsed.get(SQLParserKey.TABLE);
         List<String> columns = (List<String>) parsed.get(SQLParserKey.COLUMNS);
@@ -55,7 +55,7 @@ public class CsvExecutor {
         resultData.add(Map.of(("GENERATED_KEY"), String.valueOf(generatedKey)));
         return new CsvResultSet(resultData);
     }
-
+    @SuppressWarnings("unchecked")
     public static ResultSet select(Map<SQLParserKey, Object> parsed) {
         String tableName = (String) parsed.get(SQLParserKey.DRIVING_TABLE);
         String tableAlias = (String) parsed.get(SQLParserKey.DRIVING_TABLE_ALIAS);
