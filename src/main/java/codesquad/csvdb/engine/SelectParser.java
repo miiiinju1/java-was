@@ -24,7 +24,11 @@ public class SelectParser implements SQLParser {
         Matcher matcher = SELECT_PATTERN.matcher(parts[0]);
         parsedResult.put(SQLParserKey.COMMAND, "SELECT");
         if (matcher.find()) {
-            parsedResult.put(SQLParserKey.COLUMNS, Arrays.asList(matcher.group(1).split("\\s*,\\s*")));
+            String[] split = matcher.group(1).split("\\s*,\\s*");
+            for(int i= 0;i<split.length;i++) {
+                split[i] = split[i].trim();
+            }
+            parsedResult.put(SQLParserKey.COLUMNS, Arrays.asList(split));
             parsedResult.put(SQLParserKey.DRIVING_TABLE, matcher.group(2));
             if (matcher.group(3) != null && !matcher.group(3).equalsIgnoreCase("WHERE")) {
                 parsedResult.put(SQLParserKey.DRIVING_TABLE_ALIAS, matcher.group(3));
@@ -44,22 +48,4 @@ public class SelectParser implements SQLParser {
         return parsedResult;
     }
 
-    public static void main(String[] args) {
-        SelectParser parser = new SelectParser();
-
-        String sql = "SELECT a, b FROM table1 t1 LEFT JOIN table2 t2 ON t1.id = t2.id WHERE a = 1;";
-        try {
-            Map<SQLParserKey, Object> result = parser.parse(sql);
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
-        }
-
-        // Test with missing semicolon
-        String invalidSql = "SELECT a, b FROM table1 t1 LEFT JOIN table2 t2 ON t1.id = t2.id WHERE a = 1";
-        try {
-            Map<SQLParserKey, Object> result = parser.parse(invalidSql);
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
-        }
-    }
 }

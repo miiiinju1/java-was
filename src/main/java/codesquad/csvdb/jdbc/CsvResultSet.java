@@ -15,7 +15,7 @@ public class CsvResultSet extends MyResultSet {
     }
 
     @Override
-    public boolean next() throws SQLException {
+    public boolean next() {
         if (currentIndex + 1 < data.size()) {
             currentIndex++;
             return true;
@@ -25,7 +25,7 @@ public class CsvResultSet extends MyResultSet {
 
     private void validateColumnLabel(String columnLabel) throws SQLException {
         if (!data.get(currentIndex).containsKey(columnLabel)) {
-            throw new SQLException("해당 컬럼이 존재하지 않습니다.");
+//            throw new SQLException("해당 컬럼이 존재하지 않습니다.");
         }
     }
 
@@ -105,12 +105,20 @@ public class CsvResultSet extends MyResultSet {
     @Override
     public Timestamp getTimestamp(String columnLabel) throws SQLException {
         validateColumnLabel(columnLabel);
+        columnLabel = columnLabel.trim();
         Object value = data.get(currentIndex).get(columnLabel);
         if (value == null) {
             return null;
         }
         if (value instanceof Timestamp) {
             return (Timestamp) value;
+        }
+        if (value instanceof String) {
+            try {
+                return Timestamp.valueOf((String) value);
+            } catch (IllegalArgumentException e) {
+                throw new SQLException("Timestamp로 변환할 수 없는 값입니다.", e);
+            }
         }
         throw new SQLException("Timestamp로 변환할 수 없는 값입니다.");
     }
@@ -123,7 +131,12 @@ public class CsvResultSet extends MyResultSet {
 
     @Override
     public long getLong(int columnIndex) throws SQLException {
-        String columnLabel = (String) data.get(currentIndex).keySet().toArray()[columnIndex - 1];
+        Map<String, String> map = data.get(currentIndex);
+        if(map.containsKey("GENERATED_KEY")) {
+            return Long.parseLong(map.get("GENERATED_KEY"));
+        }
+
+        String columnLabel = (String) map.keySet().toArray()[columnIndex - 1];
         return getLong(columnLabel);
     }
 

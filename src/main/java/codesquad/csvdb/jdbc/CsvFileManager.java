@@ -16,17 +16,19 @@ public class CsvFileManager {
         BufferedReader br = new BufferedReader(new FileReader(file));
 
         String[] rows = br.readLine().split(",");
+        for(int i= 0;i<rows.length;i++) {
+            rows[i] = rows[i].trim();
+        }
 
-        HashSet<Integer> columnIndexes = columns.stream()
-                .map(column -> {
-                    for (int i = 0; i < rows.length; i++) {
-                        if (rows[i].equals(column)) {
-                            return i;
-                        }
-                    }
-                    throw new IllegalArgumentException("존재하지 않는 컬럼입니다.");
-                })
-                .collect(Collectors.toCollection(HashSet::new));
+        HashSet<Integer> columnIndexes = new HashSet<>();
+
+        for (String column : columns) {
+            for (int i = 0; i < rows.length; i++) {
+                if (rows[i].equalsIgnoreCase(column)) {
+                    columnIndexes.add(i);
+                }
+            }
+        }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
 
@@ -92,14 +94,13 @@ public class CsvFileManager {
                 String[] values = line.split(",");
                 Map<String, String> row = new HashMap<>();
                 for (int i = 0; i < values.length; i++) {
-                    row.put(columns.get(i), values[i]);
+                    row.put(columns.get(i).trim(), values[i].trim());
                 }
                 results.add(row);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return results;
     }
 

@@ -20,12 +20,13 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public long save(CommentVO data) {
-        String sql = "INSERT INTO comments (post_id, user_id, content) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO comments (comment_id, post_id, user_id, content, created_at) VALUES (%s, %s, %s);";
+        sql = String.format(sql, data.postId(), data.userId(), data.content());
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setLong(1, data.postId());
-            pstmt.setLong(2, data.userId());
-            pstmt.setString(3, data.content());
+//            pstmt.setLong(1, data.postId());
+//            pstmt.setLong(2, data.userId());
+//            pstmt.setString(3, data.content());
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
                 throw new RuntimeException("comment를 저장하는 데 실패했습니다, no rows affected.");
@@ -43,10 +44,10 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public Optional<CommentVO> findById(long commentId) {
-        String sql = "SELECT * FROM comments WHERE comment_id = ?";
+        String sql = "SELECT comment_id, post_id, user_id, content, created_at FROM comments WHERE comment_id = " + commentId+";";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, commentId);
+//            pstmt.setLong(1, commentId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return Optional.of(new CommentVO(
@@ -66,7 +67,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void delete(long commentId) {
-        String sql = "DELETE FROM comments WHERE comment_id = ?";
+        String sql = "DELETE FROM comments WHERE comment_id = ?;";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, commentId);
@@ -99,7 +100,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public Collection<CommentVO> findAll() {
-        String sql = "SELECT * FROM comments";
+        String sql = "SELECT * FROM comments;";
         Collection<CommentVO> comments = new ArrayList<>();
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -121,7 +122,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public List<CommentVO> findByPostId(Long postId) {
-        String sql = "SELECT * FROM comments WHERE post_id = ?";
+        String sql = "SELECT * FROM comments WHERE post_id = ?;";
         List<CommentVO> comments = new ArrayList<>();
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -147,8 +148,8 @@ public class CommentDaoImpl implements CommentDao {
     public List<CommentListVO> findCommentsJoinFetch(Long postId) {
         String sql = "SELECT c.comment_id, c.post_id, c.user_id, u.nickname, c.content, c.created_at " +
                 "FROM comments c " +
-                "LEFT JOIN users u ON u.user_id = c.user_id " +
-                "WHERE c.post_id = ?";
+                "LEFT JOIN users u ON c.user_id = u.user_id " +
+                "WHERE c.post_id = " + postId + ";";
 
         List<CommentListVO> comments = new ArrayList<>();
         try (Connection conn = databaseConfig.getConnection();
@@ -157,12 +158,12 @@ public class CommentDaoImpl implements CommentDao {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     comments.add(new CommentListVO(
-                            rs.getLong("comment_id"),
-                            rs.getLong("post_id"),
-                            rs.getLong("user_id"),
-                            rs.getString("nickname"),
-                            rs.getString("content"),
-                            rs.getTimestamp("created_at").toLocalDateTime()
+                            rs.getLong("c.comment_id"),
+                            rs.getLong("c.post_id"),
+                            rs.getLong("c.user_id"),
+                            rs.getString("u.nickname"),
+                            rs.getString("c.content"),
+                            rs.getTimestamp("c.created_at").toLocalDateTime()
                     ));
                 }
             }

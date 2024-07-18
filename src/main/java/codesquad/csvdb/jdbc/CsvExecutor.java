@@ -4,6 +4,8 @@ import codesquad.csvdb.engine.SQLParserKey;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,8 +51,10 @@ public class CsvExecutor {
         List<Map<String, String>> resultData = new ArrayList<>();
         valueList.forEach(values -> {
             long generatedKey = autoIncrement.incrementAndGet();
-            values.remove(0);
+//            values.remove(0);
             values.add(0, String.valueOf(generatedKey));
+            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+            values.add(timestamp.toString());
             resultData.add(Map.of(("GENERATED_KEY"), String.valueOf(generatedKey)));
         });
 
@@ -93,9 +97,9 @@ public class CsvExecutor {
         List<Map<String, String>> result = new ArrayList<>();
         for (Map<String, String> base : baseTable) {
             for (Map<String, String> join : joinTable) {
-                String baseKey = joinConditionLeft.replace(baseTableAlias, "").substring(1);
+                String baseKey = joinConditionLeft.replace(baseTableAlias+".", "");
                 String baseValue = base.get(baseKey);
-                String joinKey = joinConditionRight.replace(joinTableAlias, "").substring(1);
+                String joinKey = joinConditionRight.replace(joinTableAlias+".", "");
                 String joinValue = join.get(joinKey);
 
                 if(!baseValue.equals(joinValue)) continue;
@@ -120,18 +124,11 @@ public class CsvExecutor {
             return data;
         }
         return data.stream()
-                .filter(row -> whereClause == null || evaluateWhereClause(row, whereClause))
+                .filter(row -> evaluateWhereClause(row, whereClause))
                 .map(row -> {
-                    Map<String, String> selectedRow = new HashMap<>();
+                    Map<String, String> selectedRow = new LinkedHashMap<>();
                     for (String column : selectedColumns) {
-                        if (column.contains(".")) {
-                            String[] parts = column.split("\\.");
-                            String alias = parts[0];
-                            String colName = parts[1];
-                            selectedRow.put(column, row.getOrDefault(alias + "." + colName, row.get(colName)));
-                        } else {
-                            selectedRow.put(column, row.get(column));
-                        }
+                        selectedRow.put(column, row.get(column));
                     }
                     return selectedRow;
                 })

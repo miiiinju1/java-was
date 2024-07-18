@@ -23,13 +23,14 @@ public class UserDaoImpl implements UserDao {
             final UserVO user
     ) {
         validateUserVo(user);
-        String sql = "INSERT INTO users (username, password, nickname, email) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (user_id, username, password, email, nickname, created_at) VALUES (%s, %s, %s, %s);";
+        sql = String.format(sql, user.username(), user.password(), user.email(), user.nickname());
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setString(1, user.username());
-            pstmt.setString(2, user.password());
-            pstmt.setString(3, user.nickname());
-            pstmt.setString(4, user.email());
+//            pstmt.setString(1, user.username());
+//            pstmt.setString(2, user.password());
+//            pstmt.setString(3, user.nickname());
+//            pstmt.setString(4, user.email());
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -47,7 +48,7 @@ public class UserDaoImpl implements UserDao {
             final String username
     ) {
         validateUsername(username);
-        String sql = "SELECT * FROM users WHERE username = ?";
+        String sql = "SELECT user_id, username, password, nickname, email, created_at FROM users WHERE username = " + username+";";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
@@ -73,10 +74,10 @@ public class UserDaoImpl implements UserDao {
     public Optional<UserVO> findById(
             final long id
     ) {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
+        String sql = "SELECT user_id, username, password, email, nickname, created_at FROM users WHERE user_id = " + id + ";";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+//            pstmt.setLong(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return Optional.of(new UserVO(
@@ -97,7 +98,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<UserVO> findAll() {
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT user_id, username, password, nickname, email, created_at FROM users;";
         List<UserVO> users = new ArrayList<>();
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -124,7 +125,8 @@ public class UserDaoImpl implements UserDao {
             final UserVO user
     ) {
         validateUserVo(user);
-        String sql = "UPDATE users SET username = ?, password = ?, email = ?, nickname = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET username = ?, password = ?, email = ?, nickname = ? WHERE user_id = ?" +
+                "";
         try (Connection conn = databaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.username());

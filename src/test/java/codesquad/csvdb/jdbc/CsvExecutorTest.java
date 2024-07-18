@@ -38,15 +38,13 @@ class CsvExecutorTest {
     void testMethodNameHere() throws IOException {
         // given
         String tableName = "test";
-        List<String> rows = List.of("id", "name", "age");
+        List<String> rows = List.of("name", "age");
         CsvFileManager.createTable(tableName, rows);
         ArrayList<String> values1 = new ArrayList<>();
-        values1.add(null);
         values1.add("keesun");
         values1.add("30");
 
         ArrayList<String> values2 = new ArrayList<>();
-        values2.add(null);
         values2.add("iam");
         values2.add("30");
 
@@ -54,7 +52,10 @@ class CsvExecutorTest {
         Map<SQLParserKey, Object> sqlParser = Map.of(
                 SQLParserKey.TABLE, tableName,
                 SQLParserKey.COLUMNS, List.of("id", "name", "age"),
-                SQLParserKey.VALUES, List.of(values1, values2)
+                SQLParserKey.VALUES, List.of(
+                        values1,
+                        values2
+                )
         );
 
         // when

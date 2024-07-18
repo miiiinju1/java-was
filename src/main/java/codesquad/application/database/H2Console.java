@@ -1,8 +1,10 @@
 package codesquad.application.database;
 
+import codesquad.csvdb.jdbc.CsvFileManager;
 import org.h2.tools.Server;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class H2Console {
     public static void main(
@@ -10,8 +12,12 @@ public class H2Console {
     ) {
         try {
             // H2 웹 서버 시작
-            Server webServer = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082");
-            webServer.start();
+            CsvFileManager.createTable("users", List.of("user_id", "username", "password", "email", "nickname", "created_at"));
+            CsvFileManager.createTable("posts", List.of("post_id", "user_id", "content", "image_path", "created_at"));
+            CsvFileManager.createTable("comments", List.of("comment_id", "post_id", "user_id", "content", "created_at"));
+
+//            Server webServer = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082");
+//            webServer.start();
 
             // 초기 DDL 실행
             DDLExecutor ddlExecutor = new DDLExecutor(databaseConfig);

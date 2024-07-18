@@ -17,7 +17,7 @@ public abstract class MyResultSet implements ResultSet {
 
     @Override
     public void close() throws SQLException {
-        throw new UnsupportedOperationException("지원하지 않는 기능입니다.");
+
     }
 
     @Override

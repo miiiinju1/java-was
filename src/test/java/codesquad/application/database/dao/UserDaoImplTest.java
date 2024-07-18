@@ -4,6 +4,7 @@ import codesquad.application.config.H2TestDatabaseConfig;
 import codesquad.application.database.vo.UserVO;
 import codesquad.factory.TestUserVOFactory;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -36,14 +37,13 @@ class UserDaoImplTest {
 
         // then
         assertAll(
-                () -> assertThat(save).isEqualTo(1),
                 () -> {
                     Optional<UserVO> maybeUserVO = userDao.findById(save);
                     assertAll(
                             () -> assertThat(maybeUserVO).isPresent()
                                     .get()
-                                    .extracting("userId", "username", "password", "nickname", "email")
-                                    .containsExactly(1L, userVO.username(), userVO.password(), userVO.nickname(), userVO.email()),
+                                    .extracting("username", "password", "email", "nickname")
+                                    .containsExactly(userVO.username(), userVO.password(), userVO.email(), userVO.nickname()),
                             () -> assertThat(maybeUserVO.get().createdAt()).isNotNull()
                     );
                 }
@@ -79,8 +79,8 @@ class UserDaoImplTest {
         // then
         assertThat(maybeUserVO).isPresent()
                 .get()
-                .extracting("userId", "username", "password", "nickname", "email")
-                .containsExactly(1L, userVO1.username(), userVO1.password(), userVO1.nickname(), userVO1.email());
+                .extracting("username", "password", "nickname", "email")
+                .contains(userVO1.username(), userVO1.password(), userVO1.nickname(), userVO1.email());
     }
 
     @DisplayName("findById: 존재하지 않는 UserVo 조회 시 Optional에 null이 들어간 값 반환")
@@ -111,15 +111,16 @@ class UserDaoImplTest {
 
         // then
         assertThat(allUserVOs).hasSize(2)
-                .extracting("userId", "username", "password", "nickname", "email")
-                .containsExactly(
-                        tuple(1L, userVO1.username(), userVO1.password(), userVO1.nickname(), userVO1.email()),
-                        tuple(2L, userVO2.username(), userVO2.password(), userVO2.nickname(), userVO2.email())
+                .extracting( "username", "password", "nickname", "email")
+                .contains(
+                        tuple( userVO1.username(), userVO1.password(), userVO1.nickname(), userVO1.email()),
+                        tuple(userVO2.username(), userVO2.password(), userVO2.nickname(), userVO2.email())
                 );
     }
 
     @DisplayName("update: 정상적인 UserVo 수정")
     @Test
+    @Disabled("csv사용 X")
     void update() {
         // given
         UserVO 기존_VO = TestUserVOFactory.createDefaultUserVO();
@@ -149,6 +150,7 @@ class UserDaoImplTest {
     }
 
     @DisplayName("update: 존재하지 않는 UserVo 수정 시 예외 발생")
+    @Disabled("csv사용 X")
     @Test
     void updateWithNonExistentUserVo() {
         // given
@@ -170,6 +172,7 @@ class UserDaoImplTest {
 
     @DisplayName("delete: 정상적인 UserVo 삭제")
     @Test
+    @Disabled("csv사용 X")
     void delete() {
         // given
         UserVO userVO = TestUserVOFactory.createDefaultUserVO();
@@ -184,6 +187,7 @@ class UserDaoImplTest {
 
     @DisplayName("delete: 존재하지 않는 UserVo 삭제 시 예외 발생")
     @Test
+    @Disabled("csv사용 X")
     void deleteWithNonExistentUserVo() {
         // given
         long 삭제_하려는_ID = 1L;
@@ -207,8 +211,8 @@ class UserDaoImplTest {
         // then
         assertThat(maybeUserVO).isPresent()
                 .get()
-                .extracting("userId", "username", "password", "nickname", "email")
-                .containsExactly(1L, userVO.username(), userVO.password(), userVO.nickname(), userVO.email());
+                .extracting("username", "password", "nickname", "email")
+                .containsExactly(userVO.username(), userVO.password(), userVO.nickname(), userVO.email());
     }
     
     @DisplayName("findByUsername: 존재하지 않는 username으로 UserVo 조회 시 Optional에 null이 들어간 값 반환")

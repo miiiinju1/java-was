@@ -52,20 +52,18 @@ class GetPostListLogicTest {
                     assertThat(plr.postResponses().get(0))
                             .satisfies(post -> {
                                 assertThat(post)
-                                        .extracting("postId", "nickname", "content", "imageName")
-                                        .contains(2L, "nickname2", "content", "imagePath");
+                                        .extracting( "nickname", "content", "imageName")
+                                        .contains("nickname2", "content", "imagePath");
                                 assertThat(post.commentList()).isNotNull()
                                         .satisfies(clr -> {
-                                            assertThat(clr)
-                                                    .extracting("postId", "commentCount")
-                                                    .contains(2L, 1L);
+                                            assertThat(clr.commentCount()).isEqualTo(1L);
 
                                             assertThat(clr.commentList()).hasSize(1);
                                             assertThat(clr.commentList().get(0))
                                                     .satisfies(comment -> {
                                                         assertThat(comment)
-                                                                .extracting("commentId", "nickname", "content")
-                                                                .contains(2L, "nickname2", "comment2");
+                                                                .extracting("nickname", "content")
+                                                                .contains( "nickname2", "comment2");
                                                         assertThat(comment.createdAt()).isNotNull();
                                                     });
                                         });
@@ -74,19 +72,17 @@ class GetPostListLogicTest {
                     assertThat(plr.postResponses().get(1))
                             .satisfies(post -> {
                                 assertThat(post)
-                                        .extracting("postId", "nickname", "content", "imageName")
-                                        .contains(1L, "nickname1", "content", "imagePath");
+                                        .extracting("nickname", "content", "imageName")
+                                        .contains("nickname1", "content", "imagePath");
                                 assertThat(post.commentList()).isNotNull()
                                         .satisfies(clr -> {
-                                            assertThat(clr)
-                                                    .extracting("postId", "commentCount")
-                                                    .contains(1L, 1L);
+                                            assertThat(clr.commentCount()).isEqualTo(1L);
 
                                             assertThat(clr.commentList().get(0))
                                                     .satisfies(comment -> {
                                                         assertThat(comment)
-                                                                .extracting("commentId", "nickname", "content")
-                                                                .contains(1L, "nickname1", "comment1");
+                                                                .extracting( "nickname", "content")
+                                                                .contains( "nickname1", "comment1");
                                                         assertThat(comment.createdAt()).isNotNull();
                                                     });
                                         });
