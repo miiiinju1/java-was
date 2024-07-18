@@ -10,7 +10,7 @@ import java.util.*;
 
 public class CsvPreparedStatement implements PreparedStatement {
 
-    private final String basePath;
+    private final String folderPath;
     private final String sql;
     private final Map<Integer, Object> parameters = new HashMap<>();
     private final List<Integer> generatedKeys = new ArrayList<>();
@@ -516,8 +516,8 @@ public class CsvPreparedStatement implements PreparedStatement {
         return false;
     }
 
-    public CsvPreparedStatement(String basePath, String sql) {
-        this.basePath = basePath;
+    public CsvPreparedStatement(String folderPath, String sql) {
+        this.folderPath = folderPath;
         this.sql = sql;
     }
 }
