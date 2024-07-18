@@ -22,8 +22,8 @@ public class CsvDriver implements Driver {
             return null;
         }
 
-        String filePath = url.substring("jdbc:csvdb:".length());
-        return new CsvConnection(filePath);
+        String folderPath = url.substring("jdbc:csvdb:".length());
+        return new CsvConnection(folderPath);
     }
 
     @Override
