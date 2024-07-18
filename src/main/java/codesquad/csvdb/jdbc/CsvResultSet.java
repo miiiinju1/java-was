@@ -6,17 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public class CsvResultSet extends MyResultSet {
-    
-    private final Map<String, Object> data;
-    private final List<String> columns;
+
+    private final List<Map<String, String>> data;
     private int currentIndex = -1;
 
-    public CsvResultSet(
-            Map<String, Object> data,
-            List<String> columns
-    ) {
+    public CsvResultSet(List<Map<String, String>> data) {
         this.data = data;
-        this.columns = columns;
     }
 
     @Override
@@ -29,7 +24,7 @@ public class CsvResultSet extends MyResultSet {
     }
 
     private void validateColumnLabel(String columnLabel) throws SQLException {
-        if (!data.containsKey(columnLabel)) {
+        if (!data.get(currentIndex).containsKey(columnLabel)) {
             throw new SQLException("해당 컬럼이 존재하지 않습니다.");
         }
     }
@@ -37,22 +32,20 @@ public class CsvResultSet extends MyResultSet {
     @Override
     public String getString(String columnLabel) throws SQLException {
         validateColumnLabel(columnLabel);
-        Object value = data.get(columnLabel);
+        Object value = data.get(currentIndex).get(columnLabel);
         if (value == null) {
             return null;
         }
-
         if (value instanceof String) {
             return (String) value;
         }
-
         throw new SQLException("String으로 변환할 수 없는 값입니다.");
     }
 
     @Override
     public boolean getBoolean(String columnLabel) throws SQLException {
         validateColumnLabel(columnLabel);
-        Object value = data.get(columnLabel);
+        Object value = data.get(currentIndex).get(columnLabel);
         if (value == null) {
             return false;
         }
@@ -66,31 +59,21 @@ public class CsvResultSet extends MyResultSet {
     }
 
     @Override
-    public byte getByte(String columnLabel) throws SQLException {
-        throw new UnsupportedOperationException("지원하지 않는 기능입니다.");
-    }
-
-    @Override
-    public short getShort(String columnLabel) throws SQLException {
-        throw new UnsupportedOperationException("지원하지 않는 기능입니다.");
-    }
-
-    @Override
     public boolean getBoolean(int columnIndex) throws SQLException {
-        String columnLabel = columns.get(columnIndex - 1);
+        String columnLabel = (String) data.get(currentIndex).keySet().toArray()[columnIndex - 1];
         return getBoolean(columnLabel);
     }
 
     @Override
     public String getString(int columnIndex) throws SQLException {
-        String columnLabel = columns.get(columnIndex - 1);
+        String columnLabel = (String) data.get(currentIndex).keySet().toArray()[columnIndex - 1];
         return getString(columnLabel);
     }
 
     @Override
     public int getInt(String columnLabel) throws SQLException {
         validateColumnLabel(columnLabel);
-        Object value = data.get(columnLabel);
+        Object value = data.get(currentIndex).get(columnLabel);
         if (value == null) {
             return 0;
         }
@@ -106,7 +89,7 @@ public class CsvResultSet extends MyResultSet {
     @Override
     public long getLong(String columnLabel) throws SQLException {
         validateColumnLabel(columnLabel);
-        Object value = data.get(columnLabel);
+        Object value = data.get(currentIndex).get(columnLabel);
         if (value == null) {
             return 0;
         }
@@ -122,34 +105,31 @@ public class CsvResultSet extends MyResultSet {
     @Override
     public Timestamp getTimestamp(String columnLabel) throws SQLException {
         validateColumnLabel(columnLabel);
-        Object value = data.get(columnLabel);
-
+        Object value = data.get(currentIndex).get(columnLabel);
         if (value == null) {
             return null;
         }
-
         if (value instanceof Timestamp) {
             return (Timestamp) value;
         }
-
         throw new SQLException("Timestamp로 변환할 수 없는 값입니다.");
     }
 
     @Override
     public int getInt(int columnIndex) throws SQLException {
-        String columnLabel = columns.get(columnIndex - 1);
+        String columnLabel = (String) data.get(currentIndex).keySet().toArray()[columnIndex - 1];
         return getInt(columnLabel);
     }
 
     @Override
     public long getLong(int columnIndex) throws SQLException {
-        String columnLabel = columns.get(columnIndex - 1);
+        String columnLabel = (String) data.get(currentIndex).keySet().toArray()[columnIndex - 1];
         return getLong(columnLabel);
     }
 
     @Override
     public Timestamp getTimestamp(int columnIndex) throws SQLException {
-        String columnLabel = columns.get(columnIndex - 1);
+        String columnLabel = (String) data.get(currentIndex).keySet().toArray()[columnIndex - 1];
         return getTimestamp(columnLabel);
     }
 
@@ -157,5 +137,4 @@ public class CsvResultSet extends MyResultSet {
     public boolean wasNull() throws SQLException {
         return data.get(currentIndex) == null;
     }
-
 }
