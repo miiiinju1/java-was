@@ -77,8 +77,7 @@ public class CsvFileManager {
         File file = new File(tableName + ".csv");
 
         if (!file.exists()) {
-            System.out.println("Table does not exist.");
-            return results;
+            throw new RuntimeException("Table does not exist.");
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
