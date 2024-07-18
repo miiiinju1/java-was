@@ -27,6 +27,7 @@ import codesquad.application.domain.user.argumentresolver.LoginArgumentResolver;
 import codesquad.application.domain.user.argumentresolver.RegisterArgumentResolver;
 import codesquad.application.domain.user.request.LoginRequest;
 import codesquad.application.domain.user.request.RegisterRequest;
+import codesquad.csvdb.CsvDriver;
 import codesquad.webserver.authorization.SecurePathManager;
 import codesquad.webserver.http.HttpMethod;
 import codesquad.webserver.middleware.MiddleWareChain;
@@ -45,7 +46,9 @@ public class Main {
 
     public static void main(String[] args) {
         ServerInitializer serverInitializer = new ServerInitializer();
-        DatabaseConfig databaseConfig = new DatabaseConfig("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "sa", "");
+//        DatabaseConfig databaseConfig = new DatabaseConfig("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "sa", "");
+        new CsvDriver();
+        DatabaseConfig databaseConfig = new DatabaseConfig("jdbc:csvdb:dd", "sa", "");
 
         CompletableFuture.runAsync(() -> H2Console.main(databaseConfig));
         HandlerRegistry handlerRegistry = new HandlerRegistry(new ArrayList<>());
