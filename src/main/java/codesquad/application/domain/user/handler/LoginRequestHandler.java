@@ -22,6 +22,10 @@ public class LoginRequestHandler extends ApiRequestHandler<LoginRequest, User> {
 
     @Override
     public void applyExceptionHandler(RuntimeException e, Response response) {
+        if (e instanceof IllegalArgumentException) {
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            return;
+        }
         response.setStatus(HttpStatus.UNAUTHORIZED);
     }
 

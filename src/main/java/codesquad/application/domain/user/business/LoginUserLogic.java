@@ -19,6 +19,10 @@ public class LoginUserLogic implements Triggerable<LoginRequest, User> {
         final String userId = loginRequest.getUsername();
         final String password = loginRequest.getPassword();
 
+        if (userId.contains(",") || password.contains(",")) {
+            throw new IllegalArgumentException("콤마는 입력할 수 없습니다.");
+        }
+
         UserVO userVO = userDao.findByUsername(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 가진 사용자가 없습니다."));
 
