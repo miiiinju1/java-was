@@ -51,8 +51,11 @@ public class CsvExecutor {
         List<Map<String, String>> resultData = new ArrayList<>();
         valueList.forEach(values -> {
             long generatedKey = autoIncrement.incrementAndGet();
-//            values.remove(0);
+
+            // INSERT 시 PK를 기본적으로 넣어주고
             values.add(0, String.valueOf(generatedKey));
+
+            // 마지막에 created_at을 넣어는 걸 Default로 함
             Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
             values.add(timestamp.toString());
             resultData.add(Map.of(("GENERATED_KEY"), String.valueOf(generatedKey)));
