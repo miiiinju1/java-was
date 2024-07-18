@@ -1,33 +1,33 @@
 package codesquad;
 
 import codesquad.application.database.DatabaseConfig;
-import codesquad.application.database.H2Console;
 import codesquad.application.database.dao.*;
 import codesquad.application.domain.comment.argumentresolver.CreateCommentArgumentResolver;
 import codesquad.application.domain.comment.business.CreateCommentLogic;
 import codesquad.application.domain.comment.handler.CreateCommentRequestHandler;
 import codesquad.application.domain.comment.request.CreateCommentRequest;
 import codesquad.application.domain.images.handler.ImageResourceHandler;
-import codesquad.application.domain.post.business.GetPostListLogic;
-import codesquad.application.domain.post.handler.GetPostListRequestHandler;
-import codesquad.application.domain.user.handler.*;
-import codesquad.application.handler.*;
-import codesquad.application.domain.user.business.LoginUserLogic;
-import codesquad.application.domain.user.business.RegisterUserLogic;
-import codesquad.application.domain.user.business.GetUserInfoLogic;
-import codesquad.application.domain.user.business.GetUserListLogic;
 import codesquad.application.domain.post.argumentresolver.PostCreateArgumentResolver;
+import codesquad.application.domain.post.business.GetPostListLogic;
 import codesquad.application.domain.post.business.PostCreateLogic;
+import codesquad.application.domain.post.handler.GetPostListRequestHandler;
 import codesquad.application.domain.post.handler.PostCreateRequestHandler;
 import codesquad.application.domain.post.request.PostCreateRequest;
-import codesquad.application.processor.HandlerRegistry;
-import codesquad.application.processor.HttpRequestDispatcher;
-import codesquad.application.processor.ArgumentResolver;
 import codesquad.application.domain.user.argumentresolver.LoginArgumentResolver;
 import codesquad.application.domain.user.argumentresolver.RegisterArgumentResolver;
+import codesquad.application.domain.user.business.GetUserInfoLogic;
+import codesquad.application.domain.user.business.GetUserListLogic;
+import codesquad.application.domain.user.business.LoginUserLogic;
+import codesquad.application.domain.user.business.RegisterUserLogic;
+import codesquad.application.domain.user.handler.*;
 import codesquad.application.domain.user.request.LoginRequest;
 import codesquad.application.domain.user.request.RegisterRequest;
+import codesquad.application.handler.StaticResourceHandler;
+import codesquad.application.processor.ArgumentResolver;
+import codesquad.application.processor.HandlerRegistry;
+import codesquad.application.processor.HttpRequestDispatcher;
 import codesquad.csvdb.CsvDriver;
+import codesquad.csvdb.jdbc.CsvFileManager;
 import codesquad.webserver.authorization.SecurePathManager;
 import codesquad.webserver.http.HttpMethod;
 import codesquad.webserver.middleware.MiddleWareChain;
@@ -39,18 +39,24 @@ import codesquad.webserver.processor.HttpResponseWriter;
 import codesquad.webserver.server.ServerInitializer;
 
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
+import java.util.List;
 
 public class Main {
 
+    static {
+        new CsvDriver();
+    }
 
     public static void main(String[] args) {
         ServerInitializer serverInitializer = new ServerInitializer();
+        // H2 사용할 때에는 아래 코드 사용할 것
 //        DatabaseConfig databaseConfig = new DatabaseConfig("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "sa", "");
-        new CsvDriver();
+//        CompletableFuture.runAsync(() -> H2Console.main(databaseConfig));
         DatabaseConfig databaseConfig = new DatabaseConfig("jdbc:csvdb:dd", "sa", "");
+        CsvFileManager.createTable("users", List.of("user_id", "username", "password", "email", "nickname", "created_at"));
+        CsvFileManager.createTable("posts", List.of("post_id", "user_id", "content", "image_path", "created_at"));
+        CsvFileManager.createTable("comments", List.of("comment_id", "post_id", "user_id", "content", "created_at"));
 
-        CompletableFuture.runAsync(() -> H2Console.main(databaseConfig));
         HandlerRegistry handlerRegistry = new HandlerRegistry(new ArrayList<>());
         HttpRequestParser requestParser = new HttpRequestParser();
 
