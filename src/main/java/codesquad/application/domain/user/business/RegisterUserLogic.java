@@ -16,6 +16,10 @@ public class RegisterUserLogic implements Triggerable<RegisterRequest, Long> {
         String password = registerRequest.getPassword();
         String name = registerRequest.getNickname();
 
+        if (email.contains(",") || userId.contains(",") || password.contains(",") || name.contains(",")) {
+            throw new IllegalArgumentException("콤마는 입력할 수 없습니다.");
+        }
+
         User user = new User(userId, password, name, email);
         long savedPk = userDao.save(UserMapper.toUserVO(user));
         if(savedPk == -1) {
