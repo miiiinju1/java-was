@@ -85,6 +85,71 @@ class CsvExecutorTest {
 
     }
 
+    @DisplayName("조인을 포함한 select문을 실행할 수 있다.")
+    @Test
+    void joinSelect() throws IOException {
+        // given
+        String tableName = "test";
+        List<String> rows = List.of("id", "name", "age");
+        CsvFileManager.createTable(tableName, rows);
+
+        String joinTableName = "joinTest";
+        List<String> joinRows = List.of("id", "grade");
+        CsvFileManager.createTable(joinTableName, joinRows);
+
+        List<List<String>> values = List.of(
+                List.of("2", "keesun", "30"),
+                List.of("3", "iam", "30")
+        );
+
+        CsvFileManager.writeData(tableName, rows, values);
+
+        List<List<String>> joinTableValues = List.of(
+                List.of("2", "A"),
+                List.of("3", "B")
+        );
+
+        CsvFileManager.writeData(joinTableName, joinRows, joinTableValues);
+
+        Map<SQLParserKey, Object> sqlParser = Map.of(
+                SQLParserKey.DRIVING_TABLE, tableName,
+                SQLParserKey.DRIVING_TABLE_ALIAS, "t",
+                SQLParserKey.DRIVEN_TABLE, joinTableName,
+                SQLParserKey.DRIVEN_TABLE_ALIAS, "j",
+                SQLParserKey.JOIN_CONDITION_LEFT, "t.id",
+                SQLParserKey.JOIN_CONDITION_RIGHT, "j.id",
+                SQLParserKey.COLUMNS, List.of("t.id", "t.name", "t.age", "j.grade")
+        );
+
+        // when
+        ResultSet execute = CsvExecutor.select(sqlParser);
+
+        // then
+        try {
+            assertThat(execute.next()).isTrue();
+            long id = execute.getLong("t.id");
+            String name = execute.getString("t.name");
+            int age = execute.getInt("t.age");
+            String grade = execute.getString("j.grade");
+            assertThat(id).isEqualTo(2);
+            assertThat(name).isEqualTo("keesun");
+            assertThat(age).isEqualTo(30);
+            assertThat(grade).isEqualTo("A");
+            assertThat(execute.next()).isTrue();
+            id = execute.getLong("t.id");
+            name = execute.getString("t.name");
+            age = execute.getInt("t.age");
+            grade = execute.getString("j.grade");
+            assertThat(id).isEqualTo(3);
+            assertThat(name).isEqualTo("iam");
+            assertThat(age).isEqualTo(30);
+            assertThat(grade).isEqualTo("B");
+            assertThat(execute.next()).isFalse();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @DisplayName("기본적인 select 문을 실행할 수 있다.")
     @Test
     void select() throws Exception {
@@ -176,7 +241,7 @@ class CsvExecutorTest {
 
         List<Map<String, String>> readData = CsvFileManager.readTable(tableName);
         List<String> selectedColumns = List.of("id", "name");
-        String whereClause = "age = 20";
+        String whereClause = "age = 25";
 
         // when
         List<Map<String, String>> results = CsvExecutor.filterData(readData, selectedColumns, whereClause);
