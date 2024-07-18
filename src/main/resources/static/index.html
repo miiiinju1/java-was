@@ -273,7 +273,7 @@
                 <img src="../img/bookMark.svg" alt="Bookmark" />
               </button>
             </div>
-            <p class="post__article">${post.content}</p>
+            <p class="post__article">${convertNewlinesToBr(post.content)}</p>
             <p class="post__timestamp">작성일: ${postCreatedAt}</p>
             <ul class="comment__list" data-post-id="${post.postId}"></ul>
             <div class="comment-form">
@@ -309,7 +309,7 @@
           commentItem.innerHTML = `
             <div class="comment__item__content">
               <p class="comment__item__user__nickname">${comment.nickname}</p>
-              <p>${comment.content}</p>
+              <p>${convertNewlinesToBr(comment.content)}</p>
               <p class="comment__timestamp">작성일: ${commentCreatedAt}</p>
             </div>
           `;
@@ -360,6 +360,11 @@
         setTimeout(() => {
           errorMessage.style.display = 'none';
         }, 3000);
+      };
+
+      const convertNewlinesToBr = (text) => {
+        if (!text) return "";
+        return text.replace(/\n/g, '<br>');
       };
 
       checkLoginStatus();

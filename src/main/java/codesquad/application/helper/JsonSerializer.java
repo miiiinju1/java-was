@@ -42,25 +42,13 @@ public class JsonSerializer {
         json.append(postResponse.postId());
 
         json.append(",\"nickname\":");
-        if (postResponse.nickname() != null) {
-            json.append("\"").append(postResponse.nickname()).append("\"");
-        } else {
-            json.append("null");
-        }
+        json.append(escapeJsonString(postResponse.nickname()));
 
         json.append(",\"content\":");
-        if (postResponse.content() != null) {
-            json.append("\"").append(postResponse.content()).append("\"");
-        } else {
-            json.append("null");
-        }
+        json.append(escapeJsonString(postResponse.content()));
 
         json.append(",\"imageName\":");
-        if (postResponse.imageName() != null) {
-            json.append("\"").append(postResponse.imageName()).append("\"");
-        } else {
-            json.append("null");
-        }
+        json.append(escapeJsonString(postResponse.imageName()));
 
         json.append(",\"commentList\":");
         json.append(toJsonCommentListResponse(postResponse.commentList()));
@@ -105,18 +93,10 @@ public class JsonSerializer {
         json.append(commentResponse.commentId());
 
         json.append(",\"nickname\":");
-        if (commentResponse.nickname() != null) {
-            json.append("\"").append(commentResponse.nickname()).append("\"");
-        } else {
-            json.append("null");
-        }
+        json.append(escapeJsonString(commentResponse.nickname()));
 
         json.append(",\"content\":");
-        if (commentResponse.content() != null) {
-            json.append("\"").append(commentResponse.content()).append("\"");
-        } else {
-            json.append("null");
-        }
+        json.append(escapeJsonString(commentResponse.content()));
 
         json.append(",\"createdAt\":\"");
         json.append(commentResponse.createdAt().format(formatter));
@@ -124,5 +104,16 @@ public class JsonSerializer {
 
         json.append("}");
         return json.toString();
+    }
+
+    private static String escapeJsonString(String value) {
+        if (value == null) {
+            return "null";
+        }
+        return "\"" + value.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t") + "\"";
     }
 }
