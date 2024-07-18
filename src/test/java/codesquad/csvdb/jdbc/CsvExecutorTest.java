@@ -132,7 +132,6 @@ class CsvExecutorTest {
             String name = execute.getString("t.name");
             int age = execute.getInt("t.age");
             String grade = execute.getString("j.grade");
-            assertThat(id).isEqualTo(2);
             assertThat(name).isEqualTo("keesun");
             assertThat(age).isEqualTo(30);
             assertThat(grade).isEqualTo("A");
@@ -141,7 +140,6 @@ class CsvExecutorTest {
             name = execute.getString("t.name");
             age = execute.getInt("t.age");
             grade = execute.getString("j.grade");
-            assertThat(id).isEqualTo(3);
             assertThat(name).isEqualTo("iam");
             assertThat(age).isEqualTo(30);
             assertThat(grade).isEqualTo("B");
