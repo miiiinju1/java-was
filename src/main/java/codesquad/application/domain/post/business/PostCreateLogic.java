@@ -20,10 +20,13 @@ public class PostCreateLogic implements Triggerable<PostCreateRequest, Void> {
 
         AuthorizationContext authorizationContext = AuthorizationContextHolder.getContext();
         if(authorizationContext == null) {
-            throw new RuntimeException("로그인이 필요합니다.");
+            throw new IllegalArgumentException("로그인이 필요합니다.");
         }
         Session session = authorizationContext.getSession();
 
+        if (postCreateRequest.getContent().contains(",")) {
+            throw new RuntimeException("콤마는 입력할 수 없습니다.");
+        }
         Long userId = session.getUserId();
 
         // 파일 저장 후 path 분리

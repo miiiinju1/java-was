@@ -5,6 +5,7 @@ import codesquad.api.Response;
 import codesquad.application.domain.post.request.PostCreateRequest;
 import codesquad.application.handler.ApiRequestHandler;
 import codesquad.application.processor.ArgumentResolver;
+import codesquad.webserver.http.HttpStatus;
 
 import java.io.IOException;
 
@@ -24,7 +25,13 @@ public class PostCreateRequestHandler extends ApiRequestHandler<PostCreateReques
 
     @Override
     public void applyExceptionHandler(RuntimeException e, Response response) throws IOException {
+        if(e instanceof IllegalArgumentException) {
+            response.setStatus(HttpStatus.BAD_REQUEST);
+        }
+        if(e.getMessage().equals("로그인이 필요합니다.")) {
+            response.setStatus(HttpStatus.UNAUTHORIZED);
 
+        }
     }
 
     public PostCreateRequestHandler(ArgumentResolver<PostCreateRequest> argumentResolver) {
