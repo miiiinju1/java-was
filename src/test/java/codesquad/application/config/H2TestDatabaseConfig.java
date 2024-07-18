@@ -1,30 +1,21 @@
 package codesquad.application.config;
 
 import codesquad.application.database.DatabaseConfig;
-import codesquad.csvdb.CsvDriver;
-import codesquad.csvdb.jdbc.CsvFileManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class H2TestDatabaseConfig extends DatabaseConfig {
 
     private final String ddl;
-    static {
-        new CsvDriver();
-    }
 
     public H2TestDatabaseConfig() {
-//        super("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "sa", "");
-        super("jdbc:csvdb:dd", "sa", "");
-
+        super("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "sa", "");
         ddl = new BufferedReader(
                 new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/db/ddl.sql")))
         ).lines().collect(Collectors.joining("\n"));
@@ -32,21 +23,20 @@ public class H2TestDatabaseConfig extends DatabaseConfig {
     }
 
     private void initializeDatabase() {
-//        try (Connection conn = getConnection()) {
-//             conn.prepareStatement(ddl).executeQuery();
-//        } catch (SQLException | NullPointerException e) {
-//            e.printStackTrace();
-//        }
-        CsvFileManager.createTable("users", List.of("user_id", "username", "password", "email", "nickname", "created_at"));
-        CsvFileManager.createTable("posts", List.of("post_id", "user_id", "content", "image_path", "created_at"));
-        CsvFileManager.createTable("comments", List.of("comment_id", "post_id", "user_id", "content", "created_at"));
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(ddl);
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void resetDatabase() {
-        try (Connection conn = getConnection()) {
-            conn.prepareStatement("DROP TABLE IF EXISTS comments;").executeQuery();
-            conn.prepareStatement("DROP TABLE IF EXISTS posts;").executeQuery();
-            conn.prepareStatement("DROP TABLE IF EXISTS users;").executeQuery();
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute("DROP TABLE IF EXISTS comments");
+            stmt.execute("DROP TABLE IF EXISTS posts");
+            stmt.execute("DROP TABLE IF EXISTS users");
             initializeDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
