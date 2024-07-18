@@ -1,6 +1,6 @@
 package codesquad.application.domain.post.business;
 
-import codesquad.application.config.H2TestDatabaseConfig;
+import codesquad.application.config.CSVTestDatabaseConfig;
 import codesquad.application.database.dao.*;
 import codesquad.application.domain.post.response.PostListResponse;
 import codesquad.factory.TestCommentVOFacotory;
@@ -14,15 +14,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GetPostListLogicTest {
 
-    private final H2TestDatabaseConfig h2TestDatabaseConfig = new H2TestDatabaseConfig();
-    private final PostDao postDao = new PostDaoImpl(h2TestDatabaseConfig);
-    private final CommentDao commentDao = new CommentDaoImpl(h2TestDatabaseConfig);
-    private final UserDao userDao = new UserDaoImpl(h2TestDatabaseConfig);
+    private final CSVTestDatabaseConfig csvTestDatabaseConfig = new CSVTestDatabaseConfig();
+    private final PostDao postDao = new PostDaoImpl(csvTestDatabaseConfig);
+    private final CommentDao commentDao = new CommentDaoImpl(csvTestDatabaseConfig);
+    private final UserDao userDao = new UserDaoImpl(csvTestDatabaseConfig);
     private final GetPostListLogic getPostListLogic = new GetPostListLogic(postDao, commentDao);
 
     @AfterEach
     void tearDown() {
-        h2TestDatabaseConfig.resetDatabase();
+        csvTestDatabaseConfig.resetDatabase();
     }
 
     @DisplayName("run: 전체 포스트와 Comment를 포함하는 PostListResponse를 반환한다.")

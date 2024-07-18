@@ -1,6 +1,6 @@
 package codesquad.application.domain.comment.business;
 
-import codesquad.application.config.H2TestDatabaseConfig;
+import codesquad.application.config.CSVTestDatabaseConfig;
 import codesquad.application.database.dao.CommentDao;
 import codesquad.application.database.dao.CommentDaoImpl;
 import codesquad.application.database.dao.UserDao;
@@ -22,9 +22,9 @@ import static org.assertj.core.groups.Tuple.tuple;
 
 class CreateCommentLogicTest {
 
-    private final H2TestDatabaseConfig h2TestDatabaseConfig = new H2TestDatabaseConfig();
-    private final UserDao userDao = new UserDaoImpl(h2TestDatabaseConfig);
-    private final CommentDao commentDao = new CommentDaoImpl(h2TestDatabaseConfig);
+    private final CSVTestDatabaseConfig csvTestDatabaseConfig = new CSVTestDatabaseConfig();
+    private final UserDao userDao = new UserDaoImpl(csvTestDatabaseConfig);
+    private final CommentDao commentDao = new CommentDaoImpl(csvTestDatabaseConfig);
     private final CreateCommentLogic createCommentLogic = new CreateCommentLogic(commentDao);
 
     @BeforeEach
@@ -36,7 +36,7 @@ class CreateCommentLogicTest {
 
     @AfterEach
     void tearDown() {
-        h2TestDatabaseConfig.resetDatabase();
+        csvTestDatabaseConfig.resetDatabase();
         AuthorizationContextHolder.clearContext();
     }
 

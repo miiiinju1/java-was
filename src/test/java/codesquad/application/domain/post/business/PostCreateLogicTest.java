@@ -1,6 +1,6 @@
 package codesquad.application.domain.post.business;
 
-import codesquad.application.config.H2TestDatabaseConfig;
+import codesquad.application.config.CSVTestDatabaseConfig;
 import codesquad.application.database.dao.PostDao;
 import codesquad.application.database.dao.PostDaoImpl;
 import codesquad.application.database.dao.UserDao;
@@ -23,9 +23,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PostCreateLogicTest {
 
-    private final H2TestDatabaseConfig h2TestDatabaseConfig = new H2TestDatabaseConfig();
-    private final UserDao userDao = new UserDaoImpl(h2TestDatabaseConfig);
-    private final PostDao postDao = new PostDaoImpl(h2TestDatabaseConfig);
+    private final CSVTestDatabaseConfig csvTestDatabaseConfig = new CSVTestDatabaseConfig();
+    private final UserDao userDao = new UserDaoImpl(csvTestDatabaseConfig);
+    private final PostDao postDao = new PostDaoImpl(csvTestDatabaseConfig);
 
     private PostCreateLogic postCreateLogic;
 
@@ -39,7 +39,7 @@ class PostCreateLogicTest {
 
     @AfterEach
     void tearDown() {
-        h2TestDatabaseConfig.resetDatabase();
+        csvTestDatabaseConfig.resetDatabase();
         AuthorizationContextHolder.clearContext();
 
     }
