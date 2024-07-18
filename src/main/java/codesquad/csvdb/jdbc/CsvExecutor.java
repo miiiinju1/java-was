@@ -89,19 +89,36 @@ public class CsvExecutor {
             String baseTableAlias,
             String joinTableAlias
     ) {
-        return baseTable.stream()
-                .flatMap(baseRow -> joinTable.stream()
-                        .filter(joinRow -> baseRow.get(baseTableAlias + "." + joinConditionLeft).equals(joinRow.get(joinTableAlias + "." + joinConditionRight)))
-                        .map(joinRow -> {
-                            Map<String, String> combinedRow = new HashMap<>(baseRow);
-                            joinRow.forEach((key, value) -> combinedRow.put(joinTableAlias + "." + key, value));
-                            return combinedRow;
-                        }))
-                .toList();
+
+        List<Map<String, String>> result = new ArrayList<>();
+        for (Map<String, String> base : baseTable) {
+            for (Map<String, String> join : joinTable) {
+                String baseKey = joinConditionLeft.replace(baseTableAlias, "").substring(1);
+                String baseValue = base.get(baseKey);
+                String joinKey = joinConditionRight.replace(joinTableAlias, "").substring(1);
+                String joinValue = join.get(joinKey);
+
+                if(!baseValue.equals(joinValue)) continue;
+
+                Map<String, String> ret = new HashMap<>();
+                for (Map.Entry<String, String> entry : base.entrySet()) {
+                    ret.put(baseTableAlias + "." + entry.getKey(), entry.getValue());
+                }
+                for (Map.Entry<String, String> entry : join.entrySet()) {
+                    if(entry.getKey().equals(joinKey)) continue;
+                    ret.put(joinTableAlias + "." + entry.getKey(), entry.getValue());
+                }
+                result.add(ret);
+            }
+        }
+        return result;
     }
 
 
     public static List<Map<String, String>> filterData(List<Map<String, String>> data, List<String> selectedColumns, String whereClause) {
+        if (whereClause == null) {
+            return data;
+        }
         return data.stream()
                 .filter(row -> whereClause == null || evaluateWhereClause(row, whereClause))
                 .map(row -> {
