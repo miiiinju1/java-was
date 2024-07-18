@@ -41,18 +41,21 @@ public class CsvExecutor {
     public static ResultSet getGeneratedKeyAndInsert(Map<SQLParserKey, Object> parsed) throws IOException {
         String tableName = (String) parsed.get(SQLParserKey.TABLE);
         List<String> columns = (List<String>) parsed.get(SQLParserKey.COLUMNS);
-        List<List<String>> values = (List<List<String>>) parsed.get(SQLParserKey.VALUES);
+        List<List<String>> valueList = (List<List<String>>) parsed.get(SQLParserKey.VALUES);
 
-        AtomicLong autoIncrement = autoIncrementMap.computeIfAbsent(tableName, k -> new AtomicLong(0));
-        long generatedKey = autoIncrement.incrementAndGet();
+        AtomicLong autoIncrement = autoIncrementMap.computeIfAbsent(tableName, v -> new AtomicLong(0));
 
-        values.forEach(value -> value.add(String.valueOf(generatedKey)));
-
-        CsvFileManager.writeData(tableName, columns, values);
-
-        // Creating ResultSet for generated keys
+//        valueList하나씩 돌면서 PK 할당하기
         List<Map<String, String>> resultData = new ArrayList<>();
-        resultData.add(Map.of(("GENERATED_KEY"), String.valueOf(generatedKey)));
+        valueList.forEach(values -> {
+            long generatedKey = autoIncrement.incrementAndGet();
+            values.remove(0);
+            values.add(0, String.valueOf(generatedKey));
+            resultData.add(Map.of(("GENERATED_KEY"), String.valueOf(generatedKey)));
+        });
+
+        CsvFileManager.writeData(tableName, columns, valueList);
+
         return new CsvResultSet(resultData);
     }
     @SuppressWarnings("unchecked")
