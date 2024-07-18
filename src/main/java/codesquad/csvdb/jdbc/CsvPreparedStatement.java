@@ -42,10 +42,10 @@ public class CsvPreparedStatement extends MyPreparedStatement {
             throw new RuntimeException(e);
         }
     }
-    private String compiledSql() {
+    public String compiledSql() {
         Matcher matcher = PARAMETER_PATTERN.matcher(sql);
         StringBuilder compiledSql = new StringBuilder();
-        int index = 0;
+        int index = 1;
         while (matcher.find()) {
             Object value = parameters.get(index);
             String replacement = value instanceof String ? "'" + value + "'" : value.toString();
@@ -68,72 +68,72 @@ public class CsvPreparedStatement extends MyPreparedStatement {
 
     @Override
     public void setNull(int parameterIndex, int sqlType) throws SQLException {
-        parameters.put(parameterIndex-1, null);
+        parameters.put(parameterIndex, null);
     }
 
     @Override
     public void setBoolean(int parameterIndex, boolean x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setByte(int parameterIndex, byte x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setShort(int parameterIndex, short x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setInt(int parameterIndex, int x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setLong(int parameterIndex, long x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setFloat(int parameterIndex, float x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setDouble(int parameterIndex, double x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setBigDecimal(int parameterIndex, BigDecimal x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setString(int parameterIndex, String x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setBytes(int parameterIndex, byte[] x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setDate(int parameterIndex, Date x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setTime(int parameterIndex, Time x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
     public void setTimestamp(int parameterIndex, Timestamp x) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class CsvPreparedStatement extends MyPreparedStatement {
 
     @Override
     public void setTimestamp(int parameterIndex, Timestamp x, Calendar cal) throws SQLException {
-        parameters.put(parameterIndex-1, x);
+        parameters.put(parameterIndex, x);
     }
 
     @Override
