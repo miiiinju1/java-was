@@ -5,6 +5,7 @@ import codesquad.api.Response;
 import codesquad.application.domain.comment.request.CreateCommentRequest;
 import codesquad.application.handler.ApiRequestHandler;
 import codesquad.application.processor.ArgumentResolver;
+import codesquad.webserver.http.HttpStatus;
 
 import java.io.IOException;
 
@@ -24,6 +25,9 @@ public class CreateCommentRequestHandler extends ApiRequestHandler<CreateComment
 
     @Override
     public void applyExceptionHandler(RuntimeException e, Response response) throws IOException {
+        if (e instanceof IllegalArgumentException) {
+            response.setStatus(HttpStatus.BAD_REQUEST);
+        }
 
     }
 

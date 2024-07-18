@@ -22,6 +22,11 @@ public class CreateCommentLogic implements Triggerable<CreateCommentRequest, Voi
         Session session = authorizationContext.getSession();
 
         Long userId = session.getUserId();
+
+        if (createCommentRequest.content().contains(",")) {
+            throw new IllegalArgumentException("콤마는 입력할 수 없습니다.");
+        }
+
         Comment comment = new Comment(createCommentRequest.postId(), userId, createCommentRequest.content(), null);
 
         commentDao.save(CommentMapper.toCommentVO(comment));
