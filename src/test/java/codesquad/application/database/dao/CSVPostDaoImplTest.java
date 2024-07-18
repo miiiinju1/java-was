@@ -1,0 +1,119 @@
+package codesquad.application.database.dao;
+
+import codesquad.application.config.CSVTestDatabaseConfig;
+import codesquad.application.database.vo.PostListVO;
+import codesquad.application.database.vo.PostVO;
+import codesquad.application.database.vo.UserVO;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
+
+class CSVPostDaoImplTest {
+
+    private final CSVTestDatabaseConfig csvTestDatabaseConfig = new CSVTestDatabaseConfig();
+    private final PostDaoImpl postDao = new PostDaoImpl(csvTestDatabaseConfig);
+
+    @AfterEach
+    void tearDown() {
+        csvTestDatabaseConfig.resetDatabase();
+    }
+
+    @DisplayName("findAllJoinFetch: 모든 PostListVO 조회")
+    @Test
+    void findAllJoinFetch() {
+        // given
+        UserDao userDao = new UserDaoImpl(csvTestDatabaseConfig);
+        UserVO userVO = new UserVO(null, "userId1", "password1", "name1", "email1", null);
+        long save = userDao.save(userVO);
+        PostVO postVO = new PostVO(null, save, "content1", "/path/to/image1.jpg", null);
+
+        postDao.save(postVO);
+
+        // when
+        List<PostListVO> allPosts = postDao.findAllJoinFetch();
+
+        // then
+        assertThat(allPosts).hasSize(1)
+                .extracting("nickname", "content", "imagePath")
+                .containsExactly(tuple("name1", "content1", "/path/to/image1.jpg"));
+        assertThat(allPosts.get(0))
+                .extracting("createdAt").isNotNull();
+
+    }
+
+    @DisplayName("save: 정상적인 PostVO 저장")
+    @Test
+    void savePostVO() {
+        // given
+        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg", null);
+
+        // when
+        long postId = postDao.save(postVO);
+
+        // then
+        Optional<PostVO> savedPostVO = postDao.findById(postId);
+        assertThat(savedPostVO).isPresent()
+                .get()
+                .extracting("userId", "content", "imagePath")
+                .containsExactly(1L, "content", "/path/to/image.jpg");
+    }
+
+    @DisplayName("findById: 존재하는 PostVO 조회")
+    @Test
+    void findByIdWithExistentPostVO() {
+        // given
+        PostVO postVO = new PostVO(null, 1L, "content", "/path/to/image.jpg", null);
+        long 포스트_ID = postDao.save(postVO);
+
+        // when
+        Optional<PostVO> foundPostVO = postDao.findById(포스트_ID);
+
+        // then
+        assertThat(foundPostVO).isPresent()
+                .get()
+                .extracting("userId", "content", "imagePath")
+                .containsExactly(1L, "content", "/path/to/image.jpg");
+    }
+
+    @DisplayName("findById: 존재하지 않는 PostVO 조회")
+    @Test
+    void findByIdWithNonExistentPostVO() {
+        // given
+        Long 없는_포스트_ID = 999L;
+
+        // when
+        Optional<PostVO> foundPostVO = postDao.findById(없는_포스트_ID);
+
+        // then
+        assertThat(foundPostVO).isEmpty();
+    }
+
+    @DisplayName("findAll: 저장된 모든 PostVO 조회")
+    @Test
+    void findAllPosts() {
+        // given
+        PostVO postVO1 = new PostVO(null, 1L, "content1", "/path/to/image1.jpg", null);
+        PostVO postVO2 = new PostVO(null, 2L, "content2", "/path/to/image2.jpg", null);
+        postDao.save(postVO1);
+        postDao.save(postVO2);
+
+        // when
+        Collection<PostVO> allPosts = postDao.findAll();
+
+        // then
+        assertThat(allPosts).hasSize(2)
+                .extracting("userId", "content", "imagePath")
+                .containsExactlyInAnyOrder(
+                        tuple(1L, "content1", "/path/to/image1.jpg"),
+                        tuple(2L, "content2", "/path/to/image2.jpg")
+                );
+    }
+
+}
