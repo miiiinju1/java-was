@@ -113,7 +113,7 @@ class ParserTest {
     @Test
     void testParseCreate() {
         // given
-        String sql = "CREATE TABLE IF NOT EXISTS users (user_id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, email VARCHAR(100) NOT NULL UNIQUE, nickname VARCHAR(100) NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
+        String sql = "CREATE TABLE IF NOT EXISTS users (user_id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, email VARCHAR(100) NOT NULL UNIQUE, nickname VARCHAR(100) NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 
         // when
         Map<SQLParserKey, Object> result = Parser.parseSQL(sql);
@@ -160,7 +160,7 @@ class ParserTest {
                 "email VARCHAR(100) NOT NULL UNIQUE, " +
                 "nickname VARCHAR(100) NOT NULL, " +
                 "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
-                ")";
+                ");";
 
         // when
         Map<SQLParserKey, Object> result = Parser.parseSQL(sql);
@@ -190,7 +190,7 @@ class ParserTest {
                 "content VARCHAR(255) NOT NULL, " +
                 "image_path VARCHAR(255) NOT NULL, " +
                 "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
-                ")";
+                ");";
 
         // when
         Map<SQLParserKey, Object> result = Parser.parseSQL(sql);
@@ -219,7 +219,7 @@ class ParserTest {
                 "user_id INT NOT NULL, " +
                 "content TEXT NOT NULL, " +
                 "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
-                ")";
+                ");";
 
         // when
         Map<SQLParserKey, Object> result = Parser.parseSQL(sql);
