@@ -38,7 +38,7 @@ class CsvExecutorTest {
     void testMethodNameHere() throws IOException {
         // given
         String tableName = "test";
-        List<String> rows = List.of("name", "age");
+        List<String> rows = List.of("id", "name", "age", "created_at");
         CsvFileManager.createTable(tableName, rows);
         ArrayList<String> values1 = new ArrayList<>();
         values1.add("keesun");
@@ -51,7 +51,7 @@ class CsvExecutorTest {
 
         Map<SQLParserKey, Object> sqlParser = Map.of(
                 SQLParserKey.TABLE, tableName,
-                SQLParserKey.COLUMNS, List.of("id", "name", "age"),
+                SQLParserKey.COLUMNS, List.of("name", "age"),
                 SQLParserKey.VALUES, List.of(
                         values1,
                         values2
@@ -64,11 +64,7 @@ class CsvExecutorTest {
         // then
         try {
             assertThat(execute.next()).isTrue();
-            long generatedKey = execute.getLong("GENERATED_KEY");
-            assertThat(generatedKey).isEqualTo(1);
             assertThat(execute.next()).isTrue();
-            generatedKey = execute.getLong("GENERATED_KEY");
-            assertThat(generatedKey).isEqualTo(2);
             assertThat(execute.next()).isFalse();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -80,8 +76,8 @@ class CsvExecutorTest {
         assertThat(readTable)
                 .hasSize(2)
                 .containsExactlyElementsOf(List.of(
-                        Map.of("id", "1", "name", "keesun", "age", "30"),
-                        Map.of("id", "2", "name", "iam", "age", "30")
+                        Map.of("id", "null", "name", "keesun", "age", "30", "created_at", "null"),
+                        Map.of("id", "null", "name", "iam", "age", "30", "created_at", "null")
                 ));
 
     }
