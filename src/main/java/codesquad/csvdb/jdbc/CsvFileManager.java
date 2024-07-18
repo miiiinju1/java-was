@@ -33,12 +33,11 @@ public class CsvFileManager {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
 
             for (List<String> value : values) {
-                Deque<String> deque = new ArrayDeque<>(value);
                 for (int i = 0; i < rows.length; i++) {
                     if (!columnIndexes.contains(i)) {
                         writer.write("null");
                     } else {
-                        writer.write(deque.removeFirst());
+                        writer.write(value.get(i));
                     }
                     if (i != rows.length - 1) {
                         writer.write(",");
