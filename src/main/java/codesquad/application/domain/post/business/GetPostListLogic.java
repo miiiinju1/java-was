@@ -45,7 +45,7 @@ public class GetPostListLogic implements Triggerable<Void, PostListResponse> {
                     List<CommentListVO> commentsOfPost = commentDao.findCommentsJoinFetch(post.postId());
 
                     List<CommentResponse> commentResponse = commentsOfPost.stream()
-                            .map(comment -> new CommentResponse(comment.commentId(), comment.nickname(), comment.content(), comment.createdDate()))
+                            .map(comment -> new CommentResponse(comment.commentId(), comment.nickname(), Base64Util.decode(comment.content()), comment.createdDate()))
                             .toList();
                     return new PostResponse(post.postId(), post.nickname(), Base64Util.decode(post.content()), post.imagePath(), CommentListResponse.of(post.postId(), commentResponse), post.createdAt());
                 })

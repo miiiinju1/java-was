@@ -2,6 +2,7 @@ package codesquad.application.domain.comment.business;
 
 import codesquad.application.database.dao.CommentDao;
 import codesquad.application.domain.comment.request.CreateCommentRequest;
+import codesquad.application.helper.Base64Util;
 import codesquad.application.mapper.CommentMapper;
 import codesquad.application.domain.comment.model.Comment;
 import codesquad.application.processor.Triggerable;
@@ -27,7 +28,7 @@ public class CreateCommentLogic implements Triggerable<CreateCommentRequest, Voi
             throw new IllegalArgumentException("콤마는 입력할 수 없습니다.");
         }
 
-        Comment comment = new Comment(createCommentRequest.postId(), userId, createCommentRequest.content(), null);
+        Comment comment = new Comment(createCommentRequest.postId(), userId, Base64Util.encode(createCommentRequest.content()), null);
 
         commentDao.save(CommentMapper.toCommentVO(comment));
     }
