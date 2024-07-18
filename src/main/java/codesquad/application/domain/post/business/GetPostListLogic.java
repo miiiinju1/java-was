@@ -7,6 +7,7 @@ import codesquad.application.domain.comment.response.CommentListResponse;
 import codesquad.application.domain.comment.response.CommentResponse;
 import codesquad.application.domain.post.response.PostListResponse;
 import codesquad.application.domain.post.response.PostResponse;
+import codesquad.application.helper.Base64Util;
 import codesquad.application.processor.Triggerable;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class GetPostListLogic implements Triggerable<Void, PostListResponse> {
                     List<CommentResponse> commentResponse = commentsOfPost.stream()
                             .map(comment -> new CommentResponse(comment.commentId(), comment.nickname(), comment.content(), comment.createdDate()))
                             .toList();
-                    return new PostResponse(post.postId(), post.nickname(), post.content(), post.imagePath(), CommentListResponse.of(post.postId(), commentResponse), post.createdAt());
+                    return new PostResponse(post.postId(), post.nickname(), Base64Util.decode(post.content()), post.imagePath(), CommentListResponse.of(post.postId(), commentResponse), post.createdAt());
                 })
                 .collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(postResponseList);
