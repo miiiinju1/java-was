@@ -7,6 +7,7 @@ import codesquad.application.database.dao.UserDao;
 import codesquad.application.database.dao.UserDaoImpl;
 import codesquad.application.database.vo.PostVO;
 import codesquad.application.domain.post.request.PostCreateRequest;
+import codesquad.csvdb.jdbc.CsvExecutor;
 import codesquad.factory.TestUserVOFactory;
 import codesquad.webserver.authorization.AuthorizationContext;
 import codesquad.webserver.authorization.AuthorizationContextHolder;
@@ -31,6 +32,7 @@ class PostCreateLogicTest {
 
     @BeforeEach
     void setUp() {
+        CsvExecutor.clear();
         postCreateLogic = new PostCreateLogic(userDao, postDao);
         long 저장된_사용자_ID = userDao.save(TestUserVOFactory.createBy("userId1", "nickname1", "email1"));
         Session session = new Session(저장된_사용자_ID, LocalDateTime.of(2021, 1, 1, 0, 0), 60);

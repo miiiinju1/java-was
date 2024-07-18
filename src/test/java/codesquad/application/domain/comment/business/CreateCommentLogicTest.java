@@ -7,6 +7,7 @@ import codesquad.application.database.dao.UserDao;
 import codesquad.application.database.dao.UserDaoImpl;
 import codesquad.application.database.vo.CommentVO;
 import codesquad.application.domain.comment.request.CreateCommentRequest;
+import codesquad.csvdb.jdbc.CsvExecutor;
 import codesquad.factory.TestUserVOFactory;
 import codesquad.webserver.authorization.AuthorizationContext;
 import codesquad.webserver.authorization.AuthorizationContextHolder;
@@ -29,6 +30,7 @@ class CreateCommentLogicTest {
 
     @BeforeEach
     void setUp() {
+        CsvExecutor.clear();
         long 저장된_사용자_ID = userDao.save(TestUserVOFactory.createBy("userId1", "nickname1", "email1"));
         Session session = new Session(저장된_사용자_ID, LocalDateTime.of(2021, 1, 1, 0, 0), 60);
         AuthorizationContextHolder.setContext(new AuthorizationContext(session, List.of()));

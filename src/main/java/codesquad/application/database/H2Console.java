@@ -1,7 +1,6 @@
 package codesquad.application.database;
 
 import codesquad.csvdb.jdbc.CsvFileManager;
-import org.h2.tools.Server;
 
 import java.sql.SQLException;
 import java.util.List;

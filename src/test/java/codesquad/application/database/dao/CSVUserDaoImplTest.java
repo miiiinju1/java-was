@@ -2,8 +2,10 @@ package codesquad.application.database.dao;
 
 import codesquad.application.config.CSVTestDatabaseConfig;
 import codesquad.application.database.vo.UserVO;
+import codesquad.csvdb.jdbc.CsvExecutor;
 import codesquad.factory.TestUserVOFactory;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +21,12 @@ class CSVUserDaoImplTest {
 
     private final CSVTestDatabaseConfig csvTestDatabaseConfig = new CSVTestDatabaseConfig();
     private final UserDaoImpl userDao = new UserDaoImpl(csvTestDatabaseConfig);
+
+
+    @BeforeEach
+    void setUp() {
+        CsvExecutor.clear();
+    }
 
     @AfterEach
     void tearDown() {

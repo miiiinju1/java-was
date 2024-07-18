@@ -1,6 +1,7 @@
 package codesquad.factory;
 
 import codesquad.application.database.vo.PostVO;
+import codesquad.application.helper.Base64Util;
 
 public class TestPostVOFacotry {
 
@@ -8,7 +9,7 @@ public class TestPostVOFacotry {
             return new PostVO(
                     null,
                     userId,
-                    "content",
+                    Base64Util.encode("content"),
                     "imagePath",
                     null
             );

@@ -5,8 +5,11 @@ import codesquad.application.database.vo.CommentListVO;
 import codesquad.application.database.vo.CommentVO;
 import codesquad.application.database.vo.PostVO;
 import codesquad.application.database.vo.UserVO;
+import codesquad.application.helper.Base64Util;
+import codesquad.csvdb.jdbc.CsvExecutor;
 import codesquad.factory.TestPostVOFacotry;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +26,11 @@ class CSVCommentDaoImplTest {
     private final CSVTestDatabaseConfig csvTestDatabaseConfig = new CSVTestDatabaseConfig();
     private final CommentDaoImpl commentDao = new CommentDaoImpl(csvTestDatabaseConfig);
     private final PostDao postDao = new PostDaoImpl(csvTestDatabaseConfig);
+
+    @BeforeEach
+    void setUp() {
+        CsvExecutor.clear();
+    }
 
     @AfterEach
     void tearDown() {
@@ -117,10 +125,10 @@ class CSVCommentDaoImplTest {
 
         // then
         assertThat(comments).hasSize(2)
-                .extracting("postId", "userId", "nickname", "content")
+                .extracting("commentId", "postId", "userId", "nickname", "content")
                 .containsExactlyInAnyOrder(
-                        tuple(commentId1, userId, "user1", "Comment 1"),
-                        tuple(commentId2, userId, "user1", "Comment 2")
+                        tuple(commentId1, postId, userId, "user1", "Comment 1"),
+                        tuple(commentId2, postId, userId, "user1", "Comment 2")
                 );
 
     }

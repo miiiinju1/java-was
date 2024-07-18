@@ -4,6 +4,7 @@ import codesquad.application.config.CSVTestDatabaseConfig;
 import codesquad.application.database.vo.PostListVO;
 import codesquad.application.database.vo.PostVO;
 import codesquad.application.database.vo.UserVO;
+import codesquad.csvdb.jdbc.CsvExecutor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ class CSVPostDaoImplTest {
     @AfterEach
     void tearDown() {
         csvTestDatabaseConfig.resetDatabase();
+        CsvExecutor.clear();
     }
 
     @DisplayName("findAllJoinFetch: 모든 PostListVO 조회")

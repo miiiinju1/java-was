@@ -193,4 +193,10 @@ public class CsvExecutor {
             default -> false;
         };
     }
+
+    public static void clear() {
+        autoIncrementMap.clear();
+        usernameUniqueSet.clear();
+        emailUniqueSet.clear();
+    }
 }
