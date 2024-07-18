@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class CsvExecutor {
 
     private static final ConcurrentHashMap<String, AtomicLong> autoIncrementMap = new ConcurrentHashMap<>();
+    private static final HashSet<String> usernameUniqueSet = new HashSet<>();
+    private static final HashSet<String> emailUniqueSet = new HashSet<>();
 
     public static ResultSet execute(Map<SQLParserKey, Object> parsed) throws IOException {
         String command = (String) parsed.get(SQLParserKey.COMMAND);
@@ -47,6 +49,33 @@ public class CsvExecutor {
 
         AtomicLong autoIncrement = autoIncrementMap.computeIfAbsent(tableName, v -> new AtomicLong(0));
 
+        List<String> usernames = new ArrayList<>();
+        if (columns.contains("username")) {
+            int index = columns.indexOf("username")-1;
+            for (List<String> values : valueList) {
+                String username = values.get(index);
+                if (usernameUniqueSet.contains(username)) {
+                    throw new IllegalArgumentException("사용자 ID는 중복될 수 없습니다.");
+                }
+                usernames.add(username);
+            }
+        }
+
+        List<String> emails = new ArrayList<>();
+
+        if (columns.contains("email")) {
+            int index = columns.indexOf("email")-1;
+
+            for (List<String> values : valueList) {
+                String email = values.get(index);
+                if (emailUniqueSet.contains(email)) {
+                    throw new IllegalArgumentException("이메일은 중복될 수 없습니다.");
+                }
+                emails.add(email);
+            }
+        }
+        emailUniqueSet.addAll(emails);
+        usernameUniqueSet.addAll(usernames);
 //        valueList하나씩 돌면서 PK 할당하기
         List<Map<String, String>> resultData = new ArrayList<>();
         valueList.forEach(values -> {
