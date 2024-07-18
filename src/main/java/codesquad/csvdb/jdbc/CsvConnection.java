@@ -6,7 +6,7 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class CsvConnection implements Connection {
-    private final String filePath;
+    private final String folderPath;
 
     @Override
     public Statement createStatement() throws SQLException {
@@ -15,7 +15,7 @@ public class CsvConnection implements Connection {
 
     @Override
     public PreparedStatement prepareStatement(String sql) throws SQLException {
-        return null;
+        return new CsvPreparedStatement(folderPath, sql);
     }
 
     @Override
@@ -278,7 +278,7 @@ public class CsvConnection implements Connection {
         return false;
     }
 
-    public CsvConnection(String filePath) {
-        this.filePath = filePath;
+    public CsvConnection(String folderPath) {
+        this.folderPath = folderPath;
     }
 }
