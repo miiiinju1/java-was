@@ -137,7 +137,7 @@ class ParserTest {
     @Test
     void testParseDrop() {
         // given
-        String sql = "DROP TABLE users";
+        String sql = "DROP TABLE IF EXISTS users;";
 
         // when
         Map<SQLParserKey, Object> result = Parser.parseSQL(sql);
@@ -146,6 +146,38 @@ class ParserTest {
         assertThat(result).containsExactlyInAnyOrderEntriesOf(Map.of(
                 SQLParserKey.COMMAND, "DROP",
                 SQLParserKey.TABLE, "users"
+        ));
+    }
+
+    @DisplayName("DROP문")
+    @Test
+    void testParseDrop2() {
+        // given
+        String sql = "DROP TABLE IF EXISTS posts;";
+
+        // when
+        Map<SQLParserKey, Object> result = Parser.parseSQL(sql);
+
+        // then
+        assertThat(result).containsExactlyInAnyOrderEntriesOf(Map.of(
+                SQLParserKey.COMMAND, "DROP",
+                SQLParserKey.TABLE, "posts"
+        ));
+    }
+
+    @DisplayName("DROP문")
+    @Test
+    void testParseDrop3() {
+        // given
+        String sql = "DROP TABLE IF EXISTS comments;";
+
+        // when
+        Map<SQLParserKey, Object> result = Parser.parseSQL(sql);
+
+        // then
+        assertThat(result).containsExactlyInAnyOrderEntriesOf(Map.of(
+                SQLParserKey.COMMAND, "DROP",
+                SQLParserKey.TABLE, "comments"
         ));
     }
 
