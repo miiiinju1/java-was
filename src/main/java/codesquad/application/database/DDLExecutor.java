@@ -7,8 +7,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DDLExecutor {
 
@@ -39,9 +39,10 @@ public class DDLExecutor {
     }
 
     private void executeSQL(String sql) throws SQLException {
-        try (Connection conn = databaseConfig.getConnection();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
+        try (Connection conn = databaseConfig.getConnection()) {
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.executeQuery();
+            }
         }
     }
 }
