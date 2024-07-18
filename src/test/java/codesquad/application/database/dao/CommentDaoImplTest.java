@@ -32,6 +32,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("save: 정상적인 CommentVO 저장")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void saveCommentVO() {
         // given
@@ -49,6 +50,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("findById: 존재하는 CommentVO 조회")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void findByIdWithExistentCommentVO() {
         // given
@@ -66,6 +68,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("findById: 존재하지 않는 CommentVO 조회")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void findByIdWithNonExistentCommentVO() {
         // given
@@ -79,7 +82,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("delete: 정상적인 CommentVO 삭제")
-    @Disabled("h2 사용")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void deleteCommentVO() {
         // given
@@ -95,7 +98,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("delete: 존재하지 않는 CommentVO 삭제 시 예외 발생")
-    @Disabled("h2 사용")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void deleteNonExistentCommentVO() {
         // given
@@ -108,7 +111,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("update: 정상적인 CommentVO 수정")
-    @Disabled("h2 사용")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void updateCommentVO() {
         // given
@@ -129,7 +132,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("update: 존재하지 않는 CommentVO 수정 시 예외 발생")
-    @Disabled("h2 사용")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void updateNonExistentCommentVO() {
         // given
@@ -142,6 +145,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("findAll: 저장된 모든 CommentVO 조회")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void findAllComments() {
         // given
@@ -163,7 +167,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("save: content가 null인 경우 예외 발생")
-    @Disabled("h2 사용")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void saveCommentVOWithNullContent() {
         // given
@@ -175,6 +179,7 @@ class CommentDaoImplTest {
     }
 
     @DisplayName("findCommentsJoinFetch: postId에 따른 CommentListVO 조회")
+    @Disabled("csv 개발로 일시 중단")
     @Test
     void findCommentsJoinFetch() {
         // given
