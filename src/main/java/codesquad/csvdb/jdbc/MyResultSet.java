@@ -331,11 +331,6 @@ public abstract class MyResultSet implements ResultSet {
     }
 
     @Override
-    public int getConcurrency() throws SQLException {
-        throw new UnsupportedOperationException("지원하지 않는 기능입니다.");
-    }
-
-    @Override
     public boolean rowUpdated() throws SQLException {
         throw new UnsupportedOperationException("지원하지 않는 기능입니다.");
     }
@@ -632,7 +627,7 @@ public abstract class MyResultSet implements ResultSet {
 
     @Override
     public Date getDate(int columnIndex, Calendar cal) throws SQLException {
-        throw newUnsupportedOperationException("지원하지 않는 기능입니다.");
+        throw new UnsupportedOperationException("지원하지 않는 기능입니다.");
     }
 
     @Override
