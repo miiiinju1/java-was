@@ -7,6 +7,7 @@ import codesquad.application.processor.Triggerable;
 import codesquad.webserver.http.HttpStatus;
 import codesquad.webserver.http.Mime;
 import codesquad.webserver.http.Path;
+import codesquad.webserver.http.header.HeaderConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +32,7 @@ public class ImageResourceHandler implements HttpHandler<String, Void> {
                 httpResponse.setStatus(HttpStatus.OK);
                 Mime mime = Mime.ofFilePath(filename);
                 httpResponse.setHeader("Content-Type", mime.getType());
+                httpResponse.setHeader(HeaderConstants.CACHE_CONTROL, "public, max-age=31536000");
 
                 byte[] buffer = new byte[4096];
                 int bytesRead;
